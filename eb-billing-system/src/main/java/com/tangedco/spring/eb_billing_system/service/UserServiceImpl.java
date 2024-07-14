@@ -43,11 +43,11 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByAadharId(user.getAadharId())) {
             throw new AadharIdAlreadyExistsException("Aadhar ID already exists");
         }
+        System.out.println("Registering password: " + user.getPassword());
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        // Generate custom user ID
         String lastFourAadhar = user.getAadharId().substring(user.getAadharId().length() - 4);
         int maxUserId = userRepository.findMaxUserIdSuffix();
         String customUserId = lastFourAadhar + String.format("%04d", maxUserId + 1);
@@ -61,6 +61,12 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findByUserId(loginRequest.getUserId());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
+
+            // Debugging logs to check stored and input passwords (avoid encoding here)
+            System.out.println("Stored password: " + user.getPassword());
+            System.out.println("Input password: " + loginRequest.getPassword());
+
+            // Use matches to compare the input password with the stored password hash
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 return new LoginResponse("Login successful", user);
             } else {

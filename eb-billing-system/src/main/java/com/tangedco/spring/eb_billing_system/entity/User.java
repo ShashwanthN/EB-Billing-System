@@ -23,8 +23,26 @@ public class User {
     private String aadharId;
     @Column(name = "password")
     private String password;
-    // Getters and setters
+@Column(name = "phone_number")
+    private String phoneNumber;
+@Column(name = "email")
+    private String email;
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getPassword() {
         return password;
@@ -73,4 +91,6 @@ public class User {
     public void setAadharId(String aadharId) {
         this.aadharId = aadharId;
     }
+
+
 }

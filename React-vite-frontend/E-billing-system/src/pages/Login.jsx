@@ -12,27 +12,28 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     try {
       const response = await axios.post('http://localhost:8080/users/login', {
         userId: userId,
         password: password,
       });
-
+  
+      // Check the response and set the message
       if (response.data.user) {
-        setMessage('Login successful');
+        setMessage(response.data.message); 
         setIsSuccess(true);
       } else {
-        setMessage(response.data.message);
+        setMessage(response.data.message); 
         setIsSuccess(false);
       }
     } catch (error) {
-      setMessage("error");
+      setMessage("Login error: " + (error.response?.data?.message || "Unexpected error occurred"));
       setIsSuccess(false); 
       console.error('Login error:', error);
     }
   };
-
+  
   return (
     <div className="min-h-screen max-h-screen flex items-center transition-all transform duration-200 justify-center  overflow-hidden relative">
       <img src={bg} alt="background" className="bg-full overflow-hidden brightness-75 max-h-screen" />
