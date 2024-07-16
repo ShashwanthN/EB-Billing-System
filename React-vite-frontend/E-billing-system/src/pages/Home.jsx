@@ -8,6 +8,7 @@ const Home = () => {
   return (
     <div className="min-h-screen mt-24 bg-gray-100">
       <Topbar />
+      <div className="shadow-gray pb-8">
       <header className="bg-gradient-to-tl from-blue-gray-50 to-white shadow">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <img src={logo} alt="logo" className="my-2 w-24" />
@@ -22,7 +23,7 @@ const Home = () => {
         </div>
       </header>
       <Carousel
-        className="h-96"
+        className="h-[400px]"
         navigation={({ setActiveIndex, activeIndex, length }) => (
           <div className=" left-2/4  flex -translate-x-2/4 gap-2">
             {new Array(length).fill("").map((_, i) => (
@@ -116,6 +117,10 @@ const Home = () => {
           </div>
         </div>
       </main>
+      </div>
+      <div className="min-h-screen bg-secondary border border-primary text-white">
+
+      </div>
       <Footer />
     </div>
   );

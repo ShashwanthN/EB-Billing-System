@@ -2,6 +2,11 @@ import React from 'react'
 import Navbar from './Navbar'
 const Topbar = () => {
   return (
+    <div>
+
+    <div className='mt-20'>
+
+    </div>
     <div className="top-0 fixed z-50 w-full bg-white  ">
       
       <div className=" border border-gray-3 p-4 text-purple">
@@ -17,6 +22,7 @@ const Topbar = () => {
         
       </div>
       <Navbar />
+      </div>
       </div>
   )
 }

@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
 
-    @Query("SELECT COALESCE(MAX(CAST(SUBSTRING(u.userId, 5) AS int)), 0) FROM User u WHERE u.userId LIKE '____%'")
+    @Query("SELECT COALESCE(MAX(CAST(SUBSTRING(u.userId, 5, 4) AS int)), 0) FROM User u WHERE u.userId LIKE '____%'")
     int findMaxUserIdSuffix();
 
     Optional<User> findByUserId(String userId);

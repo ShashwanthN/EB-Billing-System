@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import bg from "../assets/login-bg.png"; // Background image
-import logo from "../assets/logo.png"; // Logo image
+import bg from "../assets/login-bg.png"; 
+import logo from "../assets/logo.png"; 
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -17,12 +17,12 @@ const Register = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [userId, setUserId] = useState('');
-  const [showSplash, setShowSplash] = useState(false); // Splash screen state
+  const [showSplash, setShowSplash] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Format Aadhar ID in real-time
+   
     if (name === 'aadharId') {
       const formattedValue = formatAadhar(value);
       setUser({ ...user, [name]: formattedValue });
@@ -30,13 +30,13 @@ const Register = () => {
       const formattedPhone = formatPhone(value);
       setUser({ ...user, [name]: formattedPhone });
     } else if (name === 'firstName' || name === 'lastName') {
-      // Capitalize only first name and last name
+      
       setUser({
         ...user,
         [name]: capitalize(value)
       });
     } else {
-      // For other fields, just update the value
+      
       setUser({
         ...user,
         [name]: value
@@ -51,11 +51,11 @@ const Register = () => {
 
   const formatPhone = (value) => {
     const onlyDigits = value.replace(/\D/g, '');
-    return onlyDigits.length > 10 ? onlyDigits.slice(0, 10) : onlyDigits; // Limit to 10 digits
+    return onlyDigits.length > 10 ? onlyDigits.slice(0, 10) : onlyDigits;
   };
 
   const capitalize = (value) => {
-    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(); // Capitalizes first letter and makes the rest lowercase
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   };
 
   const validateEmail = (email) => {
@@ -68,26 +68,24 @@ const Register = () => {
     setError('');
     setMessage('');
 
-    // Check if passwords match
-    if (user.password !== user.confirmPassword) {
+      if (user.password !== user.confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
 
-    // Validate Aadhar ID format
     const normalizedAadharId = user.aadharId.replace(/\s/g, '');
     if (normalizedAadharId.length !== 12) {
       setError('Aadhar ID must be exactly 12 digits.');
       return;
     }
 
-    // Validate phone number length
+
     if (user.phoneNumber.length !== 10) {
       setError('Phone number must be exactly 10 digits.');
       return;
     }
 
-    // Validate email format
+
     if (!validateEmail(user.email)) {
       setError('Invalid email format.');
       return;
@@ -96,15 +94,15 @@ const Register = () => {
     try {
       const response = await axios.post('http://localhost:8080/users', {
         ...user,
-        aadharId: normalizedAadharId // Send normalized Aadhar ID
+        aadharId: normalizedAadharId 
       }, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      setUserId(response.data.userId); // Set user ID from response
+      setUserId(response.data.userId); 
       setMessage('User registered successfully.');
-      setShowSplash(true); // Show splash screen
+      setShowSplash(true); 
     } catch (error) {
       if (error.response) {
         setError('Error registering user: ' + error.response.data.message);
@@ -198,7 +196,7 @@ const Register = () => {
               name="aadharId"
               value={user.aadharId}
               onChange={handleChange}
-              maxLength="14" // Max length for formatted Aadhar
+              maxLength="14" 
               placeholder="1111 2222 3333"
               className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
               required

@@ -22,9 +22,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/**").permitAll() // Allow access to all endpoints under /users
+                        .requestMatchers("/users/**", "/connections/**").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
     }
+
 }
