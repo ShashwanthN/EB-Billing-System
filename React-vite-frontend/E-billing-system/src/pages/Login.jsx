@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import bg from "../assets/login-bg.png";
 import logo from "../assets/logo.png";
-import { data } from 'autoprefixer';
 
 function Login() {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false); 
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +25,7 @@ function Login() {
       if (response.data.user) {
         setMessage(response.data.message); 
         setIsSuccess(true);
+        navigate('/');  // Redirect to home page
       } else {
         setMessage(response.data.message); 
         setIsSuccess(false);
@@ -35,7 +38,7 @@ function Login() {
   };
   
   return (
-    <div className="min-h-screen max-h-screen flex items-center transition-all transform duration-200 justify-center  overflow-hidden relative">
+    <div className="min-h-screen max-h-screen flex items-center transition-all transform duration-200 justify-center overflow-hidden relative">
       <img src={bg} alt="background" className="bg-full overflow-hidden brightness-75 max-h-screen" />
       <div className="bg-white p-8 rounded shadow-lg w-full max-w-md z-10">
         <div className="flex items-center justify-between">

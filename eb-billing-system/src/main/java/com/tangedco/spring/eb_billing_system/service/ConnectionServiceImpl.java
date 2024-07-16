@@ -41,7 +41,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         logger.info("Registering household connection for user ID: {}", request.getUserId());
 
         HouseholdConnections connection = new HouseholdConnections();
-        String userId = String.valueOf(request.getUserId()); // Convert String to Long
+        String userId = request.getUserId(); // Assuming userId is already a String
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
         connection.setUser(user);
@@ -57,7 +57,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
         connection.setApplicantReferenceNumber(generateReferenceNumber());
-        connection.setPaymentStatus("Pending");
+        connection.setPaymentStatus("not_paid");
         return householdConnectionRepository.save(connection);
     }
 
@@ -66,7 +66,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         logger.info("Registering commercial connection for user ID: {}", request.getUserId());
 
         CommercialConnections connection = new CommercialConnections();
-        String userId = request.getUserId(); // Convert String to Long
+        String userId = request.getUserId(); // Assuming userId is already a String
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
         connection.setUser(user);
@@ -86,7 +86,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
         connection.setApplicantReferenceNumber(generateReferenceNumber());
-        connection.setPaymentStatus("Pending");
+        connection.setPaymentStatus("not_paid"); // Set to a valid ENUM value
         return commercialConnectionRepository.save(connection);
     }
 
@@ -96,7 +96,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         HouseholdConnections connection = householdConnectionRepository.findById(Long.parseLong(id)) // Convert String to Long
                 .orElseThrow(() -> new RuntimeException("Household connection not found with ID: " + id));
-        connection.setPaymentStatus("Paid");
+        connection.setPaymentStatus("paid"); // Set to a valid ENUM value
         return householdConnectionRepository.save(connection);
     }
 
@@ -106,7 +106,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         CommercialConnections connection = commercialConnectionRepository.findById(Long.parseLong(id)) // Convert String to Long
                 .orElseThrow(() -> new RuntimeException("Commercial connection not found with ID: " + id));
-        connection.setPaymentStatus("Paid");
+        connection.setPaymentStatus("paid"); // Set to a valid ENUM value
         return commercialConnectionRepository.save(connection);
     }
 

@@ -10,7 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +38,26 @@ public class ConnectionController {
             @RequestParam("applicant_photo") MultipartFile applicantPhoto,
             @RequestParam("property_tax_report") MultipartFile propertyTaxReport) {
 
-        HouseholdConnectionRequest request = new HouseholdConnectionRequest(userId, address, loadRequired, phase, applicantPhoto, propertyTaxReport);
+        HouseholdConnectionRequest request = new HouseholdConnectionRequest(
+                userId, address, loadRequired, phase, applicantPhoto, propertyTaxReport);
+
         HouseholdConnections connection = connectionService.registerHouseholdConnection(request);
+
+
+
         String paymentUrl = generatePaymentUrl(connection);
-        return ResponseEntity.ok(Collections.singletonMap("payment_url", paymentUrl));
+        Map<String, Object> response = new HashMap<>();
+        response.put("payment_url", paymentUrl); // Example payment URL
+        response.put("reference_number", connection.getApplicantReferenceNumber());
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("payment_url", paymentUrl);
+//        response.put("reference_number", connection.getApplicantReferenceNumber());
+//        response.put("user_id", connection.getUser().getUserId());
+//        response.put("address", connection.getAddress());
+//        response.put("load_required", connection.getLoadRequired());
+//        response.put("phase", connection.getPhase());
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/commercial")
@@ -59,21 +76,19 @@ public class ConnectionController {
         CommercialConnectionRequest request = new CommercialConnectionRequest(userId, address, loadRequired, phase, applicantPhoto, propertyTaxReport, businessName, businessType, sqMeter, ownershipProof);
         CommercialConnections connection = connectionService.registerCommercialConnection(request);
         String paymentUrl = generatePaymentUrl(connection);
-        return ResponseEntity.ok(Collections.singletonMap("payment_url", paymentUrl));
-    }
 
-    @PutMapping("/household/{id}/pay")
-    public ResponseEntity<HouseholdConnections> markHouseholdConnectionAsPaid(@PathVariable String id) {
-        logger.info("Marking household connection as paid for ID: {}", id);
-        HouseholdConnections connection = connectionService.markHouseholdConnectionAsPaid(id);
-        return ResponseEntity.ok(connection);
-    }
+        Map<String, Object> response = new HashMap<>();
+        response.put("payment_url", paymentUrl); // Example payment URL
+        response.put("reference_number", connection.getApplicantReferenceNumber());
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("payment_url", paymentUrl);
+//        response.put("reference_number", connection.getApplicantReferenceNumber());
+//        response.put("user_id", connection.getUser().getUserId());
+//        response.put("address", connection.getAddress());
+//        response.put("load_required", connection.getLoadRequired());
+//        response.put("phase", connection.getPhase());
 
-    @PutMapping("/commercial/{id}/pay")
-    public ResponseEntity<CommercialConnections> markCommercialConnectionAsPaid(@PathVariable String id) {
-        logger.info("Marking commercial connection as paid for ID: {}", id);
-        CommercialConnections connection = connectionService.markCommercialConnectionAsPaid(id);
-        return ResponseEntity.ok(connection);
+        return ResponseEntity.ok(response);
     }
 
     private String generatePaymentUrl(HouseholdConnections connection) {

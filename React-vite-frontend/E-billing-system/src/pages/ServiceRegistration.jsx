@@ -4,8 +4,11 @@ import { useDropzone } from 'react-dropzone';
 import Topbar from '../components/Topbar';
 import bg from "../assets/powerlines.jpg";
 import logo from "../assets/logo.png";
+import { useNavigate } from 'react-router-dom';
 
 const ServiceRegistration = () => {
+  const navigate = useNavigate();
+
   const [user_id, setUserId] = useState('');
   const [connectionType, setConnectionType] = useState('household');
   const [address, setAddress] = useState('');
@@ -17,6 +20,7 @@ const ServiceRegistration = () => {
   const [businessType, setBusinessType] = useState('');
   const [sqMeter, setSqMeter] = useState('');
   const [ownershipProof, setOwnershipProof] = useState(null);
+  const [referenceNumber, setReferenceNumber] = useState(null);
 
   const onDrop = useCallback(
     (acceptedFiles, fileRejections, setFile) => {
@@ -41,7 +45,7 @@ const ServiceRegistration = () => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('userId', user_id); // Ensure user_id is treated as a string
+    formData.append('userId', user_id);
     formData.append('address', address);
     formData.append('load_required', loadRequired);
     formData.append('phase', phase);
@@ -51,26 +55,39 @@ const ServiceRegistration = () => {
     let url = 'http://localhost:8080/connections/household';
 
     if (connectionType === 'commercial') {
-        formData.append('business_name', businessName);
-        formData.append('business_type', businessType);
-        formData.append('sq_meter', sqMeter);
-        formData.append('ownership_proof', ownershipProof);
-        url = 'http://localhost:8080/connections/commercial';
+      formData.append('business_name', businessName);
+      formData.append('business_type', businessType);
+      formData.append('sq_meter', sqMeter);
+      formData.append('ownership_proof', ownershipProof);
+      url = 'http://localhost:8080/connections/commercial';
     }
 
     try {
-        const response = await axios.post(url, formData);
-        if (response.data.payment_url) {
-            window.location.href = response.data.payment_url;
-        } else {
-            alert('Registration failed');
-        }
-    } catch (error) {
-        console.error('There was an error registering the connection!', error);
+      const response = await axios.post(url, formData);
+      if (response.data.payment_url) {
+        setReferenceNumber(response.data.reference_number);
+        navigate('/ApplicationConfirmation', {
+          state: {
+            paymentUrl: response.data.payment_url,
+            referenceNumber: response.data.reference_number,
+            userId: user_id,
+            address: address,
+            loadRequired: loadRequired,
+            phase: phase,
+            connectionType: connectionType,
+            businessName: businessName,
+            businessType: businessType,
+            sqMeter: sqMeter,
+          },
+        });
+      } else {
         alert('Registration failed');
+      }
+    } catch (error) {
+      console.error('There was an error registering the connection!', error);
+      alert('Registration failed');
     }
-};
-
+  };
 
   const applicantPhotoDropzone = useDropzone({
     onDrop: (acceptedFiles, fileRejections) => onDrop(acceptedFiles, fileRejections, setApplicantPhoto),
@@ -97,12 +114,12 @@ const ServiceRegistration = () => {
     <div className="relative h-screen overflow-scroll mt-2 bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
       <Topbar />
       <div className="relative h-max max-w-2xl mx-auto p-8 bg-white mt-10">
-        <div className='flex items-center my-10 justify-between'>
+        <div className="flex items-center my-10 justify-between">
           <h2 className="text-3xl font-bold text-gray-700">Service Registration</h2>
           <img src={logo} alt="logo" className="w-36 h-36" />
         </div>
 
-        <form onSubmit={handleRegister} enctype="multipart/form-data" className="max-w-2xl mx-auto space-y-6">
+        <form onSubmit={handleRegister} className="max-w-2xl mx-auto space-y-6">
           <div className="flex flex-col">
             <label className="block text-gray text-sm text-left font-bold mb-2">User ID:</label>
             <input
@@ -194,9 +211,9 @@ const ServiceRegistration = () => {
                   type="text"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
-                  required
+                  required={connectionType === 'commercial'}
                   className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
-                  placeholder="Enter the business name"
+                  placeholder="Enter your business name"
                 />
               </div>
               <div className="flex flex-col">
@@ -205,25 +222,25 @@ const ServiceRegistration = () => {
                   type="text"
                   value={businessType}
                   onChange={(e) => setBusinessType(e.target.value)}
-                  required
+                  required={connectionType === 'commercial'}
                   className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
-                  placeholder="Enter the business type"
+                  placeholder="Enter your business type"
                 />
               </div>
               <div className="flex flex-col">
-                <label className="block text-gray text-sm text-left font-bold mb-2">Area (in Sq Meters):</label>
+                <label className="block text-gray text-sm text-left font-bold mb-2">Square Meters:</label>
                 <input
                   type="number"
                   step="0.01"
                   value={sqMeter}
                   onChange={(e) => setSqMeter(e.target.value)}
-                  required
+                  required={connectionType === 'commercial'}
                   className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
-                  placeholder="Enter the area"
+                  placeholder="Enter the square meters"
                 />
               </div>
               <div className="flex flex-col">
-                <label className="block text-gray text-sm text-left font-bold mb-2">Ownership Proof</label>
+                <label className="block text-gray text-sm text-left font-bold mb-2">Ownership Proof:</label>
                 <div
                   {...ownershipProofDropzone.getRootProps()}
                   className="border-dashed border-2 p-4 rounded-md transition-all duration-200 hover:border-gray-500 cursor-pointer"
@@ -236,12 +253,13 @@ const ServiceRegistration = () => {
               </div>
             </>
           )}
-          <div className=''>
+
+          <div className="flex justify-between mt-8">
             <button
               type="submit"
-              className="bg-accent hover:bg-purple mt-5 hover:border-secondary text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
+              className="px-4 py-2 bg-accent hover:bg-accent-dark text-white font-bold rounded-md focus:outline-none"
             >
-              Register and Pay
+              Register
             </button>
           </div>
         </form>
