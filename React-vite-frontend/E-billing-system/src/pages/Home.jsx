@@ -21,6 +21,21 @@ const Home = () => {
             </p>
           </div>
         </div>
+        {/* {generatedBills.length > 0 && (
+            <div>
+              <h2 className="text-3xl font-bold mt-6 mb-4 text-center">Generated Bills</h2>
+              <div className="grid grid-cols-1 gap-4">
+                {generatedBills.map((bill) => (
+                  <div key={bill.billId} className="p-4 border rounded shadow-sm bg-white">
+                    <p className="font-semibold">Bill ID: <span className="font-normal">{bill.billId}</span></p>
+                    <p className="font-semibold">Reading ID: <span className="font-normal">{bill.meterReading.readingId}</span></p>
+                    <p className="font-semibold">Bill Date: <span className="font-normal">{new Date(bill.billDate).toLocaleDateString()}</span></p>
+                    <p className="font-semibold">Amount: <span className="font-normal">{bill.amount.toFixed(2)}</span></p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )} */}
       </header>
       <Carousel
         className="h-[400px]"

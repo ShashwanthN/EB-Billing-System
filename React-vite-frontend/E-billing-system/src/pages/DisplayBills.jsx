@@ -1,81 +1,69 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Topbar from '../components/Topbar';
-
+import bg from '../assets/bg-2.jpeg'
 const DisplayBills = () => {
   const [userId, setUserId] = useState('');
-  const [unpaidReadings, setUnpaidReadings] = useState([]);
-  const [generatedBills, setGeneratedBills] = useState([]);
+  const [unpaidReadingsWithBills, setUnpaidReadingsWithBills] = useState([]);
 
-  const fetchUnpaidReadings = async () => {
+  const fetchUnpaidReadingsWithBills = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/readings/user/${userId}/unpaid`);
-      const sortedReadings = response.data.sort((a, b) => new Date(b.readingDate) - new Date(a.readingDate));
-      setUnpaidReadings(sortedReadings);
+      const sortedReadings = response.data.sort((a, b) => new Date(b.meterReadings.readingDate) - new Date(a.meterReadings.readingDate));
+      setUnpaidReadingsWithBills(sortedReadings);
     } catch (error) {
-      console.error('Error fetching unpaid readings:', error);
-    }
-  };
-
-  const generateBills = async () => {
-    try {
-      const response = await axios.post(`http://localhost:8080/readings/generate-bills`);
-      setGeneratedBills(response.data);
-    } catch (error) {
-      console.error('Error generating bills:', error);
+      console.error('Error fetching unpaid readings with bills:', error);
     }
   };
 
   return (
     <div>
       <Topbar />
-      <div className="container  flex flex-col justify-center items-center mx-auto p-4">
-        <div className='border w-2/3 text-deep-purple-200 border-gray-300 p-10 rounded'>
-          <h2 className="text-3xl font-bold mb-6 text-center">Unpaid Bills</h2>
-          <div className="mb-6 flex flex-col items-center">
+      <img src={bg} alt="background" className="bg-full overflow-hidden  max-h-screen" />
+      <div className="container flex flex-col justify-center  pt-10 items-center mx-auto p-4">
+        <div className='border w-2/3 text-gray border-gray-3 backdrop-blur-xl p-10 rounded'>
+          <h2 className="text-3xl font-bold text-gray  mb-6 text-center">Unpaid Bills</h2>
+          <div className="mb-6 flex  items-center">
             <input
               type="text"
-              className="border p-2 rounded w-full mb-4"
+              className="border p-2 rounded mr-2 w-full"
               placeholder="Enter User ID"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
             />
-            <button onClick={fetchUnpaidReadings} className="mb-6 p-2 bg-blue-500 text-white rounded">
-              Fetch Unpaid Readings
+            <button onClick={fetchUnpaidReadingsWithBills} className=" w-1/3 p-2 ml-2 bg-deep-purple-300 hover:bg-deep-purple-500 text-white rounded">
+              Fetch Unpaid Bills
             </button>
           </div>
-          <button onClick={generateBills} className="mb-6 p-2 bg-blue-500 text-white rounded">
-            Generate Bills
-          </button>
-          {unpaidReadings.length > 0 ? (
+
+          {unpaidReadingsWithBills.length > 0 ? (
             <div className="grid grid-cols-1 gap-4">
-              {unpaidReadings.map((reading) => (
-                <div key={reading.readingId} className="p-4 border rounded shadow-sm bg-white">
-                  <p className="font-semibold">User ID: <span className="font-normal">{reading.userId}</span></p>
-                  <p className="font-semibold">Connection Type: <span className="font-normal">{reading.connectionType}</span></p>
-                  <p className="font-semibold">Reading Date: <span className="font-normal">{new Date(reading.readingDate).toLocaleDateString()}</span></p>
-                  <p className="font-semibold">Units Consumed: <span className="font-normal">{reading.unitsConsumed}</span></p>
+              {unpaidReadingsWithBills.map(({ meterReadings, bill }) => (
+                <div key={meterReadings.readingId} className="p-4 border justify-between flex border-gray-4 rounded shadow-sm">
+                  <div>
+                  <p className="font-semibold">User ID: <span className="font-normal">{meterReadings.userId}</span></p>
+                  <p className="font-semibold">Connection Type: <span className="font-normal">{meterReadings.connectionType}</span></p>
+                  <p className="font-semibold">Reading Date: <span className="font-normal">{new Date(meterReadings.readingDate).toLocaleDateString()}</span></p>
+                  <p className="font-semibold">Units Consumed: <span className="font-normal">{meterReadings.unitsConsumed}</span></p>
+                  <p className="font-semibold ">Bill No: <span className="font-normal">{bill.billId}</span></p>
+                  </div>
+                  {bill && (
+                    <>
+                    <div className=' justify-center items-end flex flex-col '>
+                      <div className=''>
+                      
+                      <p className="font-semibold"><span className="font-bold text-deep-purple-400 text-3xl">{bill.amount}</span></p>
+                      </div>
+                    
+                    </div>
+                      
+                    </>
+                  )}
                 </div>
               ))}
             </div>
           ) : (
             <p className="text-center">No unpaid readings found.</p>
-          )}
-
-          {generatedBills.length > 0 && (
-            <div>
-              <h2 className="text-3xl font-bold mt-6 mb-4 text-center">Generated Bills</h2>
-              <div className="grid grid-cols-1 gap-4">
-                {generatedBills.map((bill) => (
-                  <div key={bill.billId} className="p-4 border rounded shadow-sm bg-white">
-                    <p className="font-semibold">Bill ID: <span className="font-normal">{bill.billId}</span></p>
-                    <p className="font-semibold">Reading ID: <span className="font-normal">{bill.meterReading.readingId}</span></p>
-                    <p className="font-semibold">Bill Date: <span className="font-normal">{new Date(bill.billDate).toLocaleDateString()}</span></p>
-                    <p className="font-semibold">Amount: <span className="font-normal">{bill.amount.toFixed(2)}</span></p>
-                  </div>
-                ))}
-              </div>
-            </div>
           )}
         </div>
       </div>
