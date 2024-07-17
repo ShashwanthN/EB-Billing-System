@@ -241,7 +241,7 @@ const Register = () => {
             </button>
             <div className="text-sm text-center">
               <span className="text-gray-2">Already Registered? </span>
-              <a href="/login" className="text-accent hover:underline">Login here</a>
+              <a href="/" className="text-accent hover:underline">Login here</a>
             </div>
           </div>
         </form>
@@ -261,7 +261,7 @@ const Register = () => {
               onClick={() => setShowSplash(false)}
               className="mt-2 hover:bg-gray-400 text-black font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              <a href="/login" className="text-white my-2 rounded bg-accent py-1.5 px-4 hover:bg-purple ">Okay</a>
+              <a href="/" className="text-white my-2 rounded bg-accent py-1.5 px-4 hover:bg-purple ">Okay</a>
             </button>
           </div>
         </div>

@@ -5,6 +5,8 @@ import Topbar from '../components/Topbar';
 import bg from "../assets/powerlines.jpg";
 import logo from "../assets/logo.png";
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
+import citiesData from '../assets/cities.json';
 
 const ServiceRegistration = () => {
   const navigate = useNavigate();
@@ -12,6 +14,7 @@ const ServiceRegistration = () => {
   const [user_id, setUserId] = useState('');
   const [connectionType, setConnectionType] = useState('household');
   const [address, setAddress] = useState('');
+  const [city, setCity] = useState(null);
   const [loadRequired, setLoadRequired] = useState('');
   const [phase, setPhase] = useState('');
   const [applicantPhoto, setApplicantPhoto] = useState(null);
@@ -46,7 +49,7 @@ const ServiceRegistration = () => {
 
     const formData = new FormData();
     formData.append('userId', user_id);
-    formData.append('address', address);
+    formData.append('address', `${address}, ${city ? city.label : ''}`);
     formData.append('load_required', loadRequired);
     formData.append('phase', phase);
     formData.append('applicant_photo', applicantPhoto);
@@ -71,7 +74,7 @@ const ServiceRegistration = () => {
             paymentUrl: response.data.payment_url,
             referenceNumber: response.data.reference_number,
             userId: user_id,
-            address: address,
+            address: `${address}, ${city ? city.label : ''}`,
             loadRequired: loadRequired,
             phase: phase,
             connectionType: connectionType,
@@ -111,10 +114,10 @@ const ServiceRegistration = () => {
   });
 
   return (
-    <div className="relative h-screen overflow-scroll mt-2 bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
+    <div className="relative h-screen overflow-scroll py-10 bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
       <Topbar />
-      <div className="relative h-max max-w-2xl mx-auto p-8 bg-white mt-10">
-        <div className="flex items-center my-10 justify-between">
+      <div className="relative h-max max-w-2xl rounded  mx-auto p-8 bg-white mt-10">
+        <div className="flex items-center mb-10 justify-between">
           <h2 className="text-3xl font-bold text-gray-700">Service Registration</h2>
           <img src={logo} alt="logo" className="w-36 h-36" />
         </div>
@@ -127,7 +130,7 @@ const ServiceRegistration = () => {
               value={user_id}
               onChange={(e) => setUserId(e.target.value)}
               required
-              className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+              className="appearance-none rounded-sm border transition-all border-gray-3 duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
               placeholder="Enter your User ID"
             />
           </div>
@@ -136,7 +139,7 @@ const ServiceRegistration = () => {
             <select
               value={connectionType}
               onChange={(e) => setConnectionType(e.target.value)}
-              className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+              className="appearance-none rounded-sm border transition-all border-gray-3 duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
             >
               <option value="household">Household</option>
               <option value="commercial">Commercial</option>
@@ -148,8 +151,18 @@ const ServiceRegistration = () => {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               required
-              className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+              className="appearance-none rounded-sm border transition-all border-gray-3 duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
               placeholder="Enter your address"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="block text-gray text-sm text-left font-bold mb-2">City:</label>
+            <Select
+              value={city}
+              onChange={setCity}
+              className='border-gray-3'
+              options={citiesData.map(city => ({ label: city, value: city }))}
+              placeholder="Select your city"
             />
           </div>
           <div className="flex flex-col">
@@ -160,7 +173,7 @@ const ServiceRegistration = () => {
               value={loadRequired}
               onChange={(e) => setLoadRequired(e.target.value)}
               required
-              className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+              className="appearance-none rounded-sm border-gray-3 border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
               placeholder="Enter the load required"
             />
           </div>
@@ -172,7 +185,7 @@ const ServiceRegistration = () => {
               value={phase}
               onChange={(e) => setPhase(e.target.value)}
               required
-              className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+              className="appearance-none rounded-sm border border-gray-3 transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
               placeholder="Enter the phase"
             />
           </div>
@@ -181,7 +194,7 @@ const ServiceRegistration = () => {
             <label className="block text-gray text-sm text-left font-bold mb-2">Applicant Photo:</label>
             <div
               {...applicantPhotoDropzone.getRootProps()}
-              className="border-dashed border-2 p-4 rounded-md transition-all duration-200 hover:border-gray-500 cursor-pointer"
+              className="border-dashed border-2 p-4 rounded-md border-gray-3 transition-all duration-200 hover:border-gray-500 cursor-pointer"
             >
               <input {...applicantPhotoDropzone.getInputProps()} />
               <p className="text-center text-gray-500">
@@ -194,11 +207,11 @@ const ServiceRegistration = () => {
             <label className="block text-gray text-sm text-left font-bold mb-2">Property Tax Report:</label>
             <div
               {...propertyTaxReportDropzone.getRootProps()}
-              className="border-dashed border-2 p-4 rounded-md transition-all duration-200 hover:border-gray-500 cursor-pointer"
+              className="border-dashed border-2 p-4 rounded-md border-gray-3 transition-all duration-200 hover:border-gray-500 cursor-pointer"
             >
               <input {...propertyTaxReportDropzone.getInputProps()} />
               <p className="text-center text-gray-500">
-                {propertyTaxReport ? propertyTaxReport.name : 'Drag & drop a file here, or click to select a file'}
+                {propertyTaxReport ? propertyTaxReport.name : 'Drag & drop a property tax report here, or click to select a file'}
               </p>
             </div>
           </div>
@@ -211,9 +224,9 @@ const ServiceRegistration = () => {
                   type="text"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
-                  required={connectionType === 'commercial'}
-                  className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
-                  placeholder="Enter your business name"
+                  required
+                  className="appearance-none rounded-sm border transition-all border-gray-3 duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+                  placeholder="Enter the business name"
                 />
               </div>
               <div className="flex flex-col">
@@ -222,46 +235,44 @@ const ServiceRegistration = () => {
                   type="text"
                   value={businessType}
                   onChange={(e) => setBusinessType(e.target.value)}
-                  required={connectionType === 'commercial'}
-                  className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
-                  placeholder="Enter your business type"
+                  required
+                  className="appearance-none rounded-sm border transition-all duration-200 border-gray-3 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+                  placeholder="Enter the business type"
                 />
               </div>
               <div className="flex flex-col">
-                <label className="block text-gray text-sm text-left font-bold mb-2">Square Meters:</label>
+                <label className="block text-gray text-sm text-left font-bold mb-2">Area (in sq meters):</label>
                 <input
                   type="number"
                   step="0.01"
                   value={sqMeter}
                   onChange={(e) => setSqMeter(e.target.value)}
-                  required={connectionType === 'commercial'}
-                  className="appearance-none rounded-sm border transition-all duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
-                  placeholder="Enter the square meters"
+                  required
+                  className="appearance-none rounded-sm border transition-all border-gray-3 duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+                  placeholder="Enter the area in sq meters"
                 />
               </div>
               <div className="flex flex-col">
                 <label className="block text-gray text-sm text-left font-bold mb-2">Ownership Proof:</label>
                 <div
                   {...ownershipProofDropzone.getRootProps()}
-                  className="border-dashed border-2 p-4 rounded-md transition-all duration-200 hover:border-gray-500 cursor-pointer"
+                  className="border-dashed border-2 p-4 rounded-md transition-all  border-gray-3 duration-200 hover:border-gray-500 cursor-pointer"
                 >
                   <input {...ownershipProofDropzone.getInputProps()} />
                   <p className="text-center text-gray-500">
-                    {ownershipProof ? ownershipProof.name : 'Drag & drop a file here, or click to select a file'}
+                    {ownershipProof ? ownershipProof.name : 'Drag & drop ownership proof here, or click to select a file'}
                   </p>
                 </div>
               </div>
             </>
           )}
 
-          <div className="flex justify-between mt-8">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-accent hover:bg-accent-dark text-white font-bold rounded-md focus:outline-none"
-            >
-              Register
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full py-3 mt-6 bg-accent text-white font-bold rounded-md transition-all duration-200 hover:bg-accent-dark focus:outline-none focus:shadow-outline"
+          >
+            Register
+          </button>
         </form>
       </div>
     </div>

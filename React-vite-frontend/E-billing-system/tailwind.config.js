@@ -19,6 +19,7 @@ module.exports = withMT({
       'gray': '#404040',
       'gray-2': '#808080',
       'gray-3': '#e7e7e7',
+      'gray-4': '#bfbfbf',
       'error' : "#e23636",
       'success': "#4CAF50"
      },     

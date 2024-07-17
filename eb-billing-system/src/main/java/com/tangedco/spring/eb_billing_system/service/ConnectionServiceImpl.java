@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -106,7 +107,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         CommercialConnections connection = commercialConnectionRepository.findById(Long.parseLong(id)) // Convert String to Long
                 .orElseThrow(() -> new RuntimeException("Commercial connection not found with ID: " + id));
-        connection.setPaymentStatus("paid"); // Set to a valid ENUM value
+        connection.setPaymentStatus("paid");
         return commercialConnectionRepository.save(connection);
     }
 
@@ -116,5 +117,15 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     private String generateReferenceNumber() {
         return UUID.randomUUID().toString();
+    }
+    @Override
+    public Optional<HouseholdConnections> getHouseholdConnectionByUserId(String userId) {
+
+        return householdConnectionRepository.findByUser_UserId(userId);
+    }
+
+    @Override
+    public Optional<CommercialConnections> getCommercialConnectionByUserId(String userId) {
+        return commercialConnectionRepository.findByUser_UserId(userId);
     }
 }

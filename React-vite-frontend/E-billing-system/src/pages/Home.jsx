@@ -3,7 +3,7 @@ import Topbar from "../components/Topbar";
 import logo from "../assets/logo.png";
 import { Carousel } from "@material-tailwind/react";
 import { Footer } from "../components/Footer";
-
+import MeterReadingsDisplay from "./MeterReadingDisplay";
 const Home = () => {
   return (
     <div className="min-h-screen mt-24 bg-gray-100">
@@ -61,7 +61,7 @@ const Home = () => {
             <p className="text-gray-600">
               Easily pay your electricity bill online.
             </p>
-            <a href="#pay" className=" mt-4 inline-block">
+            <a href="/DisplayBills" className=" mt-4 inline-block">
               Pay Now &rarr;
             </a>
           </div>
@@ -70,16 +70,16 @@ const Home = () => {
             <p className="text-gray-600">
               Calculate your upcoming bill based on usage.
             </p>
-            <a href="#calculate" className=" mt-4 inline-block">
+            <a href="/CalculateBills" className=" mt-4 inline-block">
               Calculate &rarr;
             </a>
           </div>
           <div className="bg-white p-6 border border-gray-3 rounded-lg  shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:border-secondary hover:bg-accent hover:text-white hover:scale-105">
-            <h3 className="text-xl font-semibold mb-2">View Bills</h3>
+            <h3 className="text-xl font-semibold mb-2">View Readings</h3>
             <p className="text-gray-600">
               View your past bills and payment history.
             </p>
-            <a href="#view" className=" mt-4 inline-block">
+            <a href="/MeterReadingDisplay" className=" mt-4 inline-block">
               View Bills &rarr;
             </a>
           </div>
@@ -89,7 +89,7 @@ const Home = () => {
               online application for service registration
             </p>
             <a
-              href="https://app1.tangedco.org/nsconline/"
+              href="/serviceApplication"
               className=" mt-4 inline-block"
             >
               View application &rarr;

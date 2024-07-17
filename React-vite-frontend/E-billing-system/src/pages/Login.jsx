@@ -21,11 +21,10 @@ function Login() {
         password: password,
       });
   
-      // Check the response and set the message
       if (response.data.user) {
         setMessage(response.data.message); 
         setIsSuccess(true);
-        navigate('/');  // Redirect to home page
+        navigate('/home');  
       } else {
         setMessage(response.data.message); 
         setIsSuccess(false);

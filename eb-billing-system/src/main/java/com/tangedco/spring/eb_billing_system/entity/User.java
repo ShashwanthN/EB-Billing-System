@@ -28,7 +28,7 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
 
-    // Getters and setters
+
 
     public String getUserId() {
         return userId;

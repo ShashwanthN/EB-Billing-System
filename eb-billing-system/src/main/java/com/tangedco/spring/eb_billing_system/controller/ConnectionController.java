@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,19 +44,10 @@ public class ConnectionController {
 
         HouseholdConnections connection = connectionService.registerHouseholdConnection(request);
 
-
-
         String paymentUrl = generatePaymentUrl(connection);
         Map<String, Object> response = new HashMap<>();
-        response.put("payment_url", paymentUrl); // Example payment URL
+        response.put("payment_url", paymentUrl);
         response.put("reference_number", connection.getApplicantReferenceNumber());
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("payment_url", paymentUrl);
-//        response.put("reference_number", connection.getApplicantReferenceNumber());
-//        response.put("user_id", connection.getUser().getUserId());
-//        response.put("address", connection.getAddress());
-//        response.put("load_required", connection.getLoadRequired());
-//        response.put("phase", connection.getPhase());
 
         return ResponseEntity.ok(response);
     }
@@ -73,20 +65,14 @@ public class ConnectionController {
             @RequestParam("sq_meter") Double sqMeter,
             @RequestParam("ownership_proof") MultipartFile ownershipProof) {
 
-        CommercialConnectionRequest request = new CommercialConnectionRequest(userId, address, loadRequired, phase, applicantPhoto, propertyTaxReport, businessName, businessType, sqMeter, ownershipProof);
+        CommercialConnectionRequest request = new CommercialConnectionRequest(
+                userId, address, loadRequired, phase, applicantPhoto, propertyTaxReport, businessName, businessType, sqMeter, ownershipProof);
         CommercialConnections connection = connectionService.registerCommercialConnection(request);
         String paymentUrl = generatePaymentUrl(connection);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("payment_url", paymentUrl); // Example payment URL
+        response.put("payment_url", paymentUrl);
         response.put("reference_number", connection.getApplicantReferenceNumber());
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("payment_url", paymentUrl);
-//        response.put("reference_number", connection.getApplicantReferenceNumber());
-//        response.put("user_id", connection.getUser().getUserId());
-//        response.put("address", connection.getAddress());
-//        response.put("load_required", connection.getLoadRequired());
-//        response.put("phase", connection.getPhase());
 
         return ResponseEntity.ok(response);
     }
@@ -97,5 +83,19 @@ public class ConnectionController {
 
     private String generatePaymentUrl(CommercialConnections connection) {
         return "http://payment-url.com?connectionId=" + connection.getId();
+    }
+
+    @GetMapping("/type/{userId}")
+    public ResponseEntity<String> getConnectionType(@PathVariable String userId) {
+        Optional<HouseholdConnections> householdConnection = connectionService.getHouseholdConnectionByUserId(userId);
+        Optional<CommercialConnections> commercialConnection = connectionService.getCommercialConnectionByUserId(userId);
+
+        if (householdConnection.isPresent()) {
+            return ResponseEntity.ok("household");
+        } else if (commercialConnection.isPresent()) {
+            return ResponseEntity.ok("commercial");
+        } else {
+            return ResponseEntity.ok("none");
+        }
     }
 }

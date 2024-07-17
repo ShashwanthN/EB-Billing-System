@@ -1,12 +1,13 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-
+import Topbar from '../components/Topbar';
+import bg from '../assets/powerlines.jpg'
 const ApplicationConfirmation = () => {
   const location = useLocation();
   const { paymentUrl, referenceNumber, userId, address, loadRequired, phase, connectionType, businessName, businessType, sqMeter } = location.state || {};
 
-  console.log('Location State:', location.state); // Debugging step
-  console.log('Reference Number:', referenceNumber); // Debugging step
+  console.log('Location State:', location.state); 
+  console.log('Reference Number:', referenceNumber); 
 
   const paymentCharges = [
     { slno: 1, description: 'CC Deposit', amount: 5000 },
@@ -21,7 +22,11 @@ const ApplicationConfirmation = () => {
   const totalAmount = paymentCharges.reduce((total, charge) => total + charge.amount, 0);
 
   return (
+    <div className="relative h-screen overflow-scroll  bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
+<Topbar/>
+    
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        
       <div className="max-w-4xl mx-auto bg-white border-gray-3 border shadow-lg rounded-lg overflow-hidden">
         <div className="px-6 py-8">
           <div className="text-center items-center">
@@ -78,6 +83,7 @@ const ApplicationConfirmation = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

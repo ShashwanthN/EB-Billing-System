@@ -37,7 +37,7 @@ public class HouseholdConnections {
     @Column(name = "payment_status")
     private String paymentStatus;
 
-    // Getters and Setters
+
 
     public Long getId() {
         return id;
