@@ -1,6 +1,5 @@
 package com.tangedco.spring.eb_billing_system.entity;
 
-import com.tangedco.spring.eb_billing_system.entity.Bill;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -24,6 +23,10 @@ public class Payment {
 
     @Column(nullable = false)
     private String paymentMethod;
+
+    @Column(nullable = false)
+    private String transactionId;
+
 
     public int getPaymentId() {
         return paymentId;
@@ -63,5 +66,13 @@ public class Payment {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 }

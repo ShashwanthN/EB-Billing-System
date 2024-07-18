@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
 import Topbar from '../components/Topbar';
@@ -7,6 +7,7 @@ import logo from "../assets/logo.png";
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import citiesData from '../assets/cities.json';
+import axiosInstance from '../services/axiosInstance';
 
 const ServiceRegistration = () => {
   const navigate = useNavigate();
@@ -24,7 +25,13 @@ const ServiceRegistration = () => {
   const [sqMeter, setSqMeter] = useState('');
   const [ownershipProof, setOwnershipProof] = useState(null);
   const [referenceNumber, setReferenceNumber] = useState(null);
-
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser && storedUser.userId) {
+      setUserId(storedUser.userId);
+      
+    }
+  }, []); 
   const onDrop = useCallback(
     (acceptedFiles, fileRejections, setFile) => {
       if (acceptedFiles.length) {
@@ -125,14 +132,10 @@ const ServiceRegistration = () => {
         <form onSubmit={handleRegister} className="max-w-2xl mx-auto space-y-6">
           <div className="flex flex-col">
             <label className="block text-gray text-sm text-left font-bold mb-2">User ID:</label>
-            <input
-              type="text"
-              value={user_id}
-              onChange={(e) => setUserId(e.target.value)}
-              required
+            <div
               className="appearance-none rounded-sm border transition-all border-gray-3 duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
-              placeholder="Enter your User ID"
-            />
+              
+            >{user_id}</div>
           </div>
           <div className="flex flex-col">
             <label className="block text-gray text-sm text-left font-bold mb-2">Connection Type:</label>

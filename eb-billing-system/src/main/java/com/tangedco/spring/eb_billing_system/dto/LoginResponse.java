@@ -1,16 +1,18 @@
 package com.tangedco.spring.eb_billing_system.dto;
+
 import com.tangedco.spring.eb_billing_system.entity.User;
+
 public class LoginResponse {
     private String message;
     private User user;
+    private String token;
 
-    // Constructor
-    public LoginResponse(String message, User user) {
+    public LoginResponse(String message, User user, String token) {
         this.message = message;
         this.user = user;
+        this.token = token;
     }
 
-    // Getters and Setters
     public String getMessage() {
         return message;
     }
@@ -25,5 +27,13 @@ public class LoginResponse {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

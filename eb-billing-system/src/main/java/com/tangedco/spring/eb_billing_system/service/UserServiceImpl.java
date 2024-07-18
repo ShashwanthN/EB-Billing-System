@@ -5,6 +5,7 @@ import com.tangedco.spring.eb_billing_system.dto.LoginRequest;
 import com.tangedco.spring.eb_billing_system.dto.LoginResponse;
 import com.tangedco.spring.eb_billing_system.entity.User;
 import com.tangedco.spring.eb_billing_system.security.AadharIdAlreadyExistsException;
+import com.tangedco.spring.eb_billing_system.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,26 +17,23 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
     public User findById(String theId) {
         Optional<User> result = userRepository.findById(theId);
-
-        User theUser;
-
         if (result.isPresent()) {
-            theUser = result.get();
+            return result.get();
         } else {
             throw new RuntimeException("Did not find user id - " + theId);
         }
-
-        return theUser;
     }
 
     @Override
@@ -47,7 +45,6 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        // Generate custom user ID
         String lastFourAadhar = user.getAadharId().substring(user.getAadharId().length() - 4);
         int maxUserIdSuffix = userRepository.findMaxUserIdSuffix();
         String customUserId = lastFourAadhar + String.format("%04d", maxUserIdSuffix + 1);
@@ -61,15 +58,15 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findByUserId(loginRequest.getUserId());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-
-            // Use matches to compare the input password with the stored password hash
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                return new LoginResponse("Login successful", user);
+                String token = jwtUtil.generateToken(user.getUserId());
+                return new LoginResponse("Login successful", user, token);
             } else {
-                return new LoginResponse("Invalid credentials", null);
+                return new LoginResponse("Invalid credentials", null, null);
             }
         } else {
-            return new LoginResponse("User not found", null);
+            return new LoginResponse("User not found", null, null);
         }
     }
 }
+

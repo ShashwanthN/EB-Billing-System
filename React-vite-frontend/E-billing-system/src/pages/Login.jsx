@@ -8,34 +8,32 @@ function Login() {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false); 
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      const response = await axios.post('http://localhost:8080/users/login', {
-        userId: userId,
-        password: password,
-      });
-  
-      if (response.data.user) {
-        setMessage(response.data.message); 
+      const response = await axios.post('http://localhost:8080/users/login', { userId, password });
+      const { message, user, token } = response.data;
+      setMessage(message);
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', token);
         setIsSuccess(true);
-        navigate('/home');  
+        navigate('/home');
       } else {
-        setMessage(response.data.message); 
         setIsSuccess(false);
       }
     } catch (error) {
       setMessage("Login error: " + (error.response?.data?.message || "Unexpected error occurred"));
-      setIsSuccess(false); 
+      setIsSuccess(false);
       console.error('Login error:', error);
     }
   };
-  
+
   return (
     <div className="min-h-screen max-h-screen flex items-center transition-all transform duration-200 justify-center overflow-hidden relative">
       <img src={bg} alt="background" className="bg-full overflow-hidden brightness-75 max-h-screen" />
@@ -68,7 +66,7 @@ function Login() {
             <input
               type="password"
               id="password"
-              name="password" 
+              name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="appearance-none rounded-sm border transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
@@ -89,7 +87,7 @@ function Login() {
               Sign In
             </button>
             <div className="mt-4 text-sm text-center">
-              <span className="text-gray-2">Not registered? </span> 
+              <span className="text-gray-2">Not registered? </span>
               <a href="/register" className="text-accent hover:underline">Register here</a>
             </div>
           </div>
