@@ -23,7 +23,7 @@ const ApplicationConfirmation = () => {
 
   return (
     <div className="relative h-screen overflow-scroll  bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
-<Topbar/>
+
     
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         

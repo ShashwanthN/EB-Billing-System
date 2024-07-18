@@ -55,7 +55,7 @@ const MeterReadingsDisplay = () => {
 
   return (
     <div>
-<Topbar/>
+
     
     <div className="container pt-10 mx-auto items-center p-4">
       

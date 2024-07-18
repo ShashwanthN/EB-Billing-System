@@ -31,10 +31,9 @@ const CalculateBills = () => {
   };
 
   return (
-    <div>
-      <Topbar />
+    <div className='main-content'>
       <img src={bg} alt="background" className="bg-full overflow-hidden  max-h-screen" />
-      <div className="container h-[calc(100vh-4rem)] flex justify-center items-center mx-auto p-4">
+      <div className="container h-[calc(100vh-4rem)] flex justify-center  items-center mx-auto p-4">
         <div className="border w-3/5 divide-x text-gray divide-gray-4 backdrop-blur-2xl  border-gray-3 p-10 rounded flex">
           <div className="w-1/2 pr-10">
             <h2 className="text-3xl font-bold mb-6 text-start">Electricity Bill Calculator</h2>

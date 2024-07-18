@@ -6,11 +6,11 @@ import { Footer } from "../components/Footer";
 import MeterReadingsDisplay from "./MeterReadingDisplay";
 const Home = () => {
   return (
-    <div className="min-h-screen mt-24 bg-gray-100">
-      <Topbar />
-      <div className="shadow-gray pb-8">
+    <div className="min-h-screen bg-gray-1">
+      
+      <div className="shadow-gray transition duration-300 ease-in-out pb-8">
       <header className="bg-gradient-to-tl from-blue-gray-50 to-white shadow">
-        <div className="container mx-auto px-4 flex items-center justify-between">
+        {/* <div className="container mx-auto px-4 flex items-center justify-between">
           <img src={logo} alt="logo" className="my-2 w-24" />
           <div>
             <h2 className="text-2xl font-bold text-gray-900 flex justify-end">
@@ -20,7 +20,7 @@ const Home = () => {
               Light in every corner.
             </p>
           </div>
-        </div>
+        </div> */}
         {/* {generatedBills.length > 0 && (
             <div>
               <h2 className="text-3xl font-bold mt-6 mb-4 text-center">Generated Bills</h2>
@@ -38,7 +38,7 @@ const Home = () => {
           )} */}
       </header>
       <Carousel
-        className="h-[400px]"
+        className="h-[650px]"
         navigation={({ setActiveIndex, activeIndex, length }) => (
           <div className=" left-2/4  flex -translate-x-2/4 gap-2">
             {new Array(length).fill("").map((_, i) => (
@@ -69,71 +69,55 @@ const Home = () => {
           className="h-full w-full object-cover"
         />
       </Carousel>
-      <main className="container mx-auto mt-6 px-4">
-        <div className="grid grid-cols-1 transform transition-all duration-100 ease-in-out md:grid-cols-2  lg:grid-cols-3 gap-6">
-          <div className="bg-white p-6 border border-gray-3 rounded-lg shadow-md transition duration-300 ease-in-out hover:shadow-xl  hover:border-secondary transform hover:bg-accent hover:text-white hover:scale-105">
+      <main className="container mx-auto bg-gray-1 mt-6">
+        <div className="grid grid-cols-1 transform transition-all duration-100 ease-in-out md:grid-cols-2  lg:grid-cols-3 gap-6 py-4">
+          <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-300 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">
             <h3 className="text-xl font-semibold mb-2">Pay Bill</h3>
             <p className="text-gray-600">
               Easily pay your electricity bill online.
             </p>
-            <a href="/DisplayBills" className=" mt-4 inline-block">
-              Pay Now &rarr;
+            <a href="/DisplayBills" className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block">
+              Pay Now <span className="text-blue-400">&rarr;</span>
             </a>
           </div>
-          <div className="bg-white p-6 border border-gray-3 rounded-lg shadow-md transition duration-300 hover:shadow-xl hover:border-secondary ease-in-out transform hover:bg-accent hover:text-white hover:scale-105">
-            <h3 className="text-xl font-semibold mb-2 ">Calculate Bill</h3>
+          <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-300 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">            <h3 className="text-xl font-semibold mb-2 ">Calculate Bill</h3>
             <p className="text-gray-600">
               Calculate your upcoming bill based on usage.
             </p>
-            <a href="/CalculateBills" className=" mt-4 inline-block">
-              Calculate &rarr;
+            <a href="/DisplayBills" className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block">              Calculate <span className="text-blue-400">&rarr;</span>
             </a>
           </div>
-          <div className="bg-white p-6 border border-gray-3 rounded-lg  shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:border-secondary hover:bg-accent hover:text-white hover:scale-105">
-            <h3 className="text-xl font-semibold mb-2">View Readings</h3>
+          <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-300 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">            <h3 className="text-xl font-semibold mb-2">View Readings</h3>
             <p className="text-gray-600">
               View your past bills and payment history.
             </p>
-            <a href="/MeterReadingDisplay" className=" mt-4 inline-block">
-              View Bills &rarr;
+            <a href="/DisplayBills" className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block">              View Bills <span className="text-blue-400">&rarr;</span>
             </a>
           </div>
-          <div className="bg-white p-6 border border-gray-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:border-secondary hover:bg-accent hover:text-white hover:scale-105">
-            <h3 className="text-xl font-semibold mb-2">Apply Online</h3>
+          <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-300 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">            <h3 className="text-xl font-semibold mb-2">Apply Online</h3>
             <p className="text-gray-600">
               online application for service registration
             </p>
-            <a
-              href="/serviceApplication"
-              className=" mt-4 inline-block"
-            >
-              View application &rarr;
+            <a href="/DisplayBills" className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block">
+              View application <span className="text-blue-400">&rarr;</span>
             </a>
           </div>
-          <div className="bg-white p-6 border border-gray-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:border-secondary hover:bg-accent hover:text-white hover:scale-105">
-            <h3 className="text-xl font-semibold mb-2">Update Info</h3>
+          <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-300 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">            <h3 className="text-xl font-semibold mb-2">Update Info</h3>
             <p className="text-gray-600">Update your mobile number or email</p>
-            <a
-              href="https://app1.tangedco.org/nsconline/"
-              className=" mt-4 inline-block"
-            >
-              Update Now &rarr;
+            <a href="/DisplayBills" className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block">
+              Update Now <span className="text-blue-400">&rarr;</span>
             </a>
           </div>
-          <div className="bg-white p-6 border border-gray-3 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:shadow-xl hover:border-secondary hover:bg-accent hover:text-white hover:scale-105">
-             <h3 className="text-xl font-semibold mb-2">Mobile App</h3>
+          <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-300 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">             <h3 className="text-xl font-semibold mb-2">Mobile App</h3>
             <p className="text-gray-600">Download our mobile app</p>
-            <a
-              href="https://play.google.com/store/apps/details?id=com.tneb.tangedco&hl=en_IN&pli=1"
-              className=" mt-4 inline-block"
-            >
-              Download Now &rarr;
+            <a href="/DisplayBills" className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block">
+              Download Now <span className="text-blue-400">&rarr;</span>
             </a>
           </div>
         </div>
       </main>
       </div>
-      <div className="min-h-screen bg-secondary border border-primary text-white">
+      <div className="min-h-screen bg-[#f0f0f0] border border-primary text-white">
 
       </div>
       <Footer />

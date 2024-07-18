@@ -17,6 +17,8 @@ module.exports = withMT({
       'accent': '#6a65d7',
       'white': '#fff',
       'gray': '#404040',
+      'gray-1': '#1a1a1c',
+      'gray-5': '#242426',
       'gray-2': '#808080',
       'gray-3': '#e7e7e7',
       'gray-4': '#bfbfbf',

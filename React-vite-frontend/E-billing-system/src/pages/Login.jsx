@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import bg from "../assets/login-bg.png";
 import logo from "../assets/logo.png";
 
@@ -11,6 +12,7 @@ function Login() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,10 +22,10 @@ function Login() {
       const { message, user, token } = response.data;
       setMessage(message);
       if (user) {
-        localStorage.setItem('user', JSON.stringify(user));
+        login(user);
         localStorage.setItem('token', token);
         setIsSuccess(true);
-        navigate('/home');
+        navigate('/');
       } else {
         setIsSuccess(false);
       }
@@ -36,16 +38,16 @@ function Login() {
 
   return (
     <div className="min-h-screen max-h-screen flex items-center transition-all transform duration-200 justify-center overflow-hidden relative">
-      <img src={bg} alt="background" className="bg-full overflow-hidden brightness-75 max-h-screen" />
-      <div className="bg-white p-8 rounded shadow-lg w-full max-w-md z-10">
+      <img src={bg} alt="background" className="bg-full overflow-hidden brightness-50 max-h-screen hue-rotate-180" />
+      <div className="bg-gray-1 p-8 rounded shadow-lg w-full max-w-md z-10">
         <div className="flex items-center justify-between">
-          <h2 className="text-6xl font-bold opacity-50 my-4 text-center text-primary">Login</h2>
-          <img src={logo} alt="logo" className="my-4 w-36" />
+          <h2 className="text-6xl font-bold opacity-50 my-4 text-center text-white">Login</h2>
+          <img src={logo} alt="logo" className="my-4 hue-rotate-270 w-36" />
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
-            <label className="block text-gray text-sm text-left font-bold mb-2" htmlFor="userId">
+            <label className="block text-gray-3 text-sm text-left font-bold mb-2" htmlFor="userId">
               User ID
             </label>
             <input
@@ -55,12 +57,12 @@ function Login() {
               placeholder='00112233'
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
-              className="appearance-none rounded-sm border transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+              className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3  focus:outline-none outline-1 focus:shadow-outline"
               required
             />
           </div>
           <div className="mb-6">
-            <label className="block text-left text-gray text-sm font-bold mb-2" htmlFor="password">
+            <label className="block text-left text-gray-3 text-sm font-bold mb-2" htmlFor="password">
               Password
             </label>
             <input
@@ -69,10 +71,10 @@ function Login() {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="appearance-none rounded-sm border transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray leading-tight focus:outline-accent focus:shadow-outline"
+              className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 focus:outline-none  focus:shadow-outline"
               required
             />
-            <div className='text-xs justify-end flex text-gray-2 mt-1'><button>forgot password?</button></div>
+            <div className='text-xs justify-end flex text-gray-3 mt-1'><button>forgot password?</button></div>
           </div>
           {message && (
             <p className={`mt-4 text-sm text-center ${isSuccess ? 'text-success' : 'text-error'}`}>
@@ -82,13 +84,13 @@ function Login() {
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="bg-accent hover:bg-purple mt-5 hover:border-secondary text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-700 hover:bg-blue-800 mt-5 hover:border-secondary text-gray-3 font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
             >
               Sign In
             </button>
             <div className="mt-4 text-sm text-center">
-              <span className="text-gray-2">Not registered? </span>
-              <a href="/register" className="text-accent hover:underline">Register here</a>
+              <span className="text-gray-3">Not registered? </span>
+              <a href="/register" className="text-blue-400 hover:underline">Register here</a>
             </div>
           </div>
         </form>

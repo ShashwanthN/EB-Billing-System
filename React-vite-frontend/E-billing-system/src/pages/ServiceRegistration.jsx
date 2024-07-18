@@ -122,7 +122,7 @@ const ServiceRegistration = () => {
 
   return (
     <div className="relative h-screen overflow-scroll py-10 bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
-      <Topbar />
+      
       <div className="relative h-max max-w-2xl rounded  mx-auto p-8 bg-white mt-10">
         <div className="flex items-center mb-10 justify-between">
           <h2 className="text-3xl font-bold text-gray-700">Service Registration</h2>

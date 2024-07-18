@@ -10,6 +10,7 @@ const DisplayBills = () => {
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser && storedUser.userId) {
+      console.log('Stored User ID:', storedUser.userId);
       setUserId(storedUser.userId);
       fetchUnpaidReadingsWithBills(storedUser.userId);
     }
@@ -30,28 +31,25 @@ const DisplayBills = () => {
   };
 
   return (
-    <div>
-      <Topbar />
+    <div className="main-content">
+      
       <img
         src={bg}
         alt="background"
-        className="bg-full overflow-hidden  max-h-screen"
+        className="bg-full overflow-hidden brightness-50  hue-rotate-90 max-h-screen"
       />
-      <div className="container flex flex-col justify-center  pt-10 items-center mx-auto p-4">
-        <div className="border w-2/3 text-gray border-gray-3 shadow-md backdrop-blur-xl p-10 rounded">
-          <h2 className="text-3xl font-bold text-deep-purple-400 mb-6 text-center pb-2">
+      <div className="container flex flex-col justify-center   items-center mx-auto p-4">
+        <div className="border w-2/3 text-gray-3 border-gray-2 shadow-md backdrop-brightness-50 backdrop-blur-2xl p-10 rounded-lg">
+          <h2 className="text-3xl font-bold text-gray-4 mb-6 text-center pb-2">
             Unpaid Bills
           </h2>
           <div className="mb-6 flex  items-center">
-            <input
-              type="text"
-              className="border border-gray-4 p-2 focus:outline-deep-purple-500 rounded w-full"
-              placeholder="Enter User ID"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              readOnly
-            />
-            {/* <button
+            <div
+             
+              className="border border-gray-2 p-2 pl-2 bg-gray-5 focus:outline-deep-purple-500 rounded w-full"
+              
+            >{userId}</div>
+                        {/* <button
               onClick={() => fetchUnpaidReadingsWithBills(userId)}
               className="border border-deep-purple-200 w-1/3 p-2 ml-2 bg-deep-purple-300 hover:bg-deep-purple-500 text-white rounded"
             >
@@ -60,16 +58,16 @@ const DisplayBills = () => {
           </div>
 
           {unpaidReadingsWithBills.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 backdrop-blur-3xl">
               {unpaidReadingsWithBills.map(({ meterReadings, bill }) => (
                 <div
                   key={meterReadings.readingId}
-                  className="p-4 border justify-between flex border-gray-4 rounded shadow-sm"
+                  className=" justify-between flex border-b py-4 border-b-gray-2  shadow-sm"
                 >
                   <div>
                     <p className="font-semibold">
                       User ID:{" "}
-                      <span className="font-normal">
+                      <span className="font-normal text-blue-700">
                         {meterReadings.userId}
                       </span>
                     </p>
@@ -89,7 +87,7 @@ const DisplayBills = () => {
                     </p>
                     <p className="font-semibold">
                       Units Consumed:{" "}
-                      <span className="font-normal">
+                      <span className="font-normal text-blue-700">
                         {meterReadings.unitsConsumed}
                       </span>
                     </p>
@@ -103,7 +101,7 @@ const DisplayBills = () => {
                       <div className=" justify-center items-end flex flex-col ">
                         <div className="">
                           <p className="font-semibold">
-                            <span className="font-bold text-deep-purple-400 text-3xl">
+                            <span className="font-bold text-gray-3 text-3xl">
                               ₹{bill.amount}
                             </span>
                           </p>
