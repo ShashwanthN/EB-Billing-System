@@ -10,4 +10,5 @@ public interface MeterReadingsRepository extends JpaRepository<MeterReadings, In
     List<MeterReadings> findByPaymentStatus(String paymentStatus);
     List<MeterReadings> findByUserIdAndPaymentStatus(String userId, String paymentStatus);
 
+    MeterReadings findByReadingId(int readingId);
 }

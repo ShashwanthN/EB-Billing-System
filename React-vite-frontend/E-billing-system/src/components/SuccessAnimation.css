@@ -1,0 +1,38 @@
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    ;
+  }
+  
+  .circle {
+    stroke-dasharray: 597;
+    stroke-dashoffset: 597;
+    animation: dc 1s ease-in-out forwards;
+  }
+  
+  .tick {
+    stroke-dasharray: 175;
+    stroke-dashoffset: 175;
+    animation: dt 0.8s ease-out forwards;
+    animation-delay: 0.95s;
+  }
+  
+  @keyframes dc {
+    from {
+      stroke-dashoffset: 597;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @keyframes dt {
+    from {
+      stroke-dashoffset: 175;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  

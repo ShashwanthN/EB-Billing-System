@@ -8,6 +8,7 @@ import com.tangedco.spring.eb_billing_system.dto.CommercialConnectionRequest;
 import com.tangedco.spring.eb_billing_system.entity.HouseholdConnections;
 import com.tangedco.spring.eb_billing_system.entity.CommercialConnections;
 import com.tangedco.spring.eb_billing_system.entity.User;
+import com.tangedco.spring.eb_billing_system.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,14 +28,16 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final HouseholdConnectionRepository householdConnectionRepository;
     private final CommercialConnectionRepository commercialConnectionRepository;
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     @Autowired
     public ConnectionServiceImpl(HouseholdConnectionRepository householdConnectionRepository,
                                  CommercialConnectionRepository commercialConnectionRepository,
-                                 UserRepository userRepository) {
+                                 UserRepository userRepository, JwtUtil jwtUtil) {
         this.householdConnectionRepository = householdConnectionRepository;
         this.commercialConnectionRepository = commercialConnectionRepository;
         this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         logger.info("Registering household connection for user ID: {}", request.getUserId());
 
         HouseholdConnections connection = new HouseholdConnections();
-        String userId = request.getUserId(); // Assuming userId is already a String
+        String userId = request.getUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
         connection.setUser(user);
@@ -67,7 +70,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         logger.info("Registering commercial connection for user ID: {}", request.getUserId());
 
         CommercialConnections connection = new CommercialConnections();
-        String userId = request.getUserId(); // Assuming userId is already a String
+        String userId = request.getUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
         connection.setUser(user);
@@ -87,7 +90,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
         connection.setApplicantReferenceNumber(generateReferenceNumber());
-        connection.setPaymentStatus("not_paid"); // Set to a valid ENUM value
+        connection.setPaymentStatus("not_paid");
         return commercialConnectionRepository.save(connection);
     }
 

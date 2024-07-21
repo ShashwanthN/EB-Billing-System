@@ -10,21 +10,21 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-    console.log('AuthProvider - Stored User:', storedUser);
-    console.log('AuthProvider - Token:', token);
+    // console.log('AuthProvider - Stored User:', storedUser);
+    // console.log('AuthProvider - Token:', token);
     if (storedUser && token) {
       setUser(storedUser);
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
     }
-    setLoading(false); // Set loading to false once authentication status is determined
+    setLoading(false);
   }, []);
 
   const login = (userData) => {
     setUser(userData);
     setIsAuthenticated(true);
-    console.log("AuthProvider - User logged in:", userData);
+    // console.log("AuthProvider - User logged in:", userData);
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', userData.token);
   };
@@ -32,13 +32,13 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    console.log("AuthProvider - User logged out");
+    // console.log("AuthProvider - User logged out");
     localStorage.removeItem('user');
     localStorage.removeItem('token');
   };
 
   useEffect(() => {
-    console.log("auth:", isAuthenticated);
+    // console.log("auth:", isAuthenticated);
   }, [isAuthenticated]);
 
   return (

@@ -5,6 +5,7 @@ import com.tangedco.spring.eb_billing_system.dto.LoginResponse;
 import com.tangedco.spring.eb_billing_system.entity.User;
 
 public interface UserService {
+
     User findById(String theId);
     User registerUser(User user);
     LoginResponse loginUser(LoginRequest loginRequest);

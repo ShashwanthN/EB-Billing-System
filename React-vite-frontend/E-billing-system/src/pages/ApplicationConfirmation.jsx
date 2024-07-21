@@ -22,10 +22,10 @@ const ApplicationConfirmation = () => {
   const totalAmount = paymentCharges.reduce((total, charge) => total + charge.amount, 0);
 
   return (
-    <div className="relative h-screen overflow-scroll  bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
+    <div className="relative main-content h-screen overflow-scroll  bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
 
     
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pb-10 px-4 sm:px-6 lg:px-8">
         
       <div className="max-w-4xl mx-auto bg-white border-gray-3 border shadow-lg rounded-lg overflow-hidden">
         <div className="px-6 py-8">

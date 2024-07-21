@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../services/axiosInstance";
 import Topbar from "../components/Topbar";
 import bg from "../assets/bg-2.jpeg";
+import { useNavigate } from "react-router-dom";
 
 const DisplayBills = () => {
   const [userId, setUserId] = useState("");
   const [unpaidReadingsWithBills, setUnpaidReadingsWithBills] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
+    const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser && storedUser.userId) {
-      console.log('Stored User ID:', storedUser.userId);
       setUserId(storedUser.userId);
       fetchUnpaidReadingsWithBills(storedUser.userId);
     }
@@ -20,41 +21,41 @@ const DisplayBills = () => {
     try {
       const response = await axiosInstance.get(`/readings/user/${userId}/unpaid`);
       const sortedReadings = response.data.sort(
-        (a, b) =>
-          new Date(b.meterReadings.readingDate) -
-          new Date(a.meterReadings.readingDate)
+        (a, b) => new Date(b.meterReadings.readingDate) - new Date(a.meterReadings.readingDate)
       );
+console.log("fetched");
+console.log("it");
       setUnpaidReadingsWithBills(sortedReadings);
     } catch (error) {
       console.error("Error fetching unpaid readings with bills:", error);
     }
   };
 
+  const handlePayment = (bill) => {
+    navigate(`/payment/${userId}/${bill.readingId}`, { state: { bill } });
+  };
+
+  const formatReadingDate = (readingDate) => {
+    const date = new Date(readingDate);
+    return date.toLocaleDateString();
+  };
+
   return (
     <div className="main-content">
-      
       <img
         src={bg}
         alt="background"
-        className="bg-full overflow-hidden brightness-50  hue-rotate-90 max-h-screen"
+        className="bg-full overflow-hidden brightness-50 hue-rotate-90 max-h-screen"
       />
-      <div className="container flex flex-col justify-center   items-center mx-auto p-4">
+      <div className="container flex flex-col justify-center items-center mx-auto p-4">
         <div className="border w-2/3 text-gray-3 border-gray-2 shadow-md backdrop-brightness-50 backdrop-blur-2xl p-10 rounded-lg">
           <h2 className="text-3xl font-bold text-gray-4 mb-6 text-center pb-2">
             Unpaid Bills
           </h2>
-          <div className="mb-6 flex  items-center">
-            <div
-             
-              className="border border-gray-2 p-2 pl-2 bg-gray-5 focus:outline-deep-purple-500 rounded w-full"
-              
-            >{userId}</div>
-                        {/* <button
-              onClick={() => fetchUnpaidReadingsWithBills(userId)}
-              className="border border-deep-purple-200 w-1/3 p-2 ml-2 bg-deep-purple-300 hover:bg-deep-purple-500 text-white rounded"
-            >
-              Fetch Unpaid Bills
-            </button> */}
+          <div className="mb-6 flex items-center">
+            <div className="border border-gray-2 p-2 pl-2 bg-gray-5 focus:outline-deep-purple-500 rounded w-full">
+              {userId}
+            </div>
           </div>
 
           {unpaidReadingsWithBills.length > 0 ? (
@@ -62,7 +63,7 @@ const DisplayBills = () => {
               {unpaidReadingsWithBills.map(({ meterReadings, bill }) => (
                 <div
                   key={meterReadings.readingId}
-                  className=" justify-between flex border-b py-4 border-b-gray-2  shadow-sm"
+                  className="justify-between flex border-b py-4 border-b-gray-2 shadow-sm"
                 >
                   <div>
                     <p className="font-semibold">
@@ -80,9 +81,7 @@ const DisplayBills = () => {
                     <p className="font-semibold">
                       Reading Date:{" "}
                       <span className="font-normal">
-                        {new Date(
-                          meterReadings.readingDate
-                        ).toLocaleDateString()}
+                        {formatReadingDate(meterReadings.readingDate)}
                       </span>
                     </p>
                     <p className="font-semibold">
@@ -97,17 +96,21 @@ const DisplayBills = () => {
                     </p>
                   </div>
                   {bill && (
-                    <>
-                      <div className=" justify-center items-end flex flex-col ">
-                        <div className="">
-                          <p className="font-semibold">
-                            <span className="font-bold text-gray-3 text-3xl">
-                              ₹{bill.amount}
-                            </span>
-                          </p>
-                        </div>
+                    <div className="flex flex-col justify-between items-center h-full">
+                      <div className="text-center">
+                        <p className="font-semibold">
+                          <span className="font-bold text-gray-3 text-3xl">₹{bill.amount}</span>
+                        </p>
                       </div>
-                    </>
+                      <div className="w-full">
+                        <button
+                          onClick={() => handlePayment({ ...meterReadings, ...bill })}
+                          className="border border-blue-600 p-2 mt-2 bg-blue-700 hover:bg-blue-800 text-white rounded w-full"
+                        >
+                          Pay Now
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
               ))}

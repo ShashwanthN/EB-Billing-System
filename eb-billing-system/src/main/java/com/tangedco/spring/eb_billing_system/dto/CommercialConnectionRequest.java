@@ -26,7 +26,7 @@ public class CommercialConnectionRequest {
         this.ownershipProof = ownershipProof;
     }
 
-    // Getters and Setters
+
     public String getUserId() {
         return userId;
     }

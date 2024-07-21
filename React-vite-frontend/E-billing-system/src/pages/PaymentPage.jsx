@@ -1,71 +1,68 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useLocation } from "react-router-dom";
-
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
+import axiosInstance from "../services/axiosInstance";
+import bg from "../assets/bg-2.jpeg"
 const PaymentPage = () => {
+  const { userId, readingId } = useParams();
   const location = useLocation();
-  const { bill } = location.state;
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const [transactionId, setTransactionId] = useState("");
+  const bill = location.state.bill;
+  const [paymentLink, setPaymentLink] = useState("");
 
-  const handlePayment = async () => {
-    try {
-      const paymentRequest = {
-        billId: bill.billId,
-        paymentMethod,
-        transactionId,
-      };
-      const response = await axios.post(
-        "http://localhost:8080/api/payments",
-        paymentRequest
-      );
-      alert("Payment successful!");
-    } catch (error) {
-      console.error("Error processing payment:", error);
-      alert("Payment failed!");
-    }
-  };
+  useEffect(() => {
+    const initiatePayment = async () => {
+      try {
+        const response = await axiosInstance.post(`/payment/process/${userId}/${readingId}`);
+        setPaymentLink(response.data.paymentLink); // Use paymentLink from backend response
+      } catch (error) {
+        console.error("Error initiating payment:", error);
+      }
+    };
+
+    initiatePayment();
+  }, [userId, readingId]);
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">Payment Page</h2>
-      <div className="border p-4 rounded shadow-md max-w-lg mx-auto">
-        <p className="font-semibold">
-          Bill Amount: <span className="font-normal">₹{bill.amount}</span>
-        </p>
-        <div className="mt-4">
-          <label className="block font-semibold mb-2">
-            Payment Method:
-            <select
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              className="border p-2 rounded w-full"
-            >
-              <option value="">Select Payment Method</option>
-              <option value="credit_card">Credit Card</option>
-              <option value="debit_card">Debit Card</option>
-              <option value="net_banking">Net Banking</option>
-              <option value="upi">UPI</option>
-            </select>
-          </label>
+    <div className="flex justify-center items-center h-screen">
+      <img src={bg} alt="background" className="bg-full overflow-hidden brightness-50 hue-rotate-180 max-h-screen" />
+      <div className="text-center w-full max-w-md backdrop-brightness-50 backdrop-blur-md border-gray-2 shadow-md text-gray-3 rounded-lg p-6">
+        <h1 className="text-2xl font-bold mb-6 text-white">Confirmation</h1>
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full text-left ">
+            <tbody>
+              <tr>
+                <td className="font-semibold p-2">User ID:</td>
+                <td className=" p-2 text-end">{bill.userId}</td>
+              </tr>
+              <tr>
+                <td className="font-semibold  p-2">Connection Type:</td>
+                <td className="text-end p-2">{bill.connectionType}</td>
+              </tr>
+              <tr>
+                <td className="font-semibold p-2">Reading Date:</td>
+                <td className="text-end p-2">{new Date(bill.readingDate).toLocaleDateString()}</td>
+              </tr>
+              <tr>
+                <td className="font-semibold  p-2">Units Consumed:</td>
+                <td className="text-end p-2">{bill.unitsConsumed}</td>
+              </tr>
+              <tr>
+                <td className="font-semibold  p-2">Bill No:</td>
+                <td className="text-end p-2">{bill.billId}</td>
+              </tr>
+              <tr>
+                <td className="font-semibold  p-2">Amount:</td>
+                <td className="text-end p-2 text-[#68E534] font-bold">₹{bill.amount}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div className="mt-4">
-          <label className="block font-semibold mb-2">
-            Transaction ID:
-            <input
-              type="text"
-              value={transactionId}
-              onChange={(e) => setTransactionId(e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-          </label>
-        </div>
-        <button
-          onClick={handlePayment}
-          className="mt-4 bg-deep-purple-500 hover:bg-deep-purple-700 text-white p-2 rounded w-full"
-        >
-          Pay Now
-        </button>
+        {paymentLink ? (
+          <a href={paymentLink} className="btn btn-primary mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+            Click here to pay
+          </a>
+        ) : (
+          <p className="mt-6">Loading payment link...</p>
+        )}
       </div>
     </div>
   );

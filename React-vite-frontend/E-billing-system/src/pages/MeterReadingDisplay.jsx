@@ -22,6 +22,8 @@ const MeterReadingsDisplay = () => {
       const response = await axiosInstance.get(`readings/user/${userId}`);
       setReadings(response.data);
       setError("");
+      console.log("got it");
+      console.log("of");
     } catch (err) {
       setError("Failed to fetch the readings. Please check the user ID.");
       setReadings([]);
@@ -54,117 +56,106 @@ const MeterReadingsDisplay = () => {
   };
 
   return (
-    <div>
-
-    
-    <div className="container pt-10 mx-auto items-center p-4">
-      
-      <h2 className="text-3xl font-bold mb-6 text-gray text-center">Meter Readings</h2>
-      <div className="mb-6 flex  justify-center">
-        <div
-         
-          className="border-2 text-center p-2 px-10 text-3xl rounded focus:outline-2 outline-deep-purple-400 border-gray-4 font-bold text-purple"
-          
-        >{userId}</div>
-        {/* <button
-          onClick={handleFetchButtonClick}
-          className="ml-4 bg-deep-purple-400 hover:bg-deep-purple-600 border-2 border-deep-purple-200 text-white p-2 rounded"
-        >
-          Fetch Readings
-        </button> */}
-      </div>
-      {error && <p className="text-red-500 text-center mb-6">{error}</p>}
-      {readings.length > 0 && (
-        <div>
-          <div className="flex divide-x divide-gray-4 justify-center mb-6">
-            <button
-              onClick={() => setCurrentYear(currentYear - 1)}
-              className="pr-4 flex bg-gray-300 hover:bg-gray-400 text-gray-700"
-            >
-              <div className="text-gray-2 mr-2">&larr;</div> Previous Year
-            </button>
-            <button
-              onClick={() => setCurrentYear(currentYear + 1)}
-              className="pl-4 bg-gray-300 flex hover:bg-gray-400 text-gray-700"
-            >
-              Next Year <div className="text-gray-2 ml-2">&rarr;</div>
-            </button>
-          </div>
-          <div className="flex justify-center">
-            <div className="w-1/2 p-4">
-              <h3 className="text-xl font-semibold mb-4">Household</h3>
-              <div className="grid grid-cols-2 gap-4">
-                {monthsArray.map((date) => {
-                  const monthKey = format(date, "yyyy-MM");
-                  const units = householdReadings[monthKey] || 0;
-                  return (
-                    <div
-                      key={monthKey}
-                      className={`border border-deep-purple-200 p-4 rounded ${
-                        units ? "bg-gradient-to-tl from-deep-purple-100 to-deep-purple-50 shadow-sm" : "bg-red-50"
-                      }`}
-                    >
-                      <div className="text-deep-purple-200 z-0 absolute text-2xl italic font-semibold">
-                        {format(date, "MMMM yyyy")}
-                      </div>
-                      {units > 0 ? (
-                        <div className="flex justify-between">
-                          <div className="text-sm mt-10 text-white p-0.5 px-2 rounded-full border border-green-200 bg-green-500 text-end font-bold">
-                            Paid
-                          </div>
-                          <div className="text-md mt-10 text-deep-purple-500 text-end font-bold">
-                            {units} units
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-md mt-10 text-deep-purple-500 text-end font-bold">
-                          No data
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="w-1/2 p-4">
-              <h3 className="text-xl font-semibold mb-4">Commercial</h3>
-              <div className="grid grid-cols-2 gap-4">
-                {monthsArray.map((date) => {
-                  const monthKey = format(date, "yyyy-MM");
-                  const units = commercialReadings[monthKey] || 0;
-                  return (
-                    <div
-                      key={monthKey}
-                      className={`border p-4 border-blue-300 text-center rounded ${
-                        units ? "bg-gradient-to-tl from-blue-100 to-blue-50 shadow-sm" : "bg-red-50"
-                      }`}
-                    >
-                      <div className="text-blue-200 z-0 absolute text-2xl italic font-semibold">
-                        {format(date, "MMMM yyyy")}
-                      </div>
-                      {units > 0 ? (
-                        <div className="flex justify-between">
-                          <div className="text-sm mt-10 text-white p-0.5 px-2 rounded-full border border-green-200 bg-green-500 text-end font-bold">
-                            Paid
-                          </div>
-                          <div className="text-md mt-10 text-blue-500 text-end font-bold">
-                            {units} units
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-md mt-10 text-blue-500 text-end font-bold">
-                          No data
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+    <div className="main-content bg-gray-1">
+      <div className="container pt-10 mx-auto items-center p-4">
+        <h2 className="text-3xl font-bold mb-6 text-gray-3 text-center">Meter Readings</h2>
+        <div className="mb-6 flex justify-center">
+          <div className="text-center p-2 px-10 text-3xl rounded focus:outline-2 outline-deep-purple-400 border-gray-4 font-bold text-blue-400">
+            {userId}
           </div>
         </div>
-      )}
-    </div>
+        {error && <p className="text-red-500 text-center mb-6">{error}</p>}
+        {readings.length > 0 && (
+          <div>
+            <div className="flex divide-x divide-gray-4 justify-center mb-6">
+              <button
+                onClick={() => setCurrentYear(currentYear - 1)}
+                className="pr-4 flex bg-gray-300 hover:bg-gray-400 text-gray-3"
+              >
+                <div className="text-gray-2 mr-2">&larr;</div> Previous Year
+              </button>
+              <button
+                onClick={() => setCurrentYear(currentYear + 1)}
+                className="pl-4 bg-gray-300 flex hover:bg-gray-400 text-gray-3"
+              >
+                Next Year <div className="text-gray-2 ml-2">&rarr;</div>
+              </button>
+            </div>
+            <div className="flex text-white justify-center">
+              <div className="w-1/2 p-4">
+                <h3 className="text-xl font-semibold mb-4">Household</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {monthsArray.map((date) => {
+                    const monthKey = format(date, "yyyy-MM");
+                    const units = householdReadings[monthKey] || 0;
+                    return (
+                      <div
+                        key={monthKey}
+                        className={`border border-deep-purple-200 p-4 rounded ${
+                          units ? "bg-gradient-to-tl from-deep-purple-700 to-gray-5 shadow-sm" : "bg-deep-purple-50"
+                        }`}
+                      >
+                        <div className="text-deep-purple-200 z-0 absolute text-2xl italic font-semibold">
+                          {format(date, "MMMM yyyy")}
+                        </div>
+                        {units > 0 ? (
+                          <div className="flex justify-between">
+                            <div className="text-sm mt-10 text-white p-0.5 px-2 rounded-full border border-green-200 bg-green-500 text-end font-bold">
+                              Paid
+                            </div>
+                            <div className="text-md mt-10 text-deep-purple-50 text-end font-bold">
+                              {units} units
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-md mt-10 text-deep-purple-500 text-end font-bold">
+                            No data
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="w-1/2 p-4">
+                <h3 className="text-xl font-semibold mb-4">Commercial</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {monthsArray.map((date) => {
+                    const monthKey = format(date, "yyyy-MM");
+                    const units = commercialReadings[monthKey] || 0;
+                    return (
+                      <div
+                        key={monthKey}
+                        className={`border p-4 border-blue-300 text-center rounded ${
+                          units ? "bg-gradient-to-tl from-blue-700 to-gray-5 shadow-sm" : "bg-blue-50"
+                        }`}
+                      >
+                        <div className="text-blue-200 z-0 absolute text-2xl italic font-semibold">
+                          {format(date, "MMMM yyyy")}
+                        </div>
+                        {units > 0 ? (
+                          <div className="flex justify-between">
+                            <div className="text-sm mt-10 text-white p-0.5 px-2 rounded-full border border-green-200 bg-green-500 text-end font-bold">
+                              Paid
+                            </div>
+                            <div className="text-md mt-10 text-blue-50 text-end font-bold">
+                              {units} units
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-md mt-10 text-blue-500 text-end font-bold">
+                            No data
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

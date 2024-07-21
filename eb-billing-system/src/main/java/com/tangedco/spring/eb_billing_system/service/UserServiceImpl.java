@@ -1,5 +1,4 @@
 package com.tangedco.spring.eb_billing_system.service;
-
 import com.tangedco.spring.eb_billing_system.dao.UserRepository;
 import com.tangedco.spring.eb_billing_system.dto.LoginRequest;
 import com.tangedco.spring.eb_billing_system.dto.LoginResponse;
@@ -9,7 +8,6 @@ import com.tangedco.spring.eb_billing_system.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service

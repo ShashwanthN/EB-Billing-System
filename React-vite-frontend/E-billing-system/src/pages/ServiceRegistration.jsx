@@ -25,13 +25,14 @@ const ServiceRegistration = () => {
   const [sqMeter, setSqMeter] = useState('');
   const [ownershipProof, setOwnershipProof] = useState(null);
   const [referenceNumber, setReferenceNumber] = useState(null);
+
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser && storedUser.userId) {
       setUserId(storedUser.userId);
-      
     }
-  }, []); 
+  }, []);
+
   const onDrop = useCallback(
     (acceptedFiles, fileRejections, setFile) => {
       if (acceptedFiles.length) {
@@ -73,7 +74,14 @@ const ServiceRegistration = () => {
     }
 
     try {
-      const response = await axios.post(url, formData);
+      const token = localStorage.getItem('token'); 
+
+      const response = await axios.post(url, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
+
       if (response.data.payment_url) {
         setReferenceNumber(response.data.reference_number);
         navigate('/ApplicationConfirmation', {
@@ -121,9 +129,9 @@ const ServiceRegistration = () => {
   });
 
   return (
-    <div className="relative h-screen overflow-scroll py-10 bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
+    <div className="relative h-screen overflow-scroll main-content bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
       
-      <div className="relative h-max max-w-2xl rounded  mx-auto p-8 bg-white mt-10">
+      <div className="relative h-max max-w-2xl rounded  mx-auto p-8 bg-white mb-10">
         <div className="flex items-center mb-10 justify-between">
           <h2 className="text-3xl font-bold text-gray-700">Service Registration</h2>
           <img src={logo} alt="logo" className="w-36 h-36" />

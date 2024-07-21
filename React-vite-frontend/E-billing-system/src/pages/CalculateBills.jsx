@@ -25,21 +25,24 @@ const CalculateBills = () => {
   const handleCalculate = () => {
     if (connectionType === 'household') {
       setBill(calculateHouseholdBill(Number(units)));
+      
     } else if (connectionType === 'commercial') {
       setBill(calculateCommercialBill(Number(units)));
     }
+    console.log("hehe")
+    console.log("haha")
   };
 
   return (
     <div className='main-content'>
-      <img src={bg} alt="background" className="bg-full overflow-hidden  max-h-screen" />
+      <img src={bg} alt="background" className="bg-full overflow-hidden brightness-50 hue-rotate-30 max-h-screen" />
       <div className="container h-[calc(100vh-4rem)] flex justify-center  items-center mx-auto p-4">
-        <div className="border w-3/5 divide-x text-gray divide-gray-4 backdrop-blur-2xl  border-gray-3 p-10 rounded flex">
+        <div className="border w-3/5 divide-x text-gray-3 divide-gray-2 backdrop-brightness-50 backdrop-blur-md border-gray-2 p-10 rounded flex">
           <div className="w-1/2 pr-10">
             <h2 className="text-3xl font-bold mb-6 text-start">Electricity Bill Calculator</h2>
             <div className="mb-6">
               <select
-                className="border w-full text-gray-700 p-2 rounded"
+                className="border w-full text-gray-2 bg-transparent p-2 rounded"
                 value={connectionType}
                 onChange={(e) => setConnectionType(e.target.value)}
               >
@@ -52,7 +55,7 @@ const CalculateBills = () => {
               <div className="mb-6">
                 <input
                   type="number"
-                  className="border p-2 rounded w-full mb-4"
+                  className="border p-2 bg-transparent border-gray-2 rounded w-full mb-4"
                   placeholder="Enter units consumed"
                   value={units}
                   onChange={(e) => setUnits(e.target.value)}
@@ -60,7 +63,7 @@ const CalculateBills = () => {
                 <div className="text-end mt-4">
                   <button
                     onClick={handleCalculate}
-                    className="bg-blue-gray-200 hover:bg-blue-gray-400 text-white p-2 px-4 rounded"
+                    className="bg-blue-400 hover:bg-blue-500 text-white p-2 px-4 rounded"
                   >
                     Calculate Bill
                   </button>
@@ -68,10 +71,10 @@ const CalculateBills = () => {
               </div>
             )}
           </div>
-          <div className="w-1/2 flex text-gray items-center justify-center">
+          <div className="w-1/2 flex text-gray-4 items-center justify-center">
             {bill !== null && (
               <div className="text-center">
-                <p className="text-2xl font-semibold"><span className='text-blue-gray-400'>Total Bill: </span>₹{bill}</p>
+                <p className="text-2xl font-semibold"><span className='text-gray-3'>Total Bill: </span>₹{bill}</p>
               </div>
             )}
           </div>

@@ -10,6 +10,9 @@ import java.util.Optional;
 
 public interface BillRepository extends JpaRepository<Bill, Integer> {
     List<Bill> findByMeterReadingUserId(String userId);
-
+    List<Bill> findByMeterReading_UserIdAndMeterReading_PaymentStatusOrderByBillDateDesc(String userId, String paymentStatus);
     Optional<Bill> findByMeterReading(MeterReadings reading);
+
+
+    Bill findByMeterReading_ReadingId(int readingId);
 }

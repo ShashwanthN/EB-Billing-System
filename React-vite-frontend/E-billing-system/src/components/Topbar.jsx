@@ -31,7 +31,7 @@ const Topbar = () => {
     <div className={topbarClass}>
       <div className="backdrop-brightness-50 backdrop-blur-3xl p-2 shadow-lg">
         <div className="container mx-auto flex justify-between items-center text-white">
-          <h1 className="text-2xl p-1 font-bold text-blue-gray-100">TANGEDCO</h1>
+          <h1 className="text-2xl p-1 font-bold text-gray-3">TANGEDCO</h1>
           <div className="flex items-center text-blue-gray-100 space-x-6">
             <Link to="/" className="hover:text-white transition duration-300">Home</Link>
             {!isAuthenticated ? (
@@ -47,7 +47,7 @@ const Topbar = () => {
                 onClick={logout}
                 className="bg-blue-500 hover:bg-blue-600 text-white font- py-1 px-3 rounded-full transition duration-300"
               >
-                Logout
+                <Link to={"/login"}>Logout</Link>
               </button>
             )}
             <button className="hover:text-gray-200 font-bold hover:text-white transition duration-300">தமிழ்</button>

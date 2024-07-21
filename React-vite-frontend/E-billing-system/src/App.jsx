@@ -10,7 +10,9 @@ import CalculateBills from './pages/CalculateBills';
 import DisplayBills from './pages/DisplayBills';
 import { AuthProvider } from './context/AuthContext.jsx';  
 import PrivateRoute from './components/PrivateRoute.jsx';
-import Topbar from './components/Topbar.jsx'; // Import the Topbar component
+import Topbar from './components/Topbar.jsx'; 
+import PaymentPage from './pages/PaymentPage.jsx';
+import PaymentSuccess from './pages/PaymentSuccess.jsx';
 
 const AppContent = () => {
   const location = useLocation();
@@ -24,10 +26,12 @@ const AppContent = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/Payment_Success/:billId" element={<PrivateRoute><PaymentSuccess/></PrivateRoute>} />
+          <Route path="/payment/:userId/:readingId" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
           <Route path="/serviceApplication" element={<PrivateRoute><ServiceRegistration /></PrivateRoute>} />
           <Route path="/ApplicationConfirmation" element={<PrivateRoute><ApplicationConfirmation /></PrivateRoute>} />
           <Route path="/MeterReadingDisplay" element={<PrivateRoute><MeterReadingsDisplay /></PrivateRoute>} />
-          <Route path="/CalculateBills" element={<PrivateRoute><CalculateBills /></PrivateRoute>} />
+          <Route path="/CalculateBills" element={<CalculateBills />} />
           <Route path="/DisplayBills" element={<PrivateRoute><DisplayBills /></PrivateRoute>} />
         </Routes>
       </div>

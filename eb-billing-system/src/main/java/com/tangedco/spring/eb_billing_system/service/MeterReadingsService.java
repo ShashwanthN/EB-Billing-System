@@ -12,6 +12,10 @@ public interface MeterReadingsService {
     List<MeterReadings> getUnpaidMeterReadingsByUserId(String userId);
 
     List<Bill> getBillsByUserId(String userId);
-
+Bill getBillByReadingId(int readingId);
     List<MeterReadingsWithBill> getUnpaidMeterReadingsWithBillsByUserId(String userId);
+
+    MeterReadings getMeterReadingByReadingId(int readingId);
+
+    void saveMeterReading(MeterReadings meter);
 }
