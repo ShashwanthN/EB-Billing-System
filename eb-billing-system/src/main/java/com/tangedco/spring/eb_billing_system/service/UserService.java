@@ -8,5 +8,8 @@ public interface UserService {
 
     User findById(String theId);
     User registerUser(User user);
+
+    User updateUser(String userId, String email, String phoneNumber);
+
     LoginResponse loginUser(LoginRequest loginRequest);
 }

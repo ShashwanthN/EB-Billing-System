@@ -1,5 +1,4 @@
 package com.tangedco.spring.eb_billing_system.controller;
-
 import com.razorpay.Payment;
 import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
@@ -70,10 +69,8 @@ public class PaymentController {
             };
 
             PaymentLink payment = RetryUtils.retryWithBackoff(createPaymentLinkCallable);
-
             String paymentLinkId = payment.get("id");
             String paymentLinkUrl = payment.get("short_url");
-
             PaymentResponse res = new PaymentResponse();
             res.setPaymentLink(paymentLinkUrl);
             res.setPaymentLinkId(paymentLinkId);
@@ -101,7 +98,7 @@ public class PaymentController {
 
             logger.info("Fetched payment with details: {}", payment.toString());
 
-            if(payment.get("status").equals("captured")){
+            if (payment.get("status").equals("captured")) {
                 meter.setPaymentStatus("paid");
                 logger.info("Setting payment status to 'paid' for reading ID: {}", meter.getReadingId());
 

@@ -10,13 +10,13 @@ const ApplicationConfirmation = () => {
   console.log('Reference Number:', referenceNumber); 
 
   const paymentCharges = [
-    { slno: 1, description: 'CC Deposit', amount: 5000 },
-    { slno: 2, description: 'Development Charges', amount: 10000 },
-    { slno: 3, description: 'Meter Caution Charges', amount: 3000 },
-    { slno: 4, description: 'Registration Processing Charges', amount: 2000 },
-    { slno: 5, description: 'Service Connection Charges', amount: 8000 },
-    { slno: 6, description: 'CGST', amount: 1500 },
-    { slno: 7, description: 'SGST', amount: 1500 },
+    { slno: 1, description: 'CC Deposit', amount: 150 },
+    { slno: 2, description: 'Development Charges', amount: 100 },
+    { slno: 3, description: 'Meter Caution Charges', amount: 300 },
+    { slno: 4, description: 'Registration Processing Charges', amount: 200 },
+    { slno: 5, description: 'Service Connection Charges', amount: 800 },
+    { slno: 6, description: 'CGST', amount: 150 },
+    { slno: 7, description: 'SGST', amount: 150 },
   ];
 
   const totalAmount = paymentCharges.reduce((total, charge) => total + charge.amount, 0);

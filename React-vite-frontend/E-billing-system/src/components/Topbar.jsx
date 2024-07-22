@@ -7,8 +7,15 @@ import classNames from 'classnames';
 const Topbar = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
   const [isVisible, setIsVisible] = useState(true);
+  const [userName, setUserName] = useState("");
   const [prevScrollPos, setPrevScrollPos] = useState(window.pageYOffset);
-
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser && storedUser.userId) {
+      setUserName(storedUser.firstName);
+      
+    }
+  }, []); 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
@@ -31,9 +38,18 @@ const Topbar = () => {
     <div className={topbarClass}>
       <div className="backdrop-brightness-50 backdrop-blur-3xl p-2 shadow-lg">
         <div className="container mx-auto flex justify-between items-center text-white">
-          <h1 className="text-2xl p-1 font-bold text-gray-3">TANGEDCO</h1>
+          <h1 className="text-2xl p-1  font-bold text-gray-3"><Link to="/">TANGEDCO</Link></h1>
+          <div className='flex absolute left-1/2 transform -translate-x-1/2 items-center text-[#bebebe] space-x-10'>
+          <Link to="/" className="hover:text-white hover:bg- items-center transition duration-300">Home</Link>
+          <Link to="/DisplayBills" className="hover:text-white items-center transition duration-300">Pay Bills</Link>
+          <Link to="/MeterReadingDisplay" className="hover:text-white items-center transition duration-300">Past Readings</Link>
+          <Link to="/CalculateBills" className="hover:text-white items-center transition duration-300">Billing Math</Link>
+          </div>
           <div className="flex items-center text-blue-gray-100 space-x-6">
-            <Link to="/" className="hover:text-white transition duration-300">Home</Link>
+            
+
+            
+            <button className="hover:text-gray-200 font-bold hover:text-white transition duration-300">{userName}</button>
             {!isAuthenticated ? (
               <>
               <div>

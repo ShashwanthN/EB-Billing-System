@@ -23,10 +23,10 @@ const PaymentSuccess = () => {
         });
         console.log('Response:', response);
 
-        setMessage(response.data.paymentStatus ? `Payment Status: ${response.data.paymentStatus}` : 'Payment status unknown.');
+        const paymentStatus = response.data.paymentStatus;
+        setMessage(paymentStatus ? `Payment Status: ${paymentStatus}` : 'Payment status unknown.');
 
-        console.log(paymentStatus);
-        if (response.data.paymentStatus === 'Success') {
+        if (paymentStatus === 'paid') {
           setTimeout(() => {
             navigate('/DisplayBills');
           }, 3000);
@@ -41,13 +41,12 @@ const PaymentSuccess = () => {
   }, [billId, navigate]);
 
   return (
-    <div className=" flex items-center justify-center min-h-screen bg-gray-1">
+    <div className="flex items-center justify-center min-h-screen bg-gray-1">
       <div className="text-center">
-      <h1 className="text-2xl font-bold text-[#68E534] mt-4 mb-4">Payment Successful!</h1>
-        <SuccessAnimation /> 
+        <h1 className="text-2xl font-bold text-[#68E534] mt-4 mb-4">Payment Successful!</h1>
+        <SuccessAnimation />
         {message && (
           <div>
-            
             <p className="text-gray-3 mb-4 mt-4 text-center">Your transaction was successful</p>
             <p className="text-gray-2">Redirecting to your bills</p>
           </div>

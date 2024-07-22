@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import bg from "../assets/login-bg.png"; 
 import logo from "../assets/logo.png"; 
+import PasswordValidattor from 'react-password-validattor';
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -64,31 +65,33 @@ const Register = () => {
     e.preventDefault();
     setError('');
     setMessage('');
-
+  
     if (user.password !== user.confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
-
+  
     const normalizedAadharId = user.aadharId.replace(/\s/g, '');
     if (normalizedAadharId.length !== 12) {
       setError('Aadhar ID must be exactly 12 digits.');
       return;
     }
-
+  
     if (user.phoneNumber.length !== 10) {
       setError('Phone number must be exactly 10 digits.');
       return;
     }
-
+  
     if (!validateEmail(user.email)) {
       setError('Invalid email format.');
       return;
     }
-
+  
+    const { confirmPassword, ...userData } = user;
+  
     try {
       const response = await axios.post('http://localhost:8080/users', {
-        ...user,
+        ...userData,
         aadharId: normalizedAadharId 
       }, {
         headers: {
@@ -108,22 +111,27 @@ const Register = () => {
       }
     }
   };
+  
 
   const handleCopy = () => {
     navigator.clipboard.writeText(userId);
     setMessage('User ID copied to clipboard!');
   };
 
+  const onValidatorChangeHandler = (result) => {
+   
+  };
+
   return (
-    <div className="min-h-screen max-h-screen flex items-center transition-all transform duration-200 justify-center overflow-hidden relative">
-      <img src={bg} alt="background" className="bg-full overflow-hidden brightness-50 max-h-screen hue-rotate-180" />
-      <div className="bg-gray-1 p-8 rounded shadow-lg w-full max-w-lg z-10">
+    <div className="min-h-screen justify-center relative flex items-center transition-all transform duration-200 ">
+      <img src={bg} alt="background" className="fixed inset-0 w-full h-full object-cover brightness-50 hue-rotate-180" />
+      <div className="relative bg-gray-1 p-8 rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto max-h-screen">
         <div className="flex items-center justify-between">
           <h2 className="text-6xl font-bold opacity-50 my-4 text-center text-white">Register</h2>
           <img src={logo} alt="logo" className="my-2 hue-rotate-270 w-36" />
         </div>
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='overflow-scroll'>
           <div className='flex justify-between'>
             
             <div className="mb-4 w-full mr-2">
@@ -225,6 +233,17 @@ const Register = () => {
               required
             />
           </div>
+          <PasswordValidattor
+            rules={['minLength', 'maxLength', 'specialChar', 'number', 'capital', 'matches', 'lowercase', 'notEmpty', 'shouldNotContain']}
+            forbiddenWords={['John', 'Doe']} 
+            minLength={8}
+            maxLength={32}
+            password={user.password}
+            confirmedPassword={user.confirmPassword}
+            iconSize={16}
+            onValidatorChange={onValidatorChangeHandler}
+            config={{ showProgressBar: true, showPasswordSuggestion: true }}
+          />
           <div className='mt-10'>
             {message && <p className="mt-4 text-sm text-center text-success">{message}</p>}
             {error && <p className="mt-4 text-sm text-center text-error">{error}</p>}
@@ -268,4 +287,3 @@ const Register = () => {
 };
 
 export default Register;
-

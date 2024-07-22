@@ -13,7 +13,7 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import Topbar from './components/Topbar.jsx'; 
 import PaymentPage from './pages/PaymentPage.jsx';
 import PaymentSuccess from './pages/PaymentSuccess.jsx';
-
+import "./index.css"
 const AppContent = () => {
   const location = useLocation();
   const hideNavPaths = ['/login', '/register'];

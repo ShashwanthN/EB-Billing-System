@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../services/axiosInstance";
 import { format, startOfMonth, addMonths } from "date-fns";
 import Topbar from "../components/Topbar";
-
+import bg from "../assets/bg-2.jpeg"
 const MeterReadingsDisplay = () => {
   const [userId, setUserId] = useState("");
   const [readings, setReadings] = useState([]);
@@ -56,8 +56,13 @@ const MeterReadingsDisplay = () => {
   };
 
   return (
-    <div className="main-content bg-gray-1">
-      <div className="container pt-10 mx-auto items-center p-4">
+    <div className="main-content ">
+      <img
+        src={bg}
+        alt="background"
+        className="bg-full overflow-hidden  brightness-50 hue-rotate-60 max-h-screen"
+      />
+      <div className="container pt-10 backdrop-blur-lg min-w-full mx-auto items-center p-4">
         <h2 className="text-3xl font-bold mb-6 text-gray-3 text-center">Meter Readings</h2>
         <div className="mb-6 flex justify-center">
           <div className="text-center p-2 px-10 text-3xl rounded focus:outline-2 outline-deep-purple-400 border-gray-4 font-bold text-blue-400">

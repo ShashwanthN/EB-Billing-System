@@ -49,14 +49,14 @@ console.log("it");
       />
       <div className="container flex flex-col justify-center items-center mx-auto p-4">
         <div className="border w-2/3 text-gray-3 border-gray-2 shadow-md backdrop-brightness-50 backdrop-blur-2xl p-10 rounded-lg">
-          <h2 className="text-3xl font-bold text-gray-4 mb-6 text-center pb-2">
+          <h2 className="text-7xl font-bold text-gray-4 mb-6 text-start pb-2">
             Unpaid Bills
           </h2>
-          <div className="mb-6 flex items-center">
+          {/* <div className="mb-6 flex items-center">
             <div className="border border-gray-2 p-2 pl-2 bg-gray-5 focus:outline-deep-purple-500 rounded w-full">
               {userId}
             </div>
-          </div>
+          </div> */}
 
           {unpaidReadingsWithBills.length > 0 ? (
             <div className="grid grid-cols-1 backdrop-blur-3xl">
@@ -80,13 +80,13 @@ console.log("it");
                     </p>
                     <p className="font-semibold">
                       Reading Date:{" "}
-                      <span className="font-normal">
+                      <span className="font-normal text-end">
                         {formatReadingDate(meterReadings.readingDate)}
                       </span>
                     </p>
                     <p className="font-semibold">
                       Units Consumed:{" "}
-                      <span className="font-normal text-blue-700">
+                      <span className="font-normal">
                         {meterReadings.unitsConsumed}
                       </span>
                     </p>

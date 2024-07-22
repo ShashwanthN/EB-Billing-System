@@ -1,5 +1,4 @@
 package com.tangedco.spring.eb_billing_system.controller;
-
 import com.tangedco.spring.eb_billing_system.dto.HouseholdConnectionRequest;
 import com.tangedco.spring.eb_billing_system.dto.CommercialConnectionRequest;
 import com.tangedco.spring.eb_billing_system.entity.HouseholdConnections;
@@ -9,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

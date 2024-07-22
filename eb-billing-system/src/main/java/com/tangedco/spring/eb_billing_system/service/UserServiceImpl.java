@@ -1,14 +1,18 @@
 package com.tangedco.spring.eb_billing_system.service;
+
 import com.tangedco.spring.eb_billing_system.dao.UserRepository;
 import com.tangedco.spring.eb_billing_system.dto.LoginRequest;
 import com.tangedco.spring.eb_billing_system.dto.LoginResponse;
 import com.tangedco.spring.eb_billing_system.entity.User;
 import com.tangedco.spring.eb_billing_system.security.AadharIdAlreadyExistsException;
+import com.tangedco.spring.eb_billing_system.security.InvalidPasswordException;
 import com.tangedco.spring.eb_billing_system.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,6 +44,8 @@ public class UserServiceImpl implements UserService {
             throw new AadharIdAlreadyExistsException("Aadhar ID already exists");
         }
 
+        validatePassword(user.getPassword());
+
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
@@ -49,6 +55,19 @@ public class UserServiceImpl implements UserService {
         user.setUserId(customUserId);
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(String userId, String email, String phoneNumber) {
+        Optional<User> userOptional = userRepository.findByUserId(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setEmail(email);
+            user.setPhoneNumber(phoneNumber);
+            userRepository.save(user);
+            return user;
+        }
+        return null;
     }
 
     @Override
@@ -66,5 +85,11 @@ public class UserServiceImpl implements UserService {
             return new LoginResponse("User not found", null, null);
         }
     }
-}
 
+    private void validatePassword(String password) {
+        String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        if (!Pattern.matches(passwordPattern, password)) {
+            throw new InvalidPasswordException("Password does not meet the required criteria");
+        }
+    }
+}

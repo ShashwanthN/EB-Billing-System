@@ -28,6 +28,14 @@ public class UserController {
         logger.info("Registering user with aadhar ID: " + user.getAadharId());
         return userService.registerUser(user);
     }
+    @PostMapping("update/{userId}/{email}/{phoneNumber}")
+    public User updateUser( @RequestParam("userId") String userId,
+                           @RequestParam("email") String email,
+                           @RequestParam("phoneNumber") String phoneNumber
+                           ) {
+
+        return userService.updateUser(userId,email, phoneNumber);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
