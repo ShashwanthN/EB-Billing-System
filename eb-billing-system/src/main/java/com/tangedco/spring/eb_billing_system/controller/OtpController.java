@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class    OtpController {
 
     private final OtpService otpService;
-    @PostMapping("/sendOtp")
+    @PostMapping("/sendOtpForVerification")
     public OtpInfoResponse sendOtp(@RequestBody OtpRequest otpRequest) {
         return otpService.sendOtp(otpRequest);
+    }
+    @PostMapping("/sendOtp")
+    public OtpInfoResponse sendOtpForRegistration(@RequestBody OtpRequest otpRequest) {
+        return otpService.sendOtpForRegistration(otpRequest);
     }
 
     @PostMapping("/validateOtp")

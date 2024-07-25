@@ -14,4 +14,10 @@
         Optional<User> findByUserId(String userId);
 
         boolean existsByAadharId(String aadharId);
+
+
+
+        boolean existsByEmail(String email);
+
+        Optional<User> findByEmail(String email);
     }

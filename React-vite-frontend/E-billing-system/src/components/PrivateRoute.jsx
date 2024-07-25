@@ -11,7 +11,7 @@ const PrivateRoute = ({ children }) => {
     return <div>Loading...</div>; 
   }
 
-  return isAuthenticated ? children : <Navigate to="/register" />;
+  return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

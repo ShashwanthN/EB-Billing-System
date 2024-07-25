@@ -15,7 +15,6 @@ public class MeterReadings {
     @Column(name = "user_id", nullable = false)
     private String userId;
 
-
     @Column(name = "connection_type", nullable = false)
     private String connectionType;
 
@@ -24,9 +23,9 @@ public class MeterReadings {
 
     @Column(name = "units_consumed", nullable = false)
     private int unitsConsumed;
+
     @Column(name = "payment_status")
     private String paymentStatus;
-    // Getters and setters
 
     public int getReadingId() {
         return readingId;

@@ -56,6 +56,23 @@ public class UserServiceImpl implements UserService {
         user.setUserId(customUserId);
         return userRepository.save(user);
     }
+    @Override
+    public User resetPassword(String email, String password) {
+
+
+        validatePassword(password);
+
+        String encodedPassword = passwordEncoder.encode(password);
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPassword(encodedPassword);
+            userRepository.save(user);
+            return user;
+        }
+        return null;
+    }
 
     @Override
     public User updateUser(String userId, String email, String phoneNumber) {

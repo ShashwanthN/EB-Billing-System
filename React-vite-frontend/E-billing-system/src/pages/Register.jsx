@@ -162,7 +162,7 @@ const Register = () => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(userId);
-    alert("User ID copied to clipboard");
+    setMessage("copied!");
   };
 
   const onValidatorChangeHandler = (result) => {};
@@ -174,8 +174,12 @@ const Register = () => {
         alt="background"
         className="fixed inset-0 w-full h-full object-cover brightness-50 hue-rotate-180"
       />
-      {!showOtpSplash && !showSplash && (
-      <div className="relative bg-gray-1 p-8 rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto max-h-screen">
+      
+      <div
+        className={`relative bg-gray-1 p-8 rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto max-h-screen ${
+          showOtpSplash || showSplash ? "pointer-events-none brightness-50" : ""
+        }`}
+      >
         <div className="flex items-center justify-between">
           <h2 className="text-6xl font-bold opacity-50 my-4 text-center text-white">
             Register
@@ -354,55 +358,59 @@ const Register = () => {
               </div>
             </div>
           </form>
-        
-
-        
       </div>
-    )}
-      {showOtpSplash && !showSplash && (
-        <div className="relative bg-gray-1 p-8 rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto max-h-screen">
-          <form onSubmit={handleOtpSubmit} className="p-1 overflow-scroll">
-            <div className="mb-4">
-              <label
-                className="block text-gray-3 text-sm font-bold mb-2"
-                htmlFor="otp"
-              >
-                OTP
-              </label>
-              <input
-                type="text"
-                name="otp"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                placeholder="Enter OTP"
-                className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
-                required
-              />
-            </div>
-            {message && (
-              <p className="text-[#68E534] mb-2 text-xs italic">{message}</p>
-            )}
-            {error && <p className="text-red-500 text-xs italic">{error}</p>}
-            <div className="flex items-center justify-between">
-              <button
-                type="submit"
-                className="bg-light-blue-700 hover:bg-light-blue-900 transition-all transform duration-200 text-white font-bold py-2 px-4 rounded focus:outline-blue-500 outline-none"
-              >
-                Validate OTP
-              </button>
-            </div>
-          </form>
+    
+      {showOtpSplash && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
+          <div className=" backdrop-blur-lg border border-trueGray-800 p-8 rounded shadow-lg w-full max-w-md">
+            <h2 className="text-2xl font-bold text-white mb-4">Authentication</h2>
+            <form onSubmit={handleOtpSubmit}>
+              <div className="mb-4">
+                <label
+                  className="block text-trueGray-300 text-sm font-bold mb-2"
+                  htmlFor="otp"
+                >
+                  OTP
+                </label>
+                <input
+                  type="text"
+                  name="otp"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  placeholder="Enter OTP"
+                  className="appearance-none rounded border border-gray-300 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  required
+                />
+              </div>
+              <div className="flex justify-between">
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Validate OTP
+                </button>
+                <button
+                  type="button"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={() => setShowOtpSplash(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
-        )}
+        </div>
+      )}
 
-        {showSplash && (
-          <div className="relative bg-gray-1 p-8 border border-gray rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto max-h-screen">
-          {/* <img src={logo} alt="logo" className="my-2 hue-rotate-270 w-36" /> */}
+
+{showSplash && (
+        <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center z-20">
+          <div className="backdrop-blur-2xl border border-trueGray-800 p-8 rounded shadow-lg w-full max-w-md">
           <div className="splash-screen">
             <h2 className="text-lg text-[#68E534] font-semibold mb-4">
               Registration Successful!
             </h2>
-            <div className=" border-gray rounded  bg-gray-5 border">
+            <div className=" border-gray rounded  bg-gray-1 border">
             
             <p className="text-gray-3 p-4 text-3xl font-bold text-center">{userId}</p>
             </div>
@@ -420,10 +428,23 @@ const Register = () => {
               Go to Login
             </button>
             </div>
-            
+            </div>
           </div>
           </div>
-        )}
+      )}
+
+      
+      {(message || error) && (
+        <div className="absolute  top-0 left-0 w-full flex z-10 justify-center">
+          <div
+            className={`${
+              message ? "bg-green-500" : "bg-red-500"
+            } text-white font-bold py-2 px-4 rounded mt-4 shadow-lg`}
+          >
+            {message || error}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

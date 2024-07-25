@@ -30,9 +30,7 @@ const UpdateInfo = () => {
     try {
       const response = await axiosInstance.post(
         "http://localhost:8080/api/get/otp/sendOtp",
-        {
-          email: Email,
-        }
+        { email: Email }
       );
 
       if (response.data.statusCode === 200) {
@@ -56,7 +54,7 @@ const UpdateInfo = () => {
     e.preventDefault();
     setError("");
     setMessage("");
-
+  
     try {
       const otpResponse = await axiosInstance.post(
         "http://localhost:8080/users/otp/validate",
@@ -66,13 +64,12 @@ const UpdateInfo = () => {
         }
       );
   
-
       if (otpResponse.data.statusCode === 200) {
         try {
           const response = await axiosInstance.post(
             "http://localhost:8080/users/update",
             {
-              userId: user_id,
+              userId: userId,
               email: Email,
               phoneNumber: phoneNumber,
               otpValidationRequest: { email: Email, otp },
@@ -83,8 +80,7 @@ const UpdateInfo = () => {
               },
             }
           );
-
-
+  
           if (response.status === 200) {
             const updatedUser = response.data;
             setUserId(updatedUser.userId);
@@ -111,7 +107,7 @@ const UpdateInfo = () => {
       }
     }
   };
-
+  
   return (
     <div className="relative h-screen overflow-scroll main-content bg-cover bg-center">
       <img
@@ -188,7 +184,7 @@ const UpdateInfo = () => {
         </div>
       )}
       {showOtpSplash && !showSplash && (
-        <div className="relative bg-gray-1 p-8 rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto max-h-screen">
+        <div className="relative bg-gray-1 mx-auto p-8 rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto max-h-screen">
           <form onSubmit={handleOtpSubmit} className="p-1 overflow-scroll">
             <div className="mb-4">
               <label
@@ -224,7 +220,7 @@ const UpdateInfo = () => {
       )}
 
       {showSplash && (
-        <div className="relative bg-gray-1 p-8 border border-gray rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto max-h-screen">
+        <div className="relative bg-gray-1 p-8 border border-gray rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto mx-auto max-h-screen">
           <div className="splash-screen">
             <h2 className="text-lg text-green-500 font-semibold mb-4">
               Update Successful!
@@ -237,9 +233,9 @@ const UpdateInfo = () => {
             <div className="flex mt-4 justify-between">
               <button
                 className="transition-all transform duration-200 text-light-blue-600 font-bold px-4 rounded py-2 focus:outline-blue-500 outline-none mt-4"
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/")}
               >
-                Go to Login
+                Go to Home
               </button>
             </div>
           </div>
