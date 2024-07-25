@@ -117,7 +117,7 @@ const Home = () => {
                 Update your mobile number or email
               </p>
               <a
-                href="/DisplayBills"
+                href="/update"
                 className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block"
               >
                 Update Now <span className="text-blue-400">&rarr;</span>
@@ -137,7 +137,7 @@ const Home = () => {
           </div>
         </main>
       </div>
-      <div className="px-20 border-b border-gray-2">
+      <div className="px-20 border-b border-trueGray-800">
   <div className="text-gray-4 justify-center  w-full flex">
     <div className="w-1/2 flex-1 mr-4  border-t border-gray-2 mt-10">
       <h3 className="text-7xl pb-10 font-mono pt-10 font-bold text-gray-3">
@@ -165,7 +165,7 @@ const Home = () => {
     <section>
       <div className="py-4 mx-auto font-sans max-w-screen sm:py-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 h-full">
-          <div className="col-span-2 sm:col-span-1 md:col-span-2 bg-gray-50 h-auto md:h-full flex flex-col">
+          <div className="col-span-2 sm:col-span-1 md:col-span-2 h-auto md:h-full flex flex-col">
             <a
               href=""
               className="group relative flex flex-col overflow-hidden rounded-lg px-4 pb-4 pt-40 flex-grow"

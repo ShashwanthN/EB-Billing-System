@@ -1,9 +1,11 @@
 package com.tangedco.spring.eb_billing_system.controller;
-import com.tangedco.spring.eb_billing_system.dto.LoginRequest;
-import com.tangedco.spring.eb_billing_system.dto.LoginResponse;
+
+import com.tangedco.spring.eb_billing_system.dto.*;
 import com.tangedco.spring.eb_billing_system.entity.User;
 import com.tangedco.spring.eb_billing_system.security.AadharIdAlreadyExistsException;
+import com.tangedco.spring.eb_billing_system.service.OtpService;
 import com.tangedco.spring.eb_billing_system.service.UserService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,28 +15,77 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+@AllArgsConstructor
 public class UserController {
-
+    private final OtpService otpService;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @PostMapping("/otp/validate")
+    public OtpInfoResponse validateOtp(@RequestBody OtpValidationRequest otpValidationRequest) {
+        return otpService.validateOtp(otpValidationRequest);
     }
 
-    @PostMapping
-    public User registerUser(@RequestBody User user) {
-        logger.info("Registering user with aadhar ID: " + user.getAadharId());
-        return userService.registerUser(user);
-    }
-    @PostMapping("update/{userId}/{email}/{phoneNumber}")
-    public User updateUser( @RequestParam("userId") String userId,
-                           @RequestParam("email") String email,
-                           @RequestParam("phoneNumber") String phoneNumber
-                           ) {
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody UserRegistrationRequest userRegistrationRequest) {
+        OtpValidationRequest otpValidationRequest = userRegistrationRequest.getOtpValidationRequest();
+        OtpInfoResponse otpInfoResponse = otpService.validateOtp(otpValidationRequest);
 
-        return userService.updateUser(userId,email, phoneNumber);
+        if (otpInfoResponse.getStatusCode() == 200) {
+            User registeredUser = userService.registerUser(userRegistrationRequest.getUser());
+            return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<User> updateUser(
+            @RequestParam("userId") String userId,
+            @RequestParam("email") String email,
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestBody OtpValidationRequest otpValidationRequest) {
+
+        if (otpValidationRequest == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        OtpInfoResponse otpInfoResponse = otpService.validateOtp(otpValidationRequest);
+
+        if (otpInfoResponse.getStatusCode() == 200) {
+            logger.info("Updating user with userId: " + userId);
+            User updatedUser = userService.updateUser(userId, email, phoneNumber);
+            if (updatedUser != null) {
+                return ResponseEntity.ok(updatedUser);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PostMapping(value = "/update", consumes = "application/x-www-form-urlencoded")
+    public ResponseEntity<User> updateUserForm(
+            @RequestParam("userId") String userId,
+            @RequestParam("email") String email,
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestBody OtpValidationRequest otpValidationRequest) {
+
+        if (otpValidationRequest == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        OtpInfoResponse otpInfoResponse = otpService.validateOtp(otpValidationRequest);
+
+        if (otpInfoResponse.getStatusCode() == 200) {
+            logger.info("Updating user with userId: " + userId);
+            User updatedUser = userService.updateUser(userId, email, phoneNumber);
+            if (updatedUser != null) {
+                return ResponseEntity.ok(updatedUser);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PostMapping("/login")
@@ -47,7 +98,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
-
 
     @ExceptionHandler(AadharIdAlreadyExistsException.class)
     public ResponseEntity<String> handleAadharIdAlreadyExistsException(AadharIdAlreadyExistsException e) {

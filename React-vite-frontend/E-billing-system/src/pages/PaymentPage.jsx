@@ -12,7 +12,7 @@ const PaymentPage = () => {
     const initiatePayment = async () => {
       try {
         const response = await axiosInstance.post(`/payment/process/${userId}/${readingId}`);
-        setPaymentLink(response.data.paymentLink); // Use paymentLink from backend response
+        setPaymentLink(response.data.paymentLink); 
       } catch (error) {
         console.error("Error initiating payment:", error);
       }
@@ -57,7 +57,7 @@ const PaymentPage = () => {
           </table>
         </div>
         {paymentLink ? (
-          <a href={paymentLink} className="btn btn-primary mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+          <a href={paymentLink} className="btn btn-primary mt-6 inline-block bg-lightBlue-600 hover:bg-lightBlue-700 border-lightBlue-400 border text-white py-2 px-4 rounded">
             Click here to pay
           </a>
         ) : (

@@ -13,6 +13,8 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import Topbar from './components/Topbar.jsx'; 
 import PaymentPage from './pages/PaymentPage.jsx';
 import PaymentSuccess from './pages/PaymentSuccess.jsx';
+import UpdateInfo from './pages/UpdateInfo.jsx';
+import OtpVerification from './pages/OtpVerification.jsx';
 import "./index.css"
 const AppContent = () => {
   const location = useLocation();
@@ -26,6 +28,8 @@ const AppContent = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/update" element={<UpdateInfo />} />
+          <Route path="/verify-otp" element={<OtpVerification/>} />
           <Route path="/Payment_Success/:billId" element={<PrivateRoute><PaymentSuccess/></PrivateRoute>} />
           <Route path="/payment/:userId/:readingId" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
           <Route path="/serviceApplication" element={<PrivateRoute><ServiceRegistration /></PrivateRoute>} />

@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User user) {
         if (userRepository.existsByAadharId(user.getAadharId())) {
-            throw new AadharIdAlreadyExistsException("Aadhar ID already exists");
+            throw new AadharIdAlreadyExistsException("aadhar ID already exists");
         }
 
         validatePassword(user.getPassword());
@@ -52,8 +52,8 @@ public class UserServiceImpl implements UserService {
         String lastFourAadhar = user.getAadharId().substring(user.getAadharId().length() - 4);
         int maxUserIdSuffix = userRepository.findMaxUserIdSuffix();
         String customUserId = lastFourAadhar + String.format("%04d", maxUserIdSuffix + 1);
-        user.setUserId(customUserId);
 
+        user.setUserId(customUserId);
         return userRepository.save(user);
     }
 

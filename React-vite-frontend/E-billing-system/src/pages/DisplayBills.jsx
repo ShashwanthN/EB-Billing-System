@@ -68,7 +68,7 @@ console.log("it");
                   <div>
                     <p className="font-semibold">
                       User ID:{" "}
-                      <span className="font-normal text-blue-700">
+                      <span className="font-bold text-lightBlue-400">
                         {meterReadings.userId}
                       </span>
                     </p>
@@ -105,7 +105,7 @@ console.log("it");
                       <div className="w-full">
                         <button
                           onClick={() => handlePayment({ ...meterReadings, ...bill })}
-                          className="border border-blue-600 p-2 mt-2 bg-blue-700 hover:bg-blue-800 text-white rounded w-full"
+                          className="border border-lightBlue-600 p-2 mt-2 bg-lightBlue-700 hover:bg-lightBlue-800 text-white rounded w-full"
                         >
                           Pay Now
                         </button>

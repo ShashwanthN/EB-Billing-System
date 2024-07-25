@@ -50,7 +50,7 @@ const Footer = () => {
 
           <div className="flex space-x-32">
             <div>
-              <h4 className="font-semibold mb-4">API Setu</h4>
+              <h4 className="font-semibold mb-4 text-trueGray-300">API Setu</h4>
               <ul>
                 <li className="mb-2">
                   <a href="/home" className="text-gray-600 hover:text-gray-800">
@@ -89,7 +89,7 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Utilities</h4>
+              <h4 className="font-semibold text-trueGray-300 mb-4">Utilities</h4>
               <ul>
                 <li className="mb-2">
                   <a
@@ -127,14 +127,11 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            <h4 className="font-semibold mb-4">Powered By</h4>
+            <h4 className="font-semibold mb-4 text-trueGray-300">Powered By</h4>
             <p className="text-gray-600">
               Digital India Corporation (DIC)
               <br />
-              National e-Governance Division (NeGD)
-              <br />
-              Ministry of Electronics & IT (MeitY)
-              <br />
+              
               Government of India
             </p>
           </div>

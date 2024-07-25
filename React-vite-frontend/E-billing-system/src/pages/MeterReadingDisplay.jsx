@@ -6,6 +6,7 @@ import bg from "../assets/bg-2.jpeg"
 const MeterReadingsDisplay = () => {
   const [userId, setUserId] = useState("");
   const [readings, setReadings] = useState([]);
+
   const [error, setError] = useState("");
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
@@ -65,7 +66,7 @@ const MeterReadingsDisplay = () => {
       <div className="container pt-10 backdrop-blur-lg min-w-full mx-auto items-center p-4">
         <h2 className="text-3xl font-bold mb-6 text-gray-3 text-center">Meter Readings</h2>
         <div className="mb-6 flex justify-center">
-          <div className="text-center p-2 px-10 text-3xl rounded focus:outline-2 outline-deep-purple-400 border-gray-4 font-bold text-blue-400">
+          <div className="text-center p-2 px-10 text-3xl rounded focus:outline-2 outline-deep-purple-400 border-gray-4 font-bold text-lightBlue-400">
             {userId}
           </div>
         </div>
@@ -131,11 +132,11 @@ const MeterReadingsDisplay = () => {
                     return (
                       <div
                         key={monthKey}
-                        className={`border p-4 border-blue-300 text-center rounded ${
-                          units ? "bg-gradient-to-tl from-blue-700 to-gray-5 shadow-sm" : "bg-blue-50"
+                        className={`border p-4 border-lightBlue-300 text-center rounded ${
+                          units ? "bg-gradient-to-tl from-lightBlue-700 to-gray-5 shadow-sm" : "bg-lightBlue-50"
                         }`}
                       >
-                        <div className="text-blue-200 z-0 absolute text-2xl italic font-semibold">
+                        <div className="text-lightBlue-200 z-0 absolute text-2xl italic font-semibold">
                           {format(date, "MMMM yyyy")}
                         </div>
                         {units > 0 ? (
@@ -143,12 +144,12 @@ const MeterReadingsDisplay = () => {
                             <div className="text-sm mt-10 text-white p-0.5 px-2 rounded-full border border-green-200 bg-green-500 text-end font-bold">
                               Paid
                             </div>
-                            <div className="text-md mt-10 text-blue-50 text-end font-bold">
+                            <div className="text-md mt-10 text-lightBlue-50 text-end font-bold">
                               {units} units
                             </div>
                           </div>
                         ) : (
-                          <div className="text-md mt-10 text-blue-500 text-end font-bold">
+                          <div className="text-md mt-10 text-lightBlue-500 text-end font-bold">
                             No data
                           </div>
                         )}

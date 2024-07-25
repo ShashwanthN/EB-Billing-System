@@ -84,13 +84,13 @@ function Login() {
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="bg-blue-700 hover:bg-blue-800 mt-5 hover:border-secondary text-gray-3 font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
+              className="bg-lightBlue-600 hover:bg-lightBlue-700 mt-5 hover:border-secondary text-gray-3 font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
             >
               Sign In
             </button>
             <div className="mt-4 text-sm text-center">
               <span className="text-gray-3">Not registered? </span>
-              <a href="/register" className="text-blue-400 hover:underline">Register here</a>
+              <a href="/register" className="text-lightBlue-400 hover:underline">Register here</a>
             </div>
           </div>
         </form>
