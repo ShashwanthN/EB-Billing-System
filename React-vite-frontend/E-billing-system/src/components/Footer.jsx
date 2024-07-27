@@ -6,15 +6,15 @@ const Footer = () => {
     <footer className="pt-10">
       <div className="container text-trueGray-400 mx-auto px-4">
         <div className="flex justify-between items-start">
-          <div className="flex min-h-full flex-col justify-between items-center h-full">
-            <div className="text-center md:text-left w-full">
+          <div className="flex min-h-max flex-col justify-between items-center">
+            <div className="text-center flex md:text-left w-full">
               <img
                 src={logo}
                 alt="API Setu"
                 className="mx-auto w-10 md:mx-0 mt-4"
               />
             </div>
-            <div className="flex items-center justify-items-end w-full mt-auto">
+            <div className="flex items-center justify-items-end w-full">
               <div className="flex space-x-6">
                 <a
                   href="https://www.facebook.com"
@@ -50,7 +50,7 @@ const Footer = () => {
 
           <div className="flex space-x-32">
             <div>
-              <h4 className="font-semibold mb-4 text-trueGray-300">API Setu</h4>
+              <h4 className="font-semibold mb-4 text-trueGray-300">TANDEGCO</h4>
               <ul>
                 <li className="mb-2">
                   <a href="/home" className="text-gray-600 hover:text-gray-800">

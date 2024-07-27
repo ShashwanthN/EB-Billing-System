@@ -9,4 +9,5 @@ public interface HouseholdConnectionRepository extends JpaRepository<HouseholdCo
     Optional<HouseholdConnections> findByUser_UserId(String userId);
 
 
+    //Optional<HouseholdConnections> findByUserId(String );
 }

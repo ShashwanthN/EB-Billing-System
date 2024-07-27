@@ -9,5 +9,5 @@ public interface CommercialConnectionRepository extends JpaRepository<Commercial
     Optional<CommercialConnections> findByUser_UserId(String userId);
 
 
-
+    //Optional<CommercialConnections> findByUserId(String );
 }

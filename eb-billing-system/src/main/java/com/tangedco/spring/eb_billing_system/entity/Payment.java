@@ -1,78 +1,47 @@
 package com.tangedco.spring.eb_billing_system.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "payments")
+@Data
+@Getter
+@Setter
 public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int paymentId;
+    @Column(name = "payment_id")
+    private Long paymentId;
 
     @ManyToOne
     @JoinColumn(name = "bill_id", nullable = false)
     private Bill bill;
 
-    @Column(nullable = false)
-    private LocalDateTime paymentDate = LocalDateTime.now();
+    @Column(name = "service_no", nullable = false)
+    private long serviceNo;
 
-    @Column(nullable = false)
-    private double amount;
+    @Column(name = "receipt_no", nullable = false)
+    private String receiptNo;
 
-    @Column(nullable = false)
-    private String paymentMethod;
+    @Column(name = "amount_debited", nullable = false)
+    private Double amountDebited;
 
-    @Column(nullable = false)
-    private String transactionId;
+    @Column(name = "transaction_no", nullable = false)
+    private String transactionNo;
 
+    @Column(name = "receipt_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date receiptDate;
 
-    public int getPaymentId() {
-        return paymentId;
-    }
+    @Column(name = "bank_name")
+    private String bankName;
 
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
-    }
-
-    public Bill getBill() {
-        return bill;
-    }
-
-    public void setBill(Bill bill) {
-        this.bill = bill;
-    }
-
-    public LocalDateTime getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(LocalDateTime paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
+    @Column(name = "card_type")
+    private String cardType;
 }

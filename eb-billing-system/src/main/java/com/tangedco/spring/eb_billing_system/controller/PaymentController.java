@@ -1,4 +1,5 @@
 package com.tangedco.spring.eb_billing_system.controller;
+
 import com.razorpay.Payment;
 import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
@@ -8,6 +9,8 @@ import com.tangedco.spring.eb_billing_system.entity.Bill;
 import com.tangedco.spring.eb_billing_system.entity.MeterReadings;
 import com.tangedco.spring.eb_billing_system.entity.User;
 import com.tangedco.spring.eb_billing_system.service.MeterReadingsService;
+import com.tangedco.spring.eb_billing_system.service.PaymentServiceImpl;
+import com.tangedco.spring.eb_billing_system.service.PdfService;
 import com.tangedco.spring.eb_billing_system.service.UserService;
 import com.tangedco.spring.eb_billing_system.utils.RetryUtils;
 import org.json.JSONObject;
@@ -15,10 +18,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 @RestController
@@ -36,6 +43,10 @@ public class PaymentController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private PdfService pdfService;
+    @Autowired
+    private PaymentServiceImpl paymentServiceImpl; // Inject the PaymentService
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
@@ -104,6 +115,10 @@ public class PaymentController {
 
                 billingService.saveMeterReading(meter);
                 logger.info("Meter reading updated in database for reading ID: {}", meter.getReadingId());
+
+
+                paymentServiceImpl.fetchAndStorePaymentDetails(paymentId, bill.getBillId());
+                logger.info("Payment details stored for bill ID: {}", bill.getBillId());
             }
 
             return new ResponseEntity<>(meter, HttpStatus.ACCEPTED);
@@ -112,4 +127,24 @@ public class PaymentController {
             throw new RazorpayException(e.getMessage());
         }
     }
+
+    @GetMapping("/receipt/{readingId}")
+    public ResponseEntity<byte[]> downloadReceipt(@PathVariable int readingId) throws IOException {
+        MeterReadings meterReadings = billingService.getMeterReadingByReadingId(readingId);
+        logger.info(meterReadings.getConnectionType());
+
+        User user = userService.findById(meterReadings.getUserId());
+        Bill bill = billingService.getBillByReadingId(readingId);
+        List<com.tangedco.spring.eb_billing_system.entity.Payment> payments = paymentServiceImpl.getPaymentsByBillId(bill.getBillId());
+
+        // Assuming you need to generate a receipt for all payments
+        byte[] pdfBytes = pdfService.generatePaymentReceipt(user, payments);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=receipt.pdf");
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+    }
+
 }

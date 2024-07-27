@@ -1,8 +1,13 @@
 package com.tangedco.spring.eb_billing_system.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "bills")
 public class Bill {
@@ -13,7 +18,7 @@ public class Bill {
 
     @ManyToOne
     @JoinColumn(name = "reading_id", nullable = false)
-    private MeterReadings meterReading;  // Ensure the field name matches with the getter and setter methods
+    private MeterReadings meterReading;
 
     @Column(nullable = false)
     private LocalDateTime billDate = LocalDateTime.now();
@@ -21,36 +26,4 @@ public class Bill {
     @Column(nullable = false)
     private double amount;
 
-    // Getters and setters
-    public int getBillId() {
-        return billId;
-    }
-
-    public void setBillId(int billId) {
-        this.billId = billId;
-    }
-
-    public MeterReadings getMeterReading() {
-        return meterReading;
-    }
-
-    public void setMeterReading(MeterReadings meterReading) {
-        this.meterReading = meterReading;
-    }
-
-    public LocalDateTime getBillDate() {
-        return billDate;
-    }
-
-    public void setBillDate(LocalDateTime billDate) {
-        this.billDate = billDate;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
 }
