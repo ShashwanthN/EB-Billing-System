@@ -115,7 +115,7 @@ const Topbar = () => {
             ) : (
               <button
                 onClick={logout}
-                className="bg-lightBlue-500 hover:bg-lightBlue-600 text-white font- py-1 px-3 rounded-full transition duration-300"
+                className="bg-lightBlue-600 hover:bg-lightBlue-700 text-white font- py-1 px-3 rounded-full transition shadow-xl hover:shadow-none hover:outline-none outline outline-1 hover:text-trueGray-300 outline-light-blue-900 duration-300"
               >
                 <NavLink to={"/login"}>Logout</NavLink>
               </button>

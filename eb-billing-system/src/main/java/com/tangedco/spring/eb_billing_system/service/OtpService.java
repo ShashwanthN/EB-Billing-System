@@ -44,7 +44,7 @@ public class OtpService {
         otpRepository.save(Otp.builder()
                 .email(email)
                 .otp(otp)
-                .expiredAt(LocalDateTime.now().plusMinutes(2))
+                .expiredAt(LocalDateTime.now().plusMinutes(5))
                 .build());
 
         emailService.sendEmail(EmailDetails.builder()

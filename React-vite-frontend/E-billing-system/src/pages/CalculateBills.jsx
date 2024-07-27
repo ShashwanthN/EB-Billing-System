@@ -63,7 +63,7 @@ const CalculateBills = () => {
                 <div className="text-end mt-4">
                   <button
                     onClick={handleCalculate}
-                    className="bg-blue-400 hover:bg-blue-500 text-white p-2 px-4 rounded"
+                    className="bg-light-blue-600 hover:bg-light-blue-700 text-white p-2 px-4 rounded"
                   >
                     Calculate Bill
                   </button>

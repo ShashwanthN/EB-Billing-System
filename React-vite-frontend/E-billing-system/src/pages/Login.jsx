@@ -106,7 +106,9 @@ function Login() {
               {visible ? "Hide" : "Show"}
             </button>
             <div className="text-xs justify-end flex text-gray-3 mt-1">
-              <button className=" hover:text-blue-400 text-trueGray-300"><Link to="/resetPassword">forgot password?</Link></button>
+              <button className=" hover:text-blue-400 text-trueGray-300">
+                <Link to="/resetPassword">forgot password?</Link>
+              </button>
             </div>
           </div>
           {message && (

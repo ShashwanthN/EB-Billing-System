@@ -80,9 +80,13 @@ CREATE TABLE `bills` (\
 CREATE TABLE `payments` (\
   payment_id INT NOT NULL AUTO_INCREMENT,\
   bill_id INT NOT NULL,\
-  payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,\
-  amount DECIMAL(10, 2) NOT NULL,\
-  payment_method VARCHAR(50) NOT NULL,\
+  receipt_no VARCHAR(50) NOT NULL,\
+  amount_debited DECIMAL(10, 2) NOT NULL,\
+  transaction_no VARCHAR(50) NOT NULL,\
+  receipt_date DATETIME NOT NULL,\
+  bank_name VARCHAR(50),\
+  card_type VARCHAR(50),\
+  service_no varchar(50),\
   PRIMARY KEY (payment_id),\
   FOREIGN KEY (bill_id) REFERENCES `bills`(bill_id)\
       ON DELETE CASCADE ON UPDATE CASCADE\
@@ -122,5 +126,4 @@ BEGIN\
   INSERT INTO bills (reading_id, amount) VALUES (NEW.reading_id, total_amount);\
 END //\
 \
-DELIMITER ;\
-}
+DELIMITER ;}

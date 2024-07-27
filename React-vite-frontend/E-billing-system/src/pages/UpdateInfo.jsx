@@ -206,7 +206,7 @@ const UpdateInfo = () => {
             {message && (
               <p className="text-green-500 mb-2 text-xs italic">{message}</p>
             )}
-            {error && <p className="text-red-500 text-xs italic">{error}</p>}
+            {error && <p className="text-red-500 mb-2 text-xs italic">{error}</p>}
             <div className="flex items-center justify-between">
               <button
                 type="submit"

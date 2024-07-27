@@ -141,7 +141,7 @@ const Register = () => {
           const registeredUser = registrationResponse.data;
           setUserId(registeredUser.userId);
           setShowSplash(true);
-          setShowOtpSplash(false); 
+          setShowOtpSplash(false);
           setMessage("User registered successfully.");
         } else {
           setError("Registration failed.");
@@ -174,7 +174,7 @@ const Register = () => {
         alt="background"
         className="fixed inset-0 w-full h-full object-cover brightness-50 hue-rotate-180"
       />
-      
+
       <div
         className={`relative bg-gray-1 p-8 rounded shadow-lg w-full max-w-lg z-10 overflow-y-auto max-h-screen ${
           showOtpSplash || showSplash ? "pointer-events-none brightness-50" : ""
@@ -187,183 +187,185 @@ const Register = () => {
           <img src={logo} alt="logo" className="my-2 hue-rotate-270 w-36" />
         </div>
 
-        
-          <form onSubmit={handleSubmit} className="overflow-scroll">
-            <div className="p-1">
-              <div className="flex justify-between">
-                <div className="mb-4 w-full mr-2">
-                  <label
-                    className="block text-gray-3 text-sm font-bold mb-2"
-                    htmlFor="firstName"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={user.firstName}
-                    placeholder="John"
-                    onChange={handleChange}
-                    className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
-                    required
-                  />
-                </div>
-                <div className="mb-4 w-full ml-2">
-                  <label
-                    className="block text-gray-3 text-sm font-bold mb-2"
-                    htmlFor="lastName"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={user.lastName}
-                    onChange={handleChange}
-                    placeholder="Doe"
-                    className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="mb-4">
+        <form onSubmit={handleSubmit} className="overflow-scroll">
+          <div className="p-1">
+            <div className="flex justify-between">
+              <div className="mb-4 w-full mr-2">
                 <label
                   className="block text-gray-3 text-sm font-bold mb-2"
-                  htmlFor="email"
+                  htmlFor="firstName"
                 >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={user.email}
-                  onChange={handleChange}
-                  placeholder="example@domain.com"
-                  className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  className="block text-gray-3 text-sm font-bold mb-2"
-                  htmlFor="phoneNumber"
-                >
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  name="phoneNumber"
-                  value={user.phoneNumber}
-                  onChange={handleChange}
-                  maxLength="10"
-                  placeholder="9999999999"
-                  className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  className="block text-gray-3 text-sm font-bold mb-2"
-                  htmlFor="aadharId"
-                >
-                  Aadhar ID
+                  First Name
                 </label>
                 <input
                   type="text"
-                  name="aadharId"
-                  value={user.aadharId}
+                  name="firstName"
+                  value={user.firstName}
+                  placeholder="John"
                   onChange={handleChange}
-                  maxLength="14"
-                  placeholder="0000 0000 0000"
                   className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
                   required
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-4 w-full ml-2">
                 <label
                   className="block text-gray-3 text-sm font-bold mb-2"
-                  htmlFor="password"
+                  htmlFor="lastName"
                 >
-                  Password
+                  Last Name
                 </label>
                 <input
-                  type="password"
-                  name="password"
-                  value={user.password}
+                  type="text"
+                  name="lastName"
+                  value={user.lastName}
                   onChange={handleChange}
-                  placeholder="********"
-                  className="appearance-none mb-2 rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
-                  required
-                />
-                <div></div>
-                <PasswordValidattor
-                  rules={[
-                    "minLength",
-                    "maxLength",
-                    "specialChar",
-                    "number",
-                    "capital",
-                    "matches",
-                    "lowercase",
-                    "notEmpty",
-                    "shouldNotContain",
-                  ]}
-                  forbiddenWords={["John", "Doe"]}
-                  minLength={8}
-                  maxLength={32}
-                  password={user.password}
-                  confirmedPassword={user.confirmPassword}
-                  iconSize={16}
-                  onValidatorChange={onValidatorChangeHandler}
-                  config={{
-                    showProgressBar: true,
-                    showPasswordSuggestion: true,
-                  }}
-                />
-              </div>
-              <div className="mb-6">
-                <label
-                  className="block text-gray-3 text-sm font-bold mb-2"
-                  htmlFor="confirmPassword"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={user.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="********"
+                  placeholder="Doe"
                   className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
                   required
                 />
-              </div>
-              {message && (
-                <p className="text-green-500 text-xs italic">{message}</p>
-              )}
-              {error && <p className="text-red-500 text-xs italic">{error}</p>}
-              <div className="flex items-center justify-between">
-                <button
-                  type="submit"
-                  className="bg-light-blue-700 hover:bg-primary-600 hover:bg-light-blue-900 transition-all transform duration-200 text-white font-bold py-2 px-4 rounded focus:outline-blue-500 outline-none"
-                >
-                  Register
-                </button>
-                <a
-                  className="inline-block align-baseline font-bold text-sm text-trueGray-300 hover:text-primary-600"
-                  onClick={() => navigate("/login")}
-                >
-                  Already have an account? <span className="text-light-blue-500">Log in</span>
-                </a>
               </div>
             </div>
-          </form>
+            <div className="mb-4">
+              <label
+                className="block text-gray-3 text-sm font-bold mb-2"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                placeholder="example@domain.com"
+                className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-3 text-sm font-bold mb-2"
+                htmlFor="phoneNumber"
+              >
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={user.phoneNumber}
+                onChange={handleChange}
+                maxLength="10"
+                placeholder="9999999999"
+                className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-3 text-sm font-bold mb-2"
+                htmlFor="aadharId"
+              >
+                Aadhar ID
+              </label>
+              <input
+                type="text"
+                name="aadharId"
+                value={user.aadharId}
+                onChange={handleChange}
+                maxLength="14"
+                placeholder="0000 0000 0000"
+                className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-3 text-sm font-bold mb-2"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={user.password}
+                onChange={handleChange}
+                placeholder="********"
+                className="appearance-none mb-2 rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
+                required
+              />
+              <div></div>
+              <PasswordValidattor
+                rules={[
+                  "minLength",
+                  "maxLength",
+                  "specialChar",
+                  "number",
+                  "capital",
+                  "matches",
+                  "lowercase",
+                  "notEmpty",
+                  "shouldNotContain",
+                ]}
+                forbiddenWords={["John", "Doe"]}
+                minLength={8}
+                maxLength={32}
+                password={user.password}
+                confirmedPassword={user.confirmPassword}
+                iconSize={16}
+                onValidatorChange={onValidatorChangeHandler}
+                config={{
+                  showProgressBar: true,
+                  showPasswordSuggestion: true,
+                }}
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                className="block text-gray-3 text-sm font-bold mb-2"
+                htmlFor="confirmPassword"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={user.confirmPassword}
+                onChange={handleChange}
+                placeholder="********"
+                className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
+                required
+              />
+            </div>
+            {message && (
+              <p className="text-green-500 text-xs italic">{message}</p>
+            )}
+            {error && <p className="text-red-500 text-xs italic">{error}</p>}
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                className="bg-light-blue-700 hover:bg-primary-600 hover:bg-light-blue-900 transition-all transform duration-200 text-white font-bold py-2 px-4 rounded focus:outline-blue-500 outline-none"
+              >
+                Register
+              </button>
+              <a
+                className="inline-block align-baseline font-bold text-sm text-trueGray-300 hover:text-primary-600"
+                onClick={() => navigate("/login")}
+              >
+                Already have an account?{" "}
+                <span className="text-light-blue-500">Log in</span>
+              </a>
+            </div>
+          </div>
+        </form>
       </div>
-    
+
       {showOtpSplash && (
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
           <div className=" backdrop-blur-lg border border-trueGray-800 p-8 rounded shadow-lg w-full max-w-md">
-            <h2 className="text-2xl font-bold text-white mb-4">Authentication</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Authentication
+            </h2>
             <form onSubmit={handleOtpSubmit}>
               <div className="mb-4">
                 <label
@@ -402,38 +404,37 @@ const Register = () => {
         </div>
       )}
 
-
-{showSplash && (
+      {showSplash && (
         <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center z-20">
           <div className="backdrop-blur-2xl border border-trueGray-800 p-8 rounded shadow-lg w-full max-w-md">
-          <div className="splash-screen">
-            <h2 className="text-lg text-[#68E534] font-semibold mb-4">
-              Registration Successful!
-            </h2>
-            <div className=" border-gray rounded  bg-gray-1 border">
-            
-            <p className="text-gray-3 p-4 text-3xl font-bold text-center">{userId}</p>
-            </div>
-            <div className="flex mt-4 justify-between">
-            <button
-              className="bg-light-blue-700 hover:bg-light-blue-800 transition-all transform duration-200 text-white font-bold px-2  mt-4 rounded focus:outline-blue-500 outline-none"
-              onClick={handleCopy}
-            >
-              Copy User ID
-            </button>
-            <button
-              className=" transition-all transform duration-200  text-light-blue-600 font-bold px-4 rounded py-2 focus:outline-blue-500 outline-none mt-4"
-              onClick={() => navigate("/login")}
-            >
-              Go to Login
-            </button>
-            </div>
+            <div className="splash-screen">
+              <h2 className="text-lg text-[#68E534] font-semibold mb-4">
+                Registration Successful!
+              </h2>
+              <div className=" border-gray rounded  bg-gray-1 border">
+                <p className="text-gray-3 p-4 text-3xl font-bold text-center">
+                  {userId}
+                </p>
+              </div>
+              <div className="flex mt-4 justify-between">
+                <button
+                  className="bg-light-blue-700 hover:bg-light-blue-800 transition-all transform duration-200 text-white font-bold px-2  mt-4 rounded focus:outline-blue-500 outline-none"
+                  onClick={handleCopy}
+                >
+                  Copy User ID
+                </button>
+                <button
+                  className=" transition-all transform duration-200  text-light-blue-600 font-bold px-4 rounded py-2 focus:outline-blue-500 outline-none mt-4"
+                  onClick={() => navigate("/login")}
+                >
+                  Go to Login
+                </button>
+              </div>
             </div>
           </div>
-          </div>
+        </div>
       )}
 
-      
       {(message || error) && (
         <div className="absolute  top-0 left-0 w-full flex z-10 justify-center">
           <div

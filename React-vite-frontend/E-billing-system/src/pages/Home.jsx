@@ -64,9 +64,9 @@ const Home = () => {
               </p>
               <a
                 href="/DisplayBills"
-                className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block"
+                className=" mt-4 hover:text-light-blue-600 transform transition-all duration-200  ease-linear inline-block"
               >
-                Pay Now <span className="text-blue-400">&rarr;</span>
+                Pay Now <span className="text-light-blue-500">&rarr;</span>
               </a>
             </div>
             <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-700 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">
@@ -77,10 +77,10 @@ const Home = () => {
               </p>
               <a
                 href="/CalculateBills"
-                className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block"
+                className=" mt-4 hover:text-light-blue-600 transform transition-all duration-200  ease-linear inline-block"
               >
                 {" "}
-                Calculate <span className="text-blue-400">&rarr;</span>
+                Calculate <span className="text-light-blue-500">&rarr;</span>
               </a>
             </div>
             <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-700 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">
@@ -91,10 +91,10 @@ const Home = () => {
               </p>
               <a
                 href="/MeterReadingDisplay"
-                className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block"
+                className=" mt-4 hover:text-light-blue-600 transform transition-all duration-200  ease-linear inline-block"
               >
                 {" "}
-                View Bills <span className="text-blue-400">&rarr;</span>
+                View Bills <span className="text-light-blue-500">&rarr;</span>
               </a>
             </div>
             <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-700 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">
@@ -105,9 +105,9 @@ const Home = () => {
               </p>
               <a
                 href="/serviceApplication"
-                className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block"
+                className=" mt-4 hover:text-light-blue-600 transform transition-all duration-200  ease-linear inline-block"
               >
-                View application <span className="text-blue-400">&rarr;</span>
+                View application <span className="text-light-blue-500">&rarr;</span>
               </a>
             </div>
             <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-700 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">
@@ -118,9 +118,9 @@ const Home = () => {
               </p>
               <a
                 href="/update"
-                className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block"
+                className=" mt-4 hover:text-light-blue-600 transform transition-all duration-200  ease-linear inline-block"
               >
-                Update Now <span className="text-blue-400">&rarr;</span>
+                Update Now <span className="text-light-blue-500">&rarr;</span>
               </a>
             </div>
             <div className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-700 ease-in-out hover:shadow-xl  hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">
@@ -129,9 +129,9 @@ const Home = () => {
               <p className="text-gray-600">Download our mobile app</p>
               <a
                 href="https://play.google.com/store/apps/details?id=com.tneb.tangedco&hl=en_IN"
-                className=" mt-4 hover:text-blue-400 transform transition-all duration-200  ease-linear inline-block"
+                className=" mt-4 hover:text-light-blue-600 transform transition-all duration-200  ease-linear inline-block"
               >
-                Download Now <span className="text-blue-400">&rarr;</span>
+                Download Now <span className="text-light-blue-600">&rarr;</span>
               </a>
             </div>
           </div>

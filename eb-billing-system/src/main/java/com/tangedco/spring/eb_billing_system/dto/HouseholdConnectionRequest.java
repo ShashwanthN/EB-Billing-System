@@ -19,7 +19,7 @@ public class HouseholdConnectionRequest {
         this.propertyTaxReport = propertyTaxReport;
     }
 
-    // Getters and Setters
+
     public String getUserId() {
         return userId;
     }

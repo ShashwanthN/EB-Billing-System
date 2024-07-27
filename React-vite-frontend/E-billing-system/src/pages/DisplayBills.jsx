@@ -105,7 +105,7 @@ console.log("it");
                       <div className="w-full">
                         <button
                           onClick={() => handlePayment({ ...meterReadings, ...bill })}
-                          className="border border-lightBlue-600 p-2 mt-2 bg-lightBlue-700 hover:bg-lightBlue-800 text-white rounded w-full"
+                          className="bg-lightBlue-600 hover:bg-lightBlue-700 text-white font- py-2 px-3 rounded-md transition shadow-xl hover:shadow-none hover:outline-none outline outline-1 hover:text-trueGray-300 outline-light-blue-900 duration-300"
                         >
                           Pay Now
                         </button>

@@ -10,6 +10,8 @@ import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.TextAlignment;
 import com.tangedco.spring.eb_billing_system.entity.Payment;
 import com.tangedco.spring.eb_billing_system.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -18,6 +20,8 @@ import java.util.List;
 
 @Service
 public class PdfService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PdfService.class);
 
     public byte[] generatePaymentReceipt(User user, List<Payment> payments) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -40,6 +44,13 @@ public class PdfService {
         document.add(subtitle);
 
         for (Payment payment : payments) {
+            if (payment == null) {
+                logger.error("Payment object is null for userId: {}", user.getUserId());
+                continue;
+            }
+
+            logger.debug("Generating receipt for payment: {}", payment);
+
             Table table = new Table(UnitValue.createPercentArray(new float[]{3, 7}));
             table.setWidth(UnitValue.createPercentValue(100));
 

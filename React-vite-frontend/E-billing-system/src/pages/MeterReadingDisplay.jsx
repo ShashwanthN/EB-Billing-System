@@ -88,13 +88,13 @@ const MeterReadingsDisplay = () => {
             <div className="flex divide-x divide-gray-4 justify-center mb-6">
               <button
                 onClick={() => setCurrentYear(currentYear - 1)}
-                className="pr-4 flex bg-gray-300 hover:bg-gray-400 text-gray-3"
+                className="pr-4 hover:text-light-blue-400 flex bg-gray-300 hover:bg-gray-400 text-gray-3"
               >
-                <div className="text-gray-4 mr-2">&larr;</div> Previous Year
+                <div className="text-gray-4 mr-2 ">&larr;</div> Previous Year
               </button>
               <button
                 onClick={() => setCurrentYear(currentYear + 1)}
-                className="pl-4 bg-gray-300 flex hover:bg-gray-400 text-gray-3"
+                className="pl-4 bg-gray-300 hover:text-light-blue-400 flex hover:bg-gray-400 text-gray-3"
               >
                 Next Year <div className="text-gray-4 ml-2">&rarr;</div>
               </button>

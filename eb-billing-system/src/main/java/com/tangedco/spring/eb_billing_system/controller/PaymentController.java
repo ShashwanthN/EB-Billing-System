@@ -13,7 +13,10 @@ import com.tangedco.spring.eb_billing_system.service.PaymentServiceImpl;
 import com.tangedco.spring.eb_billing_system.service.PdfService;
 import com.tangedco.spring.eb_billing_system.service.UserService;
 import com.tangedco.spring.eb_billing_system.utils.RetryUtils;
+
 import org.json.JSONObject;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +24,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.Callable;
 
-@RestController
+@Controller
 @RequestMapping("/payment")
 public class PaymentController {
 
@@ -43,15 +49,26 @@ public class PaymentController {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private PdfService pdfService;
+
     @Autowired
     private PaymentServiceImpl paymentServiceImpl; // Inject the PaymentService
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
-    @PostMapping("process/{UserId}/{ReadingId}")
+    @PostMapping("/process/{UserId}/{ReadingId}")
     public ResponseEntity<PaymentResponse> createPaymentLink(@PathVariable int ReadingId, @PathVariable String UserId) throws RazorpayException {
+        // Get the current authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+
+        // Verify that the current user is authorized to create a payment link for this UserId
+        if (!UserId.equals(currentUserId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to create a payment link for this user.");
+        }
+
         Bill order = billingService.getBillByReadingId(ReadingId);
         User details = userService.findById(UserId);
 
@@ -93,13 +110,21 @@ public class PaymentController {
 
     @GetMapping("/redirect")
     public ResponseEntity<MeterReadings> redirect(@RequestParam(name="payment_id") String paymentId, @RequestParam(name="Order_id") int readingId) throws RazorpayException {
+        // Get the current authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+
+        MeterReadings meter = billingService.getMeterReadingByReadingId(readingId);
+
+        // Verify that the current user is authorized to access this meter reading
+        if (!meter.getUserId().equals(currentUserId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to access this resource.");
+        }
+
         logger.info("Redirect method called with paymentId: {} and readingId: {}", paymentId, readingId);
 
         Bill bill = billingService.getBillByReadingId(readingId);
         logger.info("Retrieved bill with amount: {}", bill.getAmount());
-
-        MeterReadings meter = billingService.getMeterReadingByReadingId(readingId);
-        logger.info("Retrieved meter reading with ID: {}", meter.getReadingId());
 
         RazorpayClient razorpayClient = new RazorpayClient(apiKey, apiSecret);
 
@@ -116,7 +141,6 @@ public class PaymentController {
                 billingService.saveMeterReading(meter);
                 logger.info("Meter reading updated in database for reading ID: {}", meter.getReadingId());
 
-
                 paymentServiceImpl.fetchAndStorePaymentDetails(paymentId, bill.getBillId());
                 logger.info("Payment details stored for bill ID: {}", bill.getBillId());
             }
@@ -130,14 +154,22 @@ public class PaymentController {
 
     @GetMapping("/receipt/{readingId}")
     public ResponseEntity<byte[]> downloadReceipt(@PathVariable int readingId) throws IOException {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+
         MeterReadings meterReadings = billingService.getMeterReadingByReadingId(readingId);
-        logger.info(meterReadings.getConnectionType());
+
+
+        if (!meterReadings.getUserId().equals(currentUserId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to access this receipt.");
+        }
 
         User user = userService.findById(meterReadings.getUserId());
         Bill bill = billingService.getBillByReadingId(readingId);
         List<com.tangedco.spring.eb_billing_system.entity.Payment> payments = paymentServiceImpl.getPaymentsByBillId(bill.getBillId());
 
-        // Assuming you need to generate a receipt for all payments
+
         byte[] pdfBytes = pdfService.generatePaymentReceipt(user, payments);
 
         HttpHeaders headers = new HttpHeaders();
@@ -146,5 +178,4 @@ public class PaymentController {
 
         return ResponseEntity.ok().headers(headers).body(pdfBytes);
     }
-
 }
