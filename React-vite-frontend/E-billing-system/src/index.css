@@ -28,7 +28,7 @@
   z-index: 10; 
 }
 
-/* styles.css or in a <style> block */
+
 .main-content {
-  padding-top: 6.5rem; /* Adjust this value based on the height of your navbar */
+  padding-top: 4.5rem;
 }

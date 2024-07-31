@@ -5,16 +5,16 @@ const Footer = () => {
   return (
     <footer className="pt-10">
       <div className="container text-trueGray-400 mx-auto px-4">
-        <div className="flex justify-between items-start">
-          <div className="flex min-h-max flex-col justify-between items-center">
-            <div className="text-center flex md:text-left w-full">
+        <div className="flex flex-col md:flex-row justify-between items-start">
+          <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
+            <div className="text-center md:text-left w-full">
               <img
                 src={logo}
-                alt="API Setu"
+                alt="EB Billing"
                 className="mx-auto w-10 md:mx-0 mt-4"
               />
             </div>
-            <div className="flex items-center justify-items-end w-full">
+            <div className="flex items-center mt-4 md:mt-6">
               <div className="flex space-x-6">
                 <a
                   href="https://www.facebook.com"
@@ -48,63 +48,63 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex space-x-32">
-            <div>
-              <h4 className="font-semibold mb-4 text-trueGray-300">TANDEGCO</h4>
+          <div className="flex flex-col md:flex-row md:space-x-32 w-full md:w-auto">
+            <div className="mb-6 md:mb-0">
+              <h4 className="font-semibold mb-4 text-trueGray-300">EB Billing</h4>
               <ul>
                 <li className="mb-2">
-                  <a href="/home" className="text-gray-600 hover:text-gray-800">
-                    Home
+                  <a href="/dashboard" className="text-gray-600 hover:text-gray-800">
+                    Dashboard
                   </a>
                 </li>
                 <li className="mb-2">
                   <a
-                    href="/about-us"
+                    href="/billing"
                     className="text-gray-600 hover:text-gray-800"
                   >
-                    About Us
+                    Billing
                   </a>
                 </li>
                 <li className="mb-2">
                   <a
-                    href="/directory"
+                    href="/connections"
                     className="text-gray-600 hover:text-gray-800"
                   >
-                    Directory
+                    Connections
                   </a>
                 </li>
                 <li className="mb-2">
-                  <a href="/blog" className="text-gray-600 hover:text-gray-800">
-                    Blog
+                  <a href="/support" className="text-gray-600 hover:text-gray-800">
+                    Support
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/join-us"
+                    href="/profile"
                     className="text-gray-600 hover:text-gray-800"
                   >
-                    Join Us
+                    Profile
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-trueGray-300 mb-4">Utilities</h4>
+              <h4 className="font-semibold text-trueGray-300 mb-4">Resources</h4>
               <ul>
                 <li className="mb-2">
                   <a
-                    href="/api-policy"
+                    href="/faq"
                     className="text-gray-600 hover:text-gray-800"
                   >
-                    API Policy
+                    FAQ
                   </a>
                 </li>
                 <li className="mb-2">
                   <a
-                    href="/data-standards"
+                    href="/guidelines"
                     className="text-gray-600 hover:text-gray-800"
                   >
-                    Data Standards
+                    Guidelines
                   </a>
                 </li>
                 <li className="mb-2">
@@ -117,10 +117,10 @@ const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="/digilocker"
+                    href="/contact"
                     className="text-gray-600 hover:text-gray-800"
                   >
-                    Digilocker
+                    Contact
                   </a>
                 </li>
               </ul>
@@ -131,12 +131,11 @@ const Footer = () => {
             <p className="text-gray-600">
               Digital India Corporation (DIC)
               <br />
-              
               Government of India
             </p>
           </div>
         </div>
-        <div className="text-trueGray-300 border-t border-trueGray-600 mt-6 pt-6 flex justify-between pb-2">
+        <div className="text-trueGray-300 border-t border-trueGray-600 mt-6 pt-6 flex flex-col md:flex-row justify-between pb-2">
           <p className="text-trueGray-300 font-extralight text-xs mb-4">
             Website designed & developed by Shashwanth N
           </p>
@@ -159,7 +158,7 @@ const Footer = () => {
             </li>
             <li>
               <a
-                href="/contact-us"
+                href="/contact"
                 className="text-trueGray-400 hover:text-trueGray-300"
               >
                 Contact Us

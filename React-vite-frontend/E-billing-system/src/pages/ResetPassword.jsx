@@ -13,7 +13,7 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(300); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,14 +25,14 @@ const ResetPassword = () => {
             clearInterval(timer);
             setError("Timeout, please request OTP again.");
             setStep(1);
-            return 300; // reset timer to 5 minutes for the next round
+            return 300; 
           }
           return prevTime - 1;
         });
       }, 1000);
     }
 
-    return () => clearInterval(timer); // cleanup the timer on component unmount or reset
+    return () => clearInterval(timer); 
   }, [step]);
 
   const handleEmailSubmit = async (e) => {

@@ -4,11 +4,14 @@ import { format, startOfMonth, addMonths } from "date-fns";
 import Topbar from "../components/Topbar";
 import bg from "../assets/bg-2.jpeg";
 import { FaFileDownload } from "react-icons/fa";
+
 const MeterReadingsDisplay = () => {
   const [userId, setUserId] = useState("");
   const [readings, setReadings] = useState([]);
   const [error, setError] = useState("");
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [selectedType, setSelectedType] = useState("household");
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -16,6 +19,12 @@ const MeterReadingsDisplay = () => {
       setUserId(storedUser.userId);
       fetchReadings(storedUser.userId);
     }
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const fetchReadings = async (userId) => {
@@ -67,11 +76,11 @@ const MeterReadingsDisplay = () => {
   };
 
   return (
-    <div className="main-content ">
+    <div className="main-content">
       <img
         src={bg}
         alt="background"
-        className="bg-full overflow-hidden  brightness-50 hue-rotate-60 max-h-screen"
+        className="bg-full overflow-hidden brightness-50 hue-rotate-60 max-h-screen"
       />
       <div className="container pt-10 backdrop-blur-lg min-w-full mx-auto items-center p-4">
         <h2 className="text-3xl font-bold mb-6 text-gray-3 text-center">
@@ -99,130 +108,211 @@ const MeterReadingsDisplay = () => {
                 Next Year <div className="text-gray-4 ml-2">&rarr;</div>
               </button>
             </div>
-            <div className="flex text-white justify-center">
-              <div className="w-1/2 p-4">
-                <h3 className="text-xl font-semibold mb-4">Household</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {monthsArray.map((date) => {
-                    const monthKey = format(date, "yyyy-MM");
-                    const reading = householdReadings[monthKey] || {
-                      unitsConsumed: 0,
-                      paymentStatus: "",
-                      readingId: null,
-                    };
-                    return (
-                      <div
-                        key={monthKey}
-                        className={`border border-deep-purple-200 p-4 rounded ${
-                          reading.unitsConsumed
-                            ? "bg-gradient-to-tl from-deep-purple-700 to-gray-5 shadow-sm"
-                            : "bg-deep-purple-50"
-                        }`}
-                      >
-                                                <div className="flex justify-between ">
-                        <div className="text-deep-purple-200 text-2xl italic font-semibold">
-                          {format(date, "MMMM yyyy")}
+            {isMobile ? (
+              <div className="mb-4 text-center">
+                <select
+                  value={selectedType}
+                  onChange={(e) => setSelectedType(e.target.value)}
+                  className="p-2 border bg-transparent w-full text-white border-gray-3 rounded"
+                >
+                  <option value="household">Household</option>
+                  <option value="commercial">Commercial</option>
+                </select>
+              </div>
+            ) : (
+              <div className="flex flex-wrap justify-center">
+                <div className="w-full md:w-1/2 p-4">
+                  <h3 className="text-xl text-white font-semibold mb-4">Household</h3>
+                  <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-4">
+                    {monthsArray.map((date) => {
+                      const monthKey = format(date, "yyyy-MM");
+                      const reading = householdReadings[monthKey] || {
+                        unitsConsumed: 0,
+                        paymentStatus: "",
+                        readingId: null,
+                      };
+                      return (
+                        <div
+                          key={monthKey}
+                          className={`border border-deep-purple-200 p-4 rounded ${
+                            reading.unitsConsumed
+                              ? "bg-gradient-to-tl from-deep-purple-700 to-gray-5 shadow-sm"
+                              : "bg-deep-purple-50"
+                          }`}
+                        >
+                          <div className="flex justify-between ">
+                            <div className="text-deep-purple-200 text-2xl italic font-semibold">
+                              {format(date, "MMMM yyyy")}
+                            </div>
+                            <div>
+                              {reading.paymentStatus === 'paid' && (
+                                <button
+                                  onClick={() => handleDownloadReceipt(reading.readingId)}
+                                  className="text-deep-purple-700 transition-all transform duration-300 bg-deep-purple-50 hover:bg-deep-purple-700 hover:text-white border border-deep-purple-400 text-sm font-bold py-1.5 px-4 rounded"
+                                >
+                                  <FaFileDownload />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                          {reading.unitsConsumed > 0 ? (
+                            <div className="flex mt-8 justify-between">
+                              <div className={`text-sm text-white p-0.5 px-2 rounded-full border ${reading.paymentStatus === 'not_paid' ? 'border-red-400 bg-red-600' : 'border-green-300 bg-green-500'} text-end font-bold`}>
+                                {reading.paymentStatus.replace('_', ' ')}
+                              </div>
+                              <div className="text-md text-deep-purple-50 text-end font-bold">
+                                {reading.unitsConsumed} units
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-md mt-8 text-deep-purple-500 text-end font-bold">
+                              No data
+                            </div>
+                          )}
                         </div>
-                        <div>
-                        {reading.paymentStatus === 'paid' && (
-                              <button
-                                onClick={() => handleDownloadReceipt(reading.readingId)}
-                                className=" text-deep-purple-700 bg-white hover:bg-deep-purple-700 hover:text-white border border-deep-purple-400 text-sm font-bold py-2 px-4 rounded"
-                              >
-                                <FaFileDownload />
-                              </button>
-                            )}
-                          </div>
-                          </div>
-                        {reading.unitsConsumed > 0 ? (
-                          <div className="flex mt-8 justify-between">
-                            <div className={`text-sm  text-white p-0.5 px-2 rounded-full border ${reading.paymentStatus === 'not_paid' ? 'border-red-200 bg-red-500' : 'border-green-200 bg-green-500'} text-end font-bold`}>
-                              {reading.paymentStatus.replace('_', ' ')}
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2  p-4">
+                  <h3 className="text-xl font-semibold  text-white mb-4">Commercial</h3>
+                  <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-4">
+                    {monthsArray.map((date) => {
+                      const monthKey = format(date, "yyyy-MM");
+                      const reading = commercialReadings[monthKey] || {
+                        unitsConsumed: 0,
+                        paymentStatus: "",
+                        readingId: null,
+                      };
+                      return (
+                        <div
+                          key={monthKey}
+                          className={`border p-4 border-lightBlue-300 text-center rounded ${
+                            reading.unitsConsumed
+                              ? "bg-gradient-to-tl from-lightBlue-700 to-gray-5 shadow-sm"
+                              : "bg-lightBlue-50"
+                          }`}
+                        >
+                          <div className="flex justify-between ">
+                            <div className="text-lightBlue-200 text-2xl italic font-semibold">
+                              {format(date, "MMMM yyyy")}
                             </div>
-                            <div className="text-md  text-deep-purple-50 text-end font-bold">
-                              {reading.unitsConsumed} units
+                            <div>
+                              {reading.paymentStatus === 'paid' && (
+                                <button
+                                  onClick={() => handleDownloadReceipt(reading.readingId)}
+                                  className="text-light-blue-700 transition-all transform duration-300 bg-light-blue-50 hover:bg-light-blue-700 hover:text-white border border-light-blue-400 text-sm font-bold py-1.5 px-4 rounded"
+                                >
+                                  <FaFileDownload />
+                                </button>
+                              )}
                             </div>
-                            {/* {reading.paymentStatus === 'paid' && (
-                              <button
-                                onClick={() => handleDownloadReceipt(reading.readingId)}
-                                className="mt-10 text-white bg-blue-500 hover:bg-blue-700 text-sm font-bold py-2 px-4 rounded"
-                              >
-                                Download Receipt
-                              </button>
-                            )} */}
                           </div>
-                        ) : (
-                          <div className="text-md mt-8 text-deep-purple-500 text-end font-bold">
-                            No data
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                          {reading.unitsConsumed > 0 ? (
+                            <div className="flex mt-8 justify-between">
+                              <div className={`text-sm text-white p-0.5 px-2 rounded-full border ${reading.paymentStatus === 'not_paid' ? 'border-red-200 bg-red-600' : 'border-green-200 bg-green-500'} text-end font-bold`}>
+                                {reading.paymentStatus.replace('_', ' ')}
+                              </div>
+                              <div className="text-md text-lightBlue-50 text-end font-bold">
+                                {reading.unitsConsumed} units
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-md mt-8 text-lightBlue-500 text-end font-bold">
+                              No data
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-              <div className="w-1/2 p-4">
-                <h3 className="text-xl font-semibold mb-4">Commercial</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {monthsArray.map((date) => {
-                    const monthKey = format(date, "yyyy-MM");
-                    const reading = commercialReadings[monthKey] || {
-                      unitsConsumed: 0,
-                      paymentStatus: "",
-                      readingId: null,
-                    };
-                    return (
-                      <div
-                        key={monthKey}
-                        className={`border p-4 border-lightBlue-300 text-center rounded ${
-                          reading.unitsConsumed
-                            ? "bg-gradient-to-tl from-lightBlue-700 to-gray-5 shadow-sm"
-                            : "bg-lightBlue-50"
-                        }`}
-                      >
-                        <div className="flex justify-between ">
-                        <div className="text-lightBlue-200 text-2xl italic font-semibold">
+            )}
+            {isMobile && (
+              <div className="grid grid-cols-1 gap-4">
+                {monthsArray.map((date) => {
+                  const monthKey = format(date, "yyyy-MM");
+                  const reading = selectedType === "household"
+                    ? householdReadings[monthKey]
+                    : commercialReadings[monthKey];
+                  return (
+                    <div
+                      key={monthKey}
+                      className={` p-4 rounded ${
+                        reading && reading.unitsConsumed
+                          ? selectedType === "household"
+                            ? "bg-gradient-to-tl border border-deep-purple-200 from-deep-purple-700 to-gray-5 shadow-sm"
+                            : "bg-gradient-to-tl from-light-blue-700 border border-light-blue-400 to-gray-5 shadow-sm"
+                          : selectedType === "household"
+                          ? "bg-deep-purple-50"
+                          : "bg-lightBlue-50"
+                      }`}
+                    >
+                      <div className="flex justify-between ">
+                        <div
+                          className={`text-2xl italic font-semibold ${
+                            selectedType === "household"
+                              ? "text-deep-purple-200"
+                              : "text-lightBlue-200"
+                          }`}
+                        >
                           {format(date, "MMMM yyyy")}
                         </div>
                         <div>
-                        {reading.paymentStatus === 'paid' && (
-                              <button
-                                onClick={() => handleDownloadReceipt(reading.readingId)}
-                                className=" text-light-blue-700 bg-white hover:bg-light-blue-700 hover:text-white border border-light-blue-400 text-sm font-bold py-1.5 px-4 rounded"
-                              >
-                                <FaFileDownload/>
-                              </button>
-                            )}
-                          </div>
-                          </div>
-                       
-                        {reading.unitsConsumed > 0 ? (
-                          <div className="flex mt-8 justify-between">
-                            <div
-                              className={`text-sm  text-white p-0.5 px-2 rounded-full border ${
-                                reading.paymentStatus === "not_paid"
-                                  ? "border-red-200 bg-red-600"
-                                  : "border-green-200 bg-green-500"
-                              } text-end font-bold`}
+                          {reading && reading.paymentStatus === "paid" && (
+                            <button
+                              onClick={() =>
+                                handleDownloadReceipt(reading.readingId)
+                              }
+                              className={`transition-all transform duration-300 text-sm font-bold py-1.5 px-4 rounded ${
+                                selectedType === "household"
+                                  ? "text-deep-purple-700 bg-deep-purple-50 hover:bg-deep-purple-700 hover:text-white border border-deep-purple-400"
+                                  : "text-light-blue-700 bg-light-blue-50 hover:bg-light-blue-700 hover:text-white border border-light-blue-400"
+                              }`}
                             >
-                              {reading.paymentStatus.replace("_", " ")}
-                            </div>
-                            <div className="text-md text-lightBlue-50 text-end font-bold">
-                              {reading.unitsConsumed} units
-                            </div>
-                            
-                          </div>
-                        ) : (
-                          <div className="text-md mt-8 text-lightBlue-500 text-end font-bold">
-                            No data
-                          </div>
-                        )}
+                              <FaFileDownload />
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
+                      {reading && reading.unitsConsumed > 0 ? (
+                        <div className="flex mt-8 justify-between">
+                          <div
+                            className={`text-sm text-white p-0.5 px-2 rounded-full border ${
+                              reading.paymentStatus === "not_paid"
+                                ? "border-red-400 bg-red-600"
+                                : "border-green-300 bg-green-500"
+                            } text-end font-bold`}
+                          >
+                            {reading.paymentStatus.replace("_", " ")}
+                          </div>
+                          <div
+                            className={`text-md text-end font-bold ${
+                              selectedType === "household"
+                                ? "text-deep-purple-50"
+                                : "text-lightBlue-50"
+                            }`}
+                          >
+                            {reading.unitsConsumed} units
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          className={`text-md mt-8 text-end font-bold ${
+                            selectedType === "household"
+                              ? "text-deep-purple-500"
+                              : "text-lightBlue-500"
+                          }`}
+                        >
+                          No data
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>

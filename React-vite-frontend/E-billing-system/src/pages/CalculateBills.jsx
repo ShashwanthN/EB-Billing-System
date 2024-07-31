@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Topbar from '../components/Topbar';
-import bg from '../assets/bg-2.jpeg'
+import bg from '../assets/bg-2.jpeg';
+
 const CalculateBills = () => {
   const [connectionType, setConnectionType] = useState('');
   const [units, setUnits] = useState('');
@@ -25,21 +26,18 @@ const CalculateBills = () => {
   const handleCalculate = () => {
     if (connectionType === 'household') {
       setBill(calculateHouseholdBill(Number(units)));
-      
     } else if (connectionType === 'commercial') {
       setBill(calculateCommercialBill(Number(units)));
     }
-    console.log("hehe")
-    console.log("haha")
   };
 
   return (
     <div className='main-content'>
       <img src={bg} alt="background" className="bg-full overflow-hidden brightness-50 hue-rotate-30 max-h-screen" />
-      <div className="container h-[calc(100vh-4rem)] flex justify-center  items-center mx-auto p-4">
-        <div className="border w-3/5 divide-x text-gray-3 divide-gray-2 backdrop-brightness-50 backdrop-blur-md border-gray-2 p-10 rounded flex">
-          <div className="w-1/2 pr-10">
-            <h2 className="text-3xl font-bold mb-6 text-start">Electricity Bill Calculator</h2>
+      <div className="container h-[calc(100vh-4rem)] flex justify-center items-center mx-auto lg:p-4">
+        <div className="sm:border w-full lg:w-3/5 divide-x text-gray-3 divide-gray-2 backdrop-brightness-50 backdrop-blur-md border-gray-2 p-10 rounded flex flex-col lg:flex-row">
+          <div className="w-full lg:w-1/2 lg:pr-10 mb-8 lg:mb-0">
+            <h2 className="lg:text-3xl text-xl font-bold mb-6 text-start">Electricity Bill Calculator</h2>
             <div className="mb-6">
               <select
                 className="border w-full text-gray-2 bg-transparent p-2 rounded"
@@ -71,7 +69,7 @@ const CalculateBills = () => {
               </div>
             )}
           </div>
-          <div className="w-1/2 flex text-gray-4 items-center justify-center">
+          <div className="w-full lg:w-1/2 flex text-gray-4 items-center justify-center">
             {bill !== null && (
               <div className="text-center">
                 <p className="text-2xl font-semibold"><span className='text-gray-3'>Total Bill: </span>₹{bill}</p>

@@ -23,8 +23,8 @@ const DisplayBills = () => {
       const sortedReadings = response.data.sort(
         (a, b) => new Date(b.meterReadings.readingDate) - new Date(a.meterReadings.readingDate)
       );
-console.log("fetched");
-console.log("it");
+      console.log("fetched");
+      console.log("it");
       setUnpaidReadingsWithBills(sortedReadings);
     } catch (error) {
       console.error("Error fetching unpaid readings with bills:", error);
@@ -47,25 +47,20 @@ console.log("it");
         alt="background"
         className="bg-full overflow-hidden brightness-50 hue-rotate-90 max-h-screen"
       />
-      <div className="container flex flex-col justify-center items-center mx-auto p-4">
-        <div className="border w-2/3 text-gray-3 border-gray-2 shadow-md backdrop-brightness-50 backdrop-blur-2xl p-10 rounded-lg">
-          <h2 className="text-7xl font-bold text-gray-4 mb-6 text-start pb-2">
+      <div className="container flex flex-col justify-center items-center mx-auto lg:p-4">
+        <div className="lg:border w-full lg:w-2/3 backdrop-blur-3xl backdrop-brightness-50 text-gray-3 border-gray-2 shadow-md p-4 lg:p-10 sm:rounded-lg">
+          <h2 className="text-3xl lg:text-7xl font-bold text-gray-4 mb-4 lg:mb-6 text-start pb-2">
             Unpaid Bills
           </h2>
-          {/* <div className="mb-6 flex items-center">
-            <div className="border border-gray-2 p-2 pl-2 bg-gray-5 focus:outline-deep-purple-500 rounded w-full">
-              {userId}
-            </div>
-          </div> */}
 
           {unpaidReadingsWithBills.length > 0 ? (
             <div className="grid grid-cols-1 backdrop-blur-3xl">
               {unpaidReadingsWithBills.map(({ meterReadings, bill }) => (
                 <div
                   key={meterReadings.readingId}
-                  className="justify-between flex border-b py-4 border-b-gray-2 shadow-sm"
+                  className="flex flex-col lg:flex-row justify-between border-gray-2 border rounded px-4 mb-5 p-4 shadow-sm"
                 >
-                  <div>
+                  <div className="mb-4 lg:mb-0">
                     <p className="font-semibold">
                       User ID:{" "}
                       <span className="font-bold text-lightBlue-400">
@@ -80,7 +75,7 @@ console.log("it");
                     </p>
                     <p className="font-semibold">
                       Reading Date:{" "}
-                      <span className="font-normal text-end">
+                      <span className="font-normal">
                         {formatReadingDate(meterReadings.readingDate)}
                       </span>
                     </p>
@@ -90,21 +85,25 @@ console.log("it");
                         {meterReadings.unitsConsumed}
                       </span>
                     </p>
-                    <p className="font-semibold ">
+                    <p className="font-semibold">
                       Bill No:{" "}
                       <span className="font-normal">{bill.billId}</span>
                     </p>
                   </div>
                   {bill && (
-                    <div className="flex flex-col justify-between items-center h-full">
-                      <div className="text-center">
-                        <p className="font-semibold">
-                          <span className="font-bold text-gray-3 text-3xl">₹{bill.amount}</span>
+                    <div className="flex lg:flex-col justify-between items-center h-full">
+                      <div className="text-center lg:mb-0">
+                        <p className="font-semibold text-center">
+                          <span className="font-bold text-white text-3xl">
+                            ₹{bill.amount}
+                          </span>
                         </p>
                       </div>
-                      <div className="w-full">
+                      <div className="w-full flex justify-end">
                         <button
-                          onClick={() => handlePayment({ ...meterReadings, ...bill })}
+                          onClick={() =>
+                            handlePayment({ ...meterReadings, ...bill })
+                          }
                           className="bg-lightBlue-600 hover:bg-lightBlue-700 text-white font- py-2 px-3 rounded-md transition shadow-xl hover:shadow-none hover:outline-none outline outline-1 hover:text-trueGray-300 outline-light-blue-900 duration-300"
                         >
                           Pay Now

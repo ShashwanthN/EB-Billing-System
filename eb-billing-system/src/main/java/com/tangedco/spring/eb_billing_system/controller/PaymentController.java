@@ -90,7 +90,9 @@ public class PaymentController {
                 notify.put("sms", true);
                 notify.put("email", true);
                 paymentLinkRequest.put("notify", notify);
-                paymentLinkRequest.put("callback_url", "http://localhost:5173/Payment_Success/" + order.getBillId());
+                //paymentLinkRequest.put("callback_url", "http://localhost:5173/Payment_Success/" + order.getBillId());
+                paymentLinkRequest.put("callback_url", "http://10.1.38.167:5173/Payment_Success/" + order.getBillId());
+                // http://192.168.0.102:8080/
                 paymentLinkRequest.put("callback_method", "get");
 
                 return razorpayClient.paymentLink.create(paymentLinkRequest);
