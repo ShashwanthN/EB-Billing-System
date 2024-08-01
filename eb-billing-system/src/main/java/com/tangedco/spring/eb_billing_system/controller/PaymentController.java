@@ -54,17 +54,17 @@ public class PaymentController {
     private PdfService pdfService;
 
     @Autowired
-    private PaymentServiceImpl paymentServiceImpl; // Inject the PaymentService
+    private PaymentServiceImpl paymentServiceImpl;
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
     @PostMapping("/process/{UserId}/{ReadingId}")
     public ResponseEntity<PaymentResponse> createPaymentLink(@PathVariable int ReadingId, @PathVariable String UserId) throws RazorpayException {
-        // Get the current authenticated user
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserId = (String) authentication.getPrincipal();
 
-        // Verify that the current user is authorized to create a payment link for this UserId
+
         if (!UserId.equals(currentUserId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to create a payment link for this user.");
         }
@@ -90,8 +90,8 @@ public class PaymentController {
                 notify.put("sms", true);
                 notify.put("email", true);
                 paymentLinkRequest.put("notify", notify);
-                //paymentLinkRequest.put("callback_url", "http://localhost:5173/Payment_Success/" + order.getBillId());
-                paymentLinkRequest.put("callback_url", "http://10.1.38.167:5173/Payment_Success/" + order.getBillId());
+                paymentLinkRequest.put("callback_url", "http://localhost:5173/Payment_Success/" + order.getBillId());
+
                 // http://192.168.0.102:8080/
                 paymentLinkRequest.put("callback_method", "get");
 
@@ -112,13 +112,13 @@ public class PaymentController {
 
     @GetMapping("/redirect")
     public ResponseEntity<MeterReadings> redirect(@RequestParam(name="payment_id") String paymentId, @RequestParam(name="Order_id") int readingId) throws RazorpayException {
-        // Get the current authenticated user
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserId = (String) authentication.getPrincipal();
 
         MeterReadings meter = billingService.getMeterReadingByReadingId(readingId);
 
-        // Verify that the current user is authorized to access this meter reading
+       
         if (!meter.getUserId().equals(currentUserId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to access this resource.");
         }
