@@ -117,7 +117,14 @@ public class ConnectionServiceImpl implements ConnectionService {
     private byte[] convertMultipartFileToBytes(MultipartFile file) throws IOException {
         return file.getBytes();
     }
-
+    @Override
+    public Optional<HouseholdConnections> getHouseholdConnectionByReferenceNumber(String userId, String referenceNumber) {
+        return householdConnectionRepository.findByUser_UserIdAndApplicantReferenceNumber(userId, referenceNumber);
+    }
+@Override
+    public Optional<CommercialConnections> getCommercialConnectionByReferenceNumber(String userId, String referenceNumber) {
+        return commercialConnectionRepository.findByUser_UserIdAndApplicantReferenceNumber(userId, referenceNumber);
+    }
     private String generateReferenceNumber() {
         return UUID.randomUUID().toString();
     }
@@ -127,8 +134,19 @@ public class ConnectionServiceImpl implements ConnectionService {
         return householdConnectionRepository.findByUser_UserId(userId);
     }
 
+
     @Override
     public Optional<CommercialConnections> getCommercialConnectionByUserId(String userId) {
         return commercialConnectionRepository.findByUser_UserId(userId);
+    }
+
+    @Override
+    public Optional<HouseholdConnections> getHouseholdConnectionByConnectionId(Long Id) {
+
+        return householdConnectionRepository.findById(Id);
+    }
+    @Override
+    public Optional<CommercialConnections> getCommercialConnectionConnectionId(Long Id) {
+        return commercialConnectionRepository.findById(Id);
     }
 }

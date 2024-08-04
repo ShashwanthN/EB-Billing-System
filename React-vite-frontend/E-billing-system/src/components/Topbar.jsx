@@ -40,7 +40,7 @@ const Topbar = () => {
 
   return (
     <div className={topbarClass}>
-      <div className="backdrop-brightness-50 border-b border-trueGray-700 backdrop-blur-3xl p-2 shadow-lg">
+      <div className="backdrop-brightness-50  backdrop-blur-3xl p-2 shadow-lg">
         <div className="container mx-auto flex justify-between items-center text-white">
           <div className="flex items-center">
             <h1 className="text-xl sm:text-2xl p-1 font-bold text-trueGray-50">

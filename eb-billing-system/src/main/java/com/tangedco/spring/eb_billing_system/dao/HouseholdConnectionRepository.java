@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface HouseholdConnectionRepository extends JpaRepository<HouseholdConnections, Long> {
     Optional<HouseholdConnections> findByUser_UserId(String userId);
 
+    Optional<HouseholdConnections> findById(Long id);
 
+    Optional<HouseholdConnections> findByUser_UserIdAndApplicantReferenceNumber(String userId, String applicantReferenceNumber);
     //Optional<HouseholdConnections> findByUserId(String );
 }

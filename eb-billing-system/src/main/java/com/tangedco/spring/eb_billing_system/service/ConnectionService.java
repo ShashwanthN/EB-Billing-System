@@ -13,6 +13,21 @@ public interface ConnectionService {
     HouseholdConnections markHouseholdConnectionAsPaid(String id);
     CommercialConnections markCommercialConnectionAsPaid(String id);
 
+    Optional<HouseholdConnections> getHouseholdConnectionByReferenceNumber(String userId, String referenceNumber);
+
+    Optional<CommercialConnections> getCommercialConnectionByReferenceNumber(String userId, String referenceNumber);
+
     Optional<HouseholdConnections> getHouseholdConnectionByUserId(String userId);
+
+
+
+    Optional<HouseholdConnections> getHouseholdConnectionByConnectionId(Long Id);
+
     Optional<CommercialConnections> getCommercialConnectionByUserId(String userId);
+
+
+
+
+
+   Optional<CommercialConnections> getCommercialConnectionConnectionId(Long Id);
 }

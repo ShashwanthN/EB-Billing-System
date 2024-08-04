@@ -14,6 +14,7 @@ import Topbar from './components/Topbar.jsx';
 import PaymentPage from './pages/PaymentPage.jsx';
 import PaymentSuccess from './pages/PaymentSuccess.jsx';
 import UpdateInfo from './pages/UpdateInfo.jsx';
+import PaymentSuccessService from './pages/PaymentSuccesService.jsx';
 import "./index.css"
 import ResetPassword from './pages/ResetPassword.jsx';
 const AppContent = () => {
@@ -32,6 +33,7 @@ const AppContent = () => {
           <Route path="/resetPassword" element={<ResetPassword/>} />
           <Route path="/Payment_Success/:billId" element={<PrivateRoute><PaymentSuccess/></PrivateRoute>} />
           <Route path="/payment/:userId/:readingId" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
+          <Route path="/Payment_Success/Service/:connectionId/:connectionType" element={<PrivateRoute><PaymentSuccessService /></PrivateRoute>} />
           <Route path="/serviceApplication" element={<PrivateRoute><ServiceRegistration /></PrivateRoute>} />
           <Route path="/ApplicationConfirmation" element={<PrivateRoute><ApplicationConfirmation /></PrivateRoute>} />
           <Route path="/MeterReadingDisplay" element={<PrivateRoute><MeterReadingsDisplay /></PrivateRoute>} />

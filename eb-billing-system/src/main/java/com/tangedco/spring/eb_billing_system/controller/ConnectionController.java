@@ -4,7 +4,9 @@ import com.tangedco.spring.eb_billing_system.dto.CommercialConnectionRequest;
 import com.tangedco.spring.eb_billing_system.entity.HouseholdConnections;
 import com.tangedco.spring.eb_billing_system.entity.CommercialConnections;
 import com.tangedco.spring.eb_billing_system.service.ConnectionService;
+import com.tangedco.spring.eb_billing_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,6 +51,30 @@ public class ConnectionController {
         return ResponseEntity.ok(response);
     }
 
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/details")
+    public ResponseEntity<?> getConnectionDetails(
+            @RequestParam String userId,
+            @RequestParam String referenceNumber,
+            @RequestParam String connectionType) {
+
+        if (connectionType.equalsIgnoreCase("household")) {
+            Optional<HouseholdConnections> householdConnection = connectionService.getHouseholdConnectionByReferenceNumber(userId, referenceNumber);
+            if (householdConnection.isPresent()) {
+                return ResponseEntity.ok(householdConnection.get());
+            }
+        } else if (connectionType.equalsIgnoreCase("commercial")) {
+            Optional<CommercialConnections> commercialConnection = connectionService.getCommercialConnectionByReferenceNumber(userId, referenceNumber);
+            if (commercialConnection.isPresent()) {
+                return ResponseEntity.ok(commercialConnection.get());
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Connection details not found.");
+    }
     @PostMapping("/commercial")
     public ResponseEntity<?> registerCommercialConnection(
             @RequestParam("userId") String userId,

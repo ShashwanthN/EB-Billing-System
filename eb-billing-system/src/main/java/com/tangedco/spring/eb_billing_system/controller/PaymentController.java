@@ -5,13 +5,8 @@ import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import com.tangedco.spring.eb_billing_system.dto.PaymentResponse;
-import com.tangedco.spring.eb_billing_system.entity.Bill;
-import com.tangedco.spring.eb_billing_system.entity.MeterReadings;
-import com.tangedco.spring.eb_billing_system.entity.User;
-import com.tangedco.spring.eb_billing_system.service.MeterReadingsService;
-import com.tangedco.spring.eb_billing_system.service.PaymentServiceImpl;
-import com.tangedco.spring.eb_billing_system.service.PdfService;
-import com.tangedco.spring.eb_billing_system.service.UserService;
+import com.tangedco.spring.eb_billing_system.entity.*;
+import com.tangedco.spring.eb_billing_system.service.*;
 import com.tangedco.spring.eb_billing_system.utils.RetryUtils;
 
 import org.json.JSONObject;
@@ -32,6 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 @Controller
@@ -46,6 +42,8 @@ public class PaymentController {
 
     @Autowired
     private MeterReadingsService billingService;
+    @Autowired
+    private ConnectionService connectionService;
 
     @Autowired
     private UserService userService;
@@ -57,6 +55,80 @@ public class PaymentController {
     private PaymentServiceImpl paymentServiceImpl;
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
+    @PostMapping("/process/{UserId}/{connection_id}/{connectionType}")
+    public ResponseEntity<PaymentResponse> createPaymentLinkForServiceRegistration(
+            @PathVariable Long connection_id,
+            @PathVariable String UserId,
+            @PathVariable String connectionType) throws RazorpayException {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+
+        if (!UserId.equals(currentUserId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to create a payment link for this user.");
+        }
+
+        User details = userService.findById(UserId);
+        if (details == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+        }
+
+        double amount = 0;
+
+        if (connectionType.equalsIgnoreCase("household")) {
+            Optional<HouseholdConnections> householdConnection = connectionService.getHouseholdConnectionByConnectionId(connection_id);
+            if (householdConnection.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Household connection not found.");
+            }
+            //amount = householdConnection.get().getRegistrationAmount();
+        } else if (connectionType.equalsIgnoreCase("commercial")) {
+            Optional<CommercialConnections> commercialConnection = connectionService.getCommercialConnectionConnectionId(connection_id);
+            if (commercialConnection.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Commercial connection not found.");
+            }
+           // amount = commercialConnection.get().getRegistrationAmount();
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid connection type.");
+        }
+
+        try {
+            RazorpayClient razorpayClient = new RazorpayClient(apiKey, apiSecret);
+
+            Callable<PaymentLink> createPaymentLinkCallable = () -> {
+                JSONObject paymentLinkRequest = new JSONObject();
+                paymentLinkRequest.put("amount", 1850 * 100);
+                paymentLinkRequest.put("currency", "INR");
+
+                JSONObject customer = new JSONObject();
+                customer.put("name", details.getFirstName());
+                customer.put("email", details.getEmail());
+                customer.put("contact", details.getPhoneNumber());
+                paymentLinkRequest.put("customer", customer);
+
+                JSONObject notify = new JSONObject();
+                notify.put("sms", true);
+                notify.put("email", true);
+                paymentLinkRequest.put("notify", notify);
+                paymentLinkRequest.put("callback_url", "http://localhost:5173/Payment_Success/Service/" + connection_id + "/" + connectionType);
+                paymentLinkRequest.put("callback_method", "get");
+
+                return razorpayClient.paymentLink.create(paymentLinkRequest);
+            };
+
+            PaymentLink payment = RetryUtils.retryWithBackoff(createPaymentLinkCallable);
+            String paymentLinkId = payment.get("id");
+            String paymentLinkUrl = payment.get("short_url");
+
+            PaymentResponse res = new PaymentResponse();
+            res.setPaymentLink(paymentLinkUrl);
+            res.setPaymentLinkId(paymentLinkId);
+
+            return new ResponseEntity<>(res, HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.error("Error creating payment link for service registration", e);
+            throw new RazorpayException(e.getMessage());
+        }
+    }
 
     @PostMapping("/process/{UserId}/{ReadingId}")
     public ResponseEntity<PaymentResponse> createPaymentLink(@PathVariable int ReadingId, @PathVariable String UserId) throws RazorpayException {
@@ -118,7 +190,7 @@ public class PaymentController {
 
         MeterReadings meter = billingService.getMeterReadingByReadingId(readingId);
 
-       
+
         if (!meter.getUserId().equals(currentUserId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to access this resource.");
         }
@@ -153,6 +225,52 @@ public class PaymentController {
             throw new RazorpayException(e.getMessage());
         }
     }
+    @GetMapping("/redirect/registration")
+    public ResponseEntity<Void> redirectForServiceRegistration(
+            @RequestParam(name = "payment_id") String paymentId,
+            @RequestParam(name = "Connection_id") Long connectionId,
+            @RequestParam(name = "connectionType") String connectionType) throws RazorpayException {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserId = (String) authentication.getPrincipal();
+
+        User user = userService.findById(currentUserId);
+
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not authorized.");
+        }
+
+        RazorpayClient razorpayClient = new RazorpayClient(apiKey, apiSecret);
+
+        try {
+            Callable<Payment> fetchPaymentCallable = () -> razorpayClient.payments.fetch(paymentId);
+            Payment payment = RetryUtils.retryWithBackoff(fetchPaymentCallable);
+
+            logger.info("Fetched payment with details: {}", payment.toString());
+
+            if (payment.get("status").equals("captured")) {
+                if (connectionType.equalsIgnoreCase("household")) {
+                    HouseholdConnections connection = connectionService.getHouseholdConnectionByConnectionId(connectionId).orElseThrow(() ->
+                            new ResponseStatusException(HttpStatus.NOT_FOUND, "Connection not found.")
+                    );
+                    connectionService.markHouseholdConnectionAsPaid(connectionId.toString());
+                    logger.info("Marked household connection as paid for ID: {}", connectionId);
+                } else if (connectionType.equalsIgnoreCase("commercial")) {
+                    CommercialConnections connection = connectionService.getCommercialConnectionConnectionId(connectionId).orElseThrow(() ->
+                            new ResponseStatusException(HttpStatus.NOT_FOUND, "Connection not found.")
+                    );
+                    connectionService.markCommercialConnectionAsPaid(connectionId.toString());
+                    logger.info("Marked commercial connection as paid for ID: {}", connectionId);
+                }
+            }
+
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            logger.error("Error processing payment redirect", e);
+            throw new RazorpayException(e.getMessage());
+        }
+    }
+
 
     @GetMapping("/receipt/{readingId}")
     public ResponseEntity<byte[]> downloadReceipt(@PathVariable int readingId) throws IOException {

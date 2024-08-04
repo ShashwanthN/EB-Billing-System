@@ -20,7 +20,7 @@ const PaymentPage = () => {
 
     initiatePayment();
   }, [userId, readingId]);
-
+  
   return (
     <div className="flex justify-center items-center h-screen">
       <img src={bg} alt="background" className="bg-full overflow-hidden brightness-50 hue-rotate-180 max-h-screen" />

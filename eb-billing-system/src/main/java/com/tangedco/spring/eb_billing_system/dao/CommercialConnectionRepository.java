@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface CommercialConnectionRepository extends JpaRepository<CommercialConnections, Long> {
     Optional<CommercialConnections> findByUser_UserId(String userId);
-
+    Optional<CommercialConnections> findById(Long Id);
+    Optional<CommercialConnections> findByUser_UserIdAndApplicantReferenceNumber(String userId, String applicantReferenceNumber);
 
     //Optional<CommercialConnections> findByUserId(String );
 }
