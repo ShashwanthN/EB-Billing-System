@@ -8,10 +8,7 @@ import com.tangedco.spring.eb_billing_system.dto.PaymentResponse;
 import com.tangedco.spring.eb_billing_system.entity.*;
 import com.tangedco.spring.eb_billing_system.service.*;
 import com.tangedco.spring.eb_billing_system.utils.RetryUtils;
-
 import org.json.JSONObject;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,27 +31,22 @@ import java.util.concurrent.Callable;
 @RequestMapping("/payment")
 public class PaymentController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
     @Value("${razorpay.key_id}")
     private String apiKey;
-
     @Value("${razorpay.key_secret}")
     private String apiSecret;
-
     @Autowired
     private MeterReadingsService billingService;
     @Autowired
     private ConnectionService connectionService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private PdfService pdfService;
-
     @Autowired
     private PaymentServiceImpl paymentServiceImpl;
 
-    private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
     @PostMapping("/process/{UserId}/{connection_id}/{connectionType}")
     public ResponseEntity<PaymentResponse> createPaymentLinkForServiceRegistration(
             @PathVariable Long connection_id,
@@ -86,7 +78,7 @@ public class PaymentController {
             if (commercialConnection.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Commercial connection not found.");
             }
-           // amount = commercialConnection.get().getRegistrationAmount();
+            // amount = commercialConnection.get().getRegistrationAmount();
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid connection type.");
         }
@@ -183,7 +175,7 @@ public class PaymentController {
     }
 
     @GetMapping("/redirect")
-    public ResponseEntity<MeterReadings> redirect(@RequestParam(name="payment_id") String paymentId, @RequestParam(name="Order_id") int readingId) throws RazorpayException {
+    public ResponseEntity<MeterReadings> redirect(@RequestParam(name = "payment_id") String paymentId, @RequestParam(name = "Order_id") int readingId) throws RazorpayException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserId = (String) authentication.getPrincipal();
@@ -225,6 +217,7 @@ public class PaymentController {
             throw new RazorpayException(e.getMessage());
         }
     }
+
     @GetMapping("/redirect/registration")
     public ResponseEntity<Void> redirectForServiceRegistration(
             @RequestParam(name = "payment_id") String paymentId,

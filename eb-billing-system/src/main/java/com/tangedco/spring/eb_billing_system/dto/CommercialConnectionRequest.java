@@ -13,6 +13,7 @@ public class CommercialConnectionRequest {
     private String businessType;
     private Double sqMeter;
     private MultipartFile ownershipProof;
+
     public CommercialConnectionRequest(String userId, String address, Double loadRequired, Double phase, MultipartFile applicantPhoto, MultipartFile propertyTaxReport, String businessName, String businessType, Double sqMeter, MultipartFile ownershipProof) {
         this.userId = userId;
         this.address = address;

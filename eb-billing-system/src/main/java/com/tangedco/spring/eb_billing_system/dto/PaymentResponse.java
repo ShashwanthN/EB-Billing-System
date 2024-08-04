@@ -8,6 +8,11 @@ public class PaymentResponse {
     public PaymentResponse() {
     }
 
+    public PaymentResponse(String paymentLink, String paymentLinkId) {
+        this.paymentLink = paymentLink;
+        this.paymentLinkId = paymentLinkId;
+    }
+
     public String getPaymentLink() {
         return paymentLink;
     }
@@ -21,11 +26,6 @@ public class PaymentResponse {
     }
 
     public void setPaymentLinkId(String paymentLinkId) {
-        this.paymentLinkId = paymentLinkId;
-    }
-
-    public PaymentResponse(String paymentLink, String paymentLinkId) {
-        this.paymentLink = paymentLink;
         this.paymentLinkId = paymentLinkId;
     }
 }
