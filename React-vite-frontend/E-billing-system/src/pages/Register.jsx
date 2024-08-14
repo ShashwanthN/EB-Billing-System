@@ -22,7 +22,7 @@ const Register = () => {
   const [userId, setUserId] = useState("");
   const [showSplash, setShowSplash] = useState(false);
   const [showOtpSplash, setShowOtpSplash] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -62,6 +62,7 @@ const Register = () => {
     setError("");
     setMessage("");
 
+
     if (user.password !== user.confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -82,6 +83,8 @@ const Register = () => {
       setError("Invalid email format.");
       return;
     }
+
+    setIsLoading(true);
 
     try {
       const response = await axiosInstance.post(
@@ -105,13 +108,17 @@ const Register = () => {
       } else {
         setError("Error sending OTP: " + error.message);
       }
+    }finally {
+      setIsLoading(false);
     }
+
   };
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setMessage("");
+    setIsLoading(true);
 
     try {
       const otpResponse = await axiosInstance.post(
@@ -157,6 +164,8 @@ const Register = () => {
       } else {
         setError("Error validating OTP: " + error.message);
       }
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -169,6 +178,12 @@ const Register = () => {
 
   return (
     <div className="min-h-screen justify-center relative flex items-center transition-all transform duration-200">
+      {isLoading && (
+        <div className="fixed top-0 inset-0 bg-trueGray-900 bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="loader"></div>
+        </div>
+      )}
+       <div className={`loading-bar ${isLoading ? "loading" : ""}`}></div>
       <img
         src={bg}
         alt="background"
@@ -294,8 +309,30 @@ const Register = () => {
                 className="appearance-none mb-2 rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
                 required
               />
-              <div></div>
-              <PasswordValidattor
+             
+              
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-3 text-sm font-bold mb-2"
+                htmlFor="confirmPassword"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={user.confirmPassword}
+                onChange={handleChange}
+                placeholder="********"
+                className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
+                required
+              />
+
+            </div>
+            <div className="mb-6">
+
+            <PasswordValidattor
                 rules={[
                   "minLength",
                   "maxLength",
@@ -319,26 +356,9 @@ const Register = () => {
                   showPasswordSuggestion: true,
                 }}
               />
-            </div>
-            <div className="mb-6">
-              <label
-                className="block text-gray-3 text-sm font-bold mb-2"
-                htmlFor="confirmPassword"
-              >
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={user.confirmPassword}
-                onChange={handleChange}
-                placeholder="********"
-                className="appearance-none rounded border border-gray bg-gray-5 transition-all transform duration-200 hover:border-gray w-full py-2 px-3 text-gray-3 placeholder-trueGray-600 focus:outline-blue-500 outline-none"
-                required
-              />
-            </div>
+              </div>
             {message && (
-              <p className="text-green-500 text-xs italic">{message}</p>
+              <p className="text-success text-xs mb-3 italic">{message}</p>
             )}
             {error && <p className="text-red-500 text-xs italic">{error}</p>}
             <div className="flex items-center justify-between">
@@ -440,7 +460,7 @@ const Register = () => {
           <div
             className={`${
               message ? "bg-green-500" : "bg-red-500"
-            } text-white font-bold py-2 px-4 rounded mt-4 shadow-lg`}
+            } text-white font-bold py-2 px-4 rounded mt-2 mb-2 shadow-lg`}
           >
             {message || error}
           </div>

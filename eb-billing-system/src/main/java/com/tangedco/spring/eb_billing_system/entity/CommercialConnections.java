@@ -1,34 +1,52 @@
 package com.tangedco.spring.eb_billing_system.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 public class CommercialConnections {
 
+    @Getter
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "connection_id")
     private Long id;
 
+    @Getter
+    @Setter
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Getter
+    @Setter
     @Column(name = "address")
     private String address;
 
+    @Getter
+    @Setter
     @Column(name = "load_required")
     private Double loadRequired;
 
+    @Getter
+    @Setter
     @Column(name = "phase")
     private Double phase;
 
+    @Getter
+    @Setter
     @Column(name = "business_name")
     private String businessName;
 
+    @Getter
+    @Setter
     @Column(name = "business_type")
     private String businessType;
 
+    @Getter
+    @Setter
     @Column(name = "sq_meter")
     private Double sqMeter;
 
@@ -44,116 +62,39 @@ public class CommercialConnections {
     @Lob
     private byte[] ownershipProof;
 
+    @Setter
+    @Getter
     @Column(name = "applicant_reference_number")
     private String applicantReferenceNumber;
 
+    @Setter
+    @Getter
     @Column(name = "payment_status")
     private String paymentStatus;
 
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Double getLoadRequired() {
-        return loadRequired;
-    }
-
-    public void setLoadRequired(Double loadRequired) {
-        this.loadRequired = loadRequired;
-    }
-
-    public Double getPhase() {
-        return phase;
-    }
-
-    public void setPhase(Double phase) {
-        this.phase = phase;
-    }
-
-    public String getBusinessName() {
-        return businessName;
-    }
-
-    public void setBusinessName(String businessName) {
-        this.businessName = businessName;
-    }
-
-    public String getBusinessType() {
-        return businessType;
-    }
-
-    public void setBusinessType(String businessType) {
-        this.businessType = businessType;
-    }
-
-    public Double getSqMeter() {
-        return sqMeter;
-    }
-
-    public void setSqMeter(Double sqMeter) {
-        this.sqMeter = sqMeter;
-    }
-
     public byte[] getApplicantPhoto() {
-        return applicantPhoto;
+        return applicantPhoto != null ? applicantPhoto.clone() : null;
     }
 
     public void setApplicantPhoto(byte[] applicantPhoto) {
-        this.applicantPhoto = applicantPhoto;
+        this.applicantPhoto = applicantPhoto != null ? applicantPhoto.clone() : null;
     }
 
     public byte[] getPropertyTaxReport() {
-        return propertyTaxReport;
+        return propertyTaxReport != null ? propertyTaxReport.clone() : null;
     }
 
     public void setPropertyTaxReport(byte[] propertyTaxReport) {
-        this.propertyTaxReport = propertyTaxReport;
+        this.propertyTaxReport = propertyTaxReport != null ? propertyTaxReport.clone() : null;
     }
 
     public byte[] getOwnershipProof() {
-        return ownershipProof;
+        return ownershipProof != null ? ownershipProof.clone() : null;
     }
 
     public void setOwnershipProof(byte[] ownershipProof) {
-        this.ownershipProof = ownershipProof;
-    }
-
-    public String getApplicantReferenceNumber() {
-        return applicantReferenceNumber;
-    }
-
-    public void setApplicantReferenceNumber(String applicantReferenceNumber) {
-        this.applicantReferenceNumber = applicantReferenceNumber;
-    }
-
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+        this.ownershipProof = ownershipProof != null ? ownershipProof.clone() : null;
     }
 
     public Long getConnectionId() {

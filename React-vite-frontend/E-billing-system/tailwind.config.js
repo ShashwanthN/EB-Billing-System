@@ -31,7 +31,7 @@ module.exports = withMT({
       'gray-3': '#e7e7e7',
       'gray-4': '#bfbfbf',
       'error' : "#e23636",
-      'success': "#4CAF50"
+      'success': "#68E534"
      },     
   },
   plugins: [],

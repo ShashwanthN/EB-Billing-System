@@ -15,6 +15,7 @@ const UpdateInfo = () => {
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -27,7 +28,15 @@ const UpdateInfo = () => {
 
   const handleRegister = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    setError(""); 
+    setMessage("");
+
     try {
+      await axiosInstance.post(
+        `http://localhost:8080/users/checkEmail?email=${encodeURIComponent(Email)}`
+      );
+
       const response = await axiosInstance.post(
         "http://localhost:8080/api/get/otp/sendOtp",
         { email: Email }
@@ -39,22 +48,28 @@ const UpdateInfo = () => {
       } else {
         setError("Failed to send OTP.");
       }
+
     } catch (error) {
-      if (error.response) {
-        setError("Error sending OTP: " + error.response.data.message);
+      if (error.response && error.response.status === 409) {
+        setError("Email already exists!");
+      } else if (error.response) {
+        setError("Error: " + error.response.data.message);
       } else if (error.request) {
-        setError("Error sending OTP: No response from server");
+        setError("Error: No response from server");
       } else {
-        setError("Error sending OTP: " + error.message);
+        setError("Error: " + error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
     setMessage("");
-  
+
     try {
       const otpResponse = await axiosInstance.post(
         "http://localhost:8080/users/otp/validate",
@@ -63,7 +78,7 @@ const UpdateInfo = () => {
           otp,
         }
       );
-  
+
       if (otpResponse.data.statusCode === 200) {
         try {
           const response = await axiosInstance.post(
@@ -80,7 +95,7 @@ const UpdateInfo = () => {
               },
             }
           );
-  
+
           if (response.status === 200) {
             const updatedUser = response.data;
             setUserId(updatedUser.userId);
@@ -92,7 +107,7 @@ const UpdateInfo = () => {
           }
         } catch (error) {
           console.error("There was an error updating the user info!", error);
-          alert("Update failed");
+          setError("Update failed.");
         }
       } else {
         setError("OTP validation failed: " + otpResponse.data.responseMessage);
@@ -105,11 +120,19 @@ const UpdateInfo = () => {
       } else {
         setError("Error validating OTP: " + error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
-  
+
   return (
-    <div className="relative h-screen overflow-scroll main-content bg-cover bg-center">
+    <div className="relative h-screen bg-opacity-50 bg-gray-1 overflow-scroll main-content bg-cover bg-center">
+      {loading && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="loader"></div>
+        </div>
+      )}
+      <div className={`loading-bar ${loading ? "loading" : ""}`}></div>
       <img
         src={bg}
         alt="background"
@@ -165,18 +188,18 @@ const UpdateInfo = () => {
                 placeholder="Enter your phone number"
               />
             </div>
-            {message && (
+            {(message || error) && (
               <p
                 className={`mt-4 text-sm text-center ${
                   error ? "text-red-500" : "text-green-500"
                 }`}
               >
-                {message}
+                {error || message}
               </p>
             )}
             <button
               type="submit"
-              className="w-full py-3 mt-6 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-md transition-all duration-200 hover:bg-accent-dark focus:outline-none focus:shadow-outline"
+              className="w-full bg-lightBlue-600 hover:bg-lightBlue-700 text-white font- py-2 px-3 rounded-md transition shadow-xl hover:shadow-none hover:outline-none outline outline-1 hover:text-trueGray-300 outline-light-blue-900 duration-300"
             >
               Update
             </button>
@@ -203,14 +226,15 @@ const UpdateInfo = () => {
                 required
               />
             </div>
-            {message && (
-              <p className="text-green-500 mb-2 text-xs italic">{message}</p>
+            {(message || error) && (
+              <p className={`text-sm italic mb-2 ${error ? 'text-red-500' : 'text-green-500'}`}>
+                {error || message}
+              </p>
             )}
-            {error && <p className="text-red-500 mb-2 text-xs italic">{error}</p>}
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                className="bg-light-blue-700 hover:bg-light-blue-900 transition-all transform duration-200 text-white font-bold py-2 px-4 rounded focus:outline-blue-500 outline-none"
+                className=" bg-lightBlue-600 hover:bg-lightBlue-700 text-white font- py-2 px-3 rounded-md transition shadow-xl hover:shadow-none hover:outline-none outline outline-1 hover:text-trueGray-300 outline-light-blue-900 duration-300"
               >
                 Validate OTP
               </button>

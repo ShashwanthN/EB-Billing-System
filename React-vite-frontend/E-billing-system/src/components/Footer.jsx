@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../assets/logo.png";
-
+import { FaYoutubeSquare, FaLinkedin, FaFacebookSquare, FaInstagramSquare} from "react-icons/fa";
 const Footer = () => {
   return (
     <footer className="pt-10">
@@ -20,29 +20,33 @@ const Footer = () => {
                   href="https://www.facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className=" hover:text-blue-600"
                 >
-                  <img src="path_to_facebook_icon.png" alt="Facebook" />
+                  <FaFacebookSquare size={26}/>
                 </a>
                 <a
-                  href="https://www.twitter.com"
+                  href="https://www.instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className=" hover:text-pink-500 "
                 >
-                  <img src="path_to_twitter_icon.png" alt="Twitter" />
+                  <FaInstagramSquare size={26}/>
                 </a>
                 <a
                   href="https://www.linkedin.com"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="hover:text-blue-500"
                 >
-                  <img src="path_to_linkedin_icon.png" alt="LinkedIn" />
+                  <FaLinkedin size={26}/>
                 </a>
                 <a
                   href="https://www.youtube.com"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="hover:text-red-500"
                 >
-                  <img src="path_to_youtube_icon.png" alt="YouTube" />
+                  <FaYoutubeSquare size={26}/>
                 </a>
               </div>
             </div>

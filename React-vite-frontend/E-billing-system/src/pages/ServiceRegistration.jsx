@@ -11,7 +11,7 @@
 
   const ServiceRegistration = () => {
     const navigate = useNavigate();
-
+    const [loading, setLoading] = useState(false);
     const [user_id, setUserId] = useState('');
     const [connectionType, setConnectionType] = useState('household');
     const [address, setAddress] = useState('');
@@ -54,7 +54,7 @@
 
     const handleRegister = async (event) => {
       event.preventDefault();
-
+      setLoading(true);
       const formData = new FormData();
       formData.append('userId', user_id);
       formData.append('address', `${address}, ${city ? city.label : ''}`);
@@ -104,6 +104,8 @@
       } catch (error) {
         console.error('There was an error registering the connection!', error);
         alert('Registration failed');
+      } finally {
+        setLoading(false);
       }
     };
     const customStyles = {
@@ -147,6 +149,12 @@
 
     return (
       <div className="relative h-screen overflow-scroll main-content  bg-cover bg-center">
+         {loading && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="loader"></div>
+        </div>
+      )}
+      <div className={`loading-bar ${loading ? "loading" : ""}`}></div>
         <img
           src={bg}
           alt="background"
@@ -302,7 +310,7 @@
 
             <button
               type="submit"
-              className="w-full py-3 mt-6 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-md transition-all duration-200 hover:bg-accent-dark focus:outline-none focus:shadow-outline"
+              className="w-full bg-lightBlue-600 hover:bg-lightBlue-700 text-white font- py-2 px-3 rounded-md transition shadow-xl hover:shadow-none hover:outline-none outline outline-1 hover:text-trueGray-300 outline-light-blue-900 duration-300"
             >
               Register
             </button>

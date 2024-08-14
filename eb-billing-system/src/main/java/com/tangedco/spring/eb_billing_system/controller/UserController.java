@@ -4,8 +4,10 @@ import com.tangedco.spring.eb_billing_system.dao.UserRepository;
 import com.tangedco.spring.eb_billing_system.dto.*;
 import com.tangedco.spring.eb_billing_system.entity.User;
 import com.tangedco.spring.eb_billing_system.security.AadharIdAlreadyExistsException;
+import com.tangedco.spring.eb_billing_system.security.EmailAlreadyExistsException;
 import com.tangedco.spring.eb_billing_system.service.OtpService;
 import com.tangedco.spring.eb_billing_system.service.UserService;
+import com.tangedco.spring.eb_billing_system.utils.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @RequestMapping("/users")
 @AllArgsConstructor
 public class UserController {
+    private JwtUtil jwtUtil;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final OtpService otpService;
     private final UserService userService;
@@ -41,14 +44,40 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @PostMapping("/checkEmail")
+    public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
+        Optional<User> userByEmail = userRepository.findByEmail(email);
+
+        if (userByEmail.isPresent()) {
+
+            throw new EmailAlreadyExistsException("Email already exists");
+        }
+
+
+        return ResponseEntity.ok(false);
+    }
+    @PostMapping("/validateToken")
+    public ResponseEntity<Boolean> validateToken(@RequestBody ValidateTokenRequest validateTokenRequest) {
+        String token = validateTokenRequest.getToken();
+
+        boolean isValidToken = jwtUtil.validateToken(token);
+
+        if (isValidToken) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+    }
+
     @PostMapping("/update")
     public ResponseEntity<User> updateUser(
             @RequestBody UpdateUserRequest updateUserRequest) {
-
+        
+        
         if (updateUserRequest == null || updateUserRequest.getOtpValidationRequest() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
+       
         OtpInfoResponse otpInfoResponse = otpService.validateOtp(updateUserRequest.getOtpValidationRequest());
 
         if (otpInfoResponse.getStatusCode() == 200) {
@@ -95,6 +124,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
+
+    
 
     @ExceptionHandler(AadharIdAlreadyExistsException.class)
     public ResponseEntity<String> handleAadharIdAlreadyExistsException(AadharIdAlreadyExistsException e) {

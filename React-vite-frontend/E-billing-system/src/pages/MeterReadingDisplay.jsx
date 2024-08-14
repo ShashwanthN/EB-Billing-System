@@ -12,7 +12,7 @@ const MeterReadingsDisplay = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [selectedType, setSelectedType] = useState("household");
-
+const [loading, setLoading] = useState(false);
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser && storedUser.userId) {
@@ -28,13 +28,22 @@ const MeterReadingsDisplay = () => {
   }, []);
 
   const fetchReadings = async (userId) => {
+    setLoading(true);
     try {
       const response = await axiosInstance.get(`readings/user/${userId}`);
       setReadings(response.data);
+      console.log();
       setError("");
+      if (response.data.length === 0) {
+        setError("No readings exist for you. Please check if you have registered or else connect support.");
+        setReadings([]);  
+        return;
+    }
     } catch (err) {
       setError("Failed to fetch the readings. Please check the user ID.");
       setReadings([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,6 +86,12 @@ const MeterReadingsDisplay = () => {
 
   return (
     <div className="main-content">
+       {loading && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="loader"></div>
+        </div>
+      )}
+      <div className={`loading-bar ${loading ? "loading" : ""}`}></div>
       <img
         src={bg}
         alt="background"

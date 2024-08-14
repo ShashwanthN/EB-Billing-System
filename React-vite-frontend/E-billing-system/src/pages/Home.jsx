@@ -3,6 +3,7 @@ import '@splidejs/react-splide/css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { Carousel } from "@material-tailwind/react";
 import Footer from "../components/Footer";
+import "./Home.css"
 
 const Home = () => {
   return (
@@ -64,7 +65,7 @@ const Home = () => {
               { title: "Update Info", text: "Update your mobile number or email.", link: "/update", label: "Update Now" },
               { title: "Mobile App", text: "Download our mobile app.", link: "https://play.google.com/store/apps/details?id=com.tneb.tangedco&hl=en_IN", label: "Download Now" },
             ].map((item, index) => (
-              <div key={index} className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition duration-700 ease-in-out hover:shadow-xl hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">
+              <div key={index} className="bg-gray-5 p-6 border border-gray text-gray-3 rounded shadow-md transition-all duration-700 ease-in-out hover:shadow-xl hover:border-gray transform hover:bg-gradient-to-tl from-gray-1 to-gray hover:text-white hover:scale-105">
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
                 <p className="text-gray-600">{item.text}</p>
                 <a
@@ -83,7 +84,7 @@ const Home = () => {
         <div className="text-gray-4 justify-center w-full flex">
           <div className="w-full md:w-1/2 flex-1 mr-4 border-t border-gray-2 mt-10">
             <h3 className="text-3xl md:text-7xl pb-10 font-mono pt-10 font-bold text-gray-3">
-              Lorem ipsum
+              Our Progress 
             </h3>
             <p className="text-sm md:text-base text-justify">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
