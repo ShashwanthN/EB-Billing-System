@@ -126,4 +126,51 @@ BEGIN\
   INSERT INTO bills (reading_id, amount) VALUES (NEW.reading_id, total_amount);\
 END //\
 \
-DELIMITER ;}
+DELIMITER ;\
+\
+\
+DELIMITER //\
+\
+CREATE TRIGGER after_household_connection_insert\
+AFTER INSERT ON household_connections\
+FOR EACH ROW\
+BEGIN\
+  INSERT INTO meter_readings (user_id, connection_type, reading_date, units_consumed, payment_status) VALUES\
+  (NEW.user_id, 'household', '2023-01-01 00:00:00', 100, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-02-01 00:00:00', 150, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-03-01 00:00:00', 130, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-04-01 00:00:00', 120, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-05-01 00:00:00', 160, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-06-01 00:00:00', 110, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-07-01 00:00:00', 140, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-08-01 00:00:00', 150, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-09-01 00:00:00', 170, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-10-01 00:00:00', 160, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-11-01 00:00:00', 180, 'not_paid'),\
+  (NEW.user_id, 'household', '2023-12-01 00:00:00', 190, 'not_paid');\
+END //\
+\
+DELIMITER ;\
+DELIMITER //\
+\
+CREATE TRIGGER after_commercial_connection_insert\
+AFTER INSERT ON commercial_connections\
+FOR EACH ROW\
+BEGIN\
+  INSERT INTO meter_readings (user_id, connection_type, reading_date, units_consumed, payment_status) VALUES\
+  (NEW.user_id, 'commercial', '2023-01-01 00:00:00', 300, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-02-01 00:00:00', 350, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-03-01 00:00:00', 320, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-04-01 00:00:00', 310, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-05-01 00:00:00', 360, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-06-01 00:00:00', 330, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-07-01 00:00:00', 340, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-08-01 00:00:00', 350, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-09-01 00:00:00', 370, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-10-01 00:00:00', 360, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-11-01 00:00:00', 380, 'not_paid'),\
+  (NEW.user_id, 'commercial', '2023-12-01 00:00:00', 390, 'not_paid');\
+END //\
+\
+DELIMITER ;\
+}
