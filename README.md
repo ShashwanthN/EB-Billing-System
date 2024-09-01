@@ -45,7 +45,7 @@ The development of the EB Billing System was completed over a span of 16 days. B
 
 - **Day 9-11: Integration & Testing**
   - Integrated the frontend with backend APIs.
-  - Conducted unit and integration testing to ensure system stability.
+  - Conducted integration testing to ensure system stability.
   - Fixed bugs and optimized performance.
 
 - **Day 12-14: Deployment Preparation**
